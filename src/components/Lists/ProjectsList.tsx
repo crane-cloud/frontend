@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import useGet from "@/utils/useGet";
-import { Button, Divider, Group, Paper, Skeleton } from "@mantine/core";
+import { Button, Divider, Group, Paper, Skeleton, Tabs } from "@mantine/core";
 import ProjectsCard from "@/components/Cards/ProjectsCard";
 import { GridLayout } from "@/components/Layouts/ListLayouts";
 import { RxHamburgerMenu } from "react-icons/rx";
@@ -13,14 +13,16 @@ import { API_PROJECTS } from "@/utils/apis";
 import { DOCS_URL } from "@/config";
 import DataNotFoundMessage from "@/pages/common/DataFoundMessage";
 import { useInfiniteScrollWithPagination } from "@/hooks/generic/useInfiniteScroll";
+import { useAuth } from "@/utils/AuthContext";
 
 const ProjectsList = () => {
   const { data: projectsData, getData, loading, success } = useGet();
-
+  const { user } = useAuth();
   const [viewMode, toggleViewMode] = useToggle<"grid" | "list">([
     "grid",
     "list",
   ]);
+  const [activeTab, setActiveTab] = React.useState<string | null>("owned");
 
   const { items: projects, lastElementRef } = useInfiniteScrollWithPagination({
     loading,
@@ -45,10 +47,16 @@ const ProjectsList = () => {
     });
   }, []);
 
+  const ownedProjects = projects.filter(
+    (project: any) => project.owner_id === user?.id,
+  );
+  const invitedProjects = projects.filter(
+    (project: any) => project.owner_id !== user?.id,
+  );
+
   return (
     <div>
       <TitleText>Projects</TitleText>
-
       <Paper py="lg" radius="md">
         <Group justify="space-between" align="center">
           <Search type="projects" wide />
@@ -75,33 +83,67 @@ const ProjectsList = () => {
 
         <Divider mt="lg" mb="md" />
 
-        {!loading && projects.length === 0 ? (
-          <DataNotFoundMessage
-            title="No projects found"
-            helpText="Try creating a new project or check the documentation."
-            helpLink={`${DOCS_URL}/projects/`}
-          />
-        ) : (
-          <GridLayout columns={viewMode === "grid" ? 3 : 1}>
-            {projects.map((project: any, index: number) => {
-              const isLast = index === projects.length - 1;
-              return (
-                <div
-                  key={project.id}
-                  ref={isLast ? lastElementRef : null}
-                  style={{ height: "100%" }}
-                >
-                  <ProjectsCard project={project} h="100%" />
-                </div>
-              );
-            })}
+        <Tabs value={activeTab} onChange={setActiveTab} mt="md">
+          <Tabs.List>
+            <Tabs.Tab value="owned">My Projects</Tabs.Tab>
+            <Tabs.Tab value="invited">Shared Projects</Tabs.Tab>
+          </Tabs.List>
 
-            {loading &&
-              [...Array(6)].map((_, i) => (
-                <Skeleton key={i} height={100} w="100%" radius="md" />
-              ))}
-          </GridLayout>
-        )}
+          <Tabs.Panel value="owned" pt="xs">
+            {!loading && ownedProjects.length === 0 ? (
+              <DataNotFoundMessage
+                title="No projects found"
+                helpText="Try creating a new project or check the documentation."
+                helpLink={`${DOCS_URL}/projects/`}
+              />
+            ) : (
+              <GridLayout columns={viewMode === "grid" ? 3 : 1}>
+                {ownedProjects.map((project: any, index: number) => {
+                  const isLast = index === ownedProjects.length - 1;
+                  return (
+                    <div
+                      key={project.id}
+                      ref={isLast ? lastElementRef : null}
+                      style={{ height: "100%" }}
+                    >
+                      <ProjectsCard project={project} h="100%" />
+                    </div>
+                  );
+                })}
+              </GridLayout>
+            )}
+          </Tabs.Panel>
+
+          <Tabs.Panel value="invited" pt="xs">
+            {!loading && invitedProjects.length === 0 ? (
+              <DataNotFoundMessage
+                title="No invited projects"
+                helpText="You have not been invited to any projects yet."
+                helpLink={`${DOCS_URL}/projects/`}
+              />
+            ) : (
+              <GridLayout columns={viewMode === "grid" ? 3 : 1}>
+                {invitedProjects.map((project: any, index: number) => {
+                  const isLast = index === invitedProjects.length - 1;
+                  return (
+                    <div
+                      key={project.id}
+                      ref={isLast ? lastElementRef : null}
+                      style={{ height: "100%" }}
+                    >
+                      <ProjectsCard project={project} h="100%" />
+                    </div>
+                  );
+                })}
+              </GridLayout>
+            )}
+          </Tabs.Panel>
+        </Tabs>
+
+        {loading &&
+          [...Array(6)].map((_, i) => (
+            <Skeleton key={i} height={100} w="100%" radius="md" />
+          ))}
       </Paper>
     </div>
   );
