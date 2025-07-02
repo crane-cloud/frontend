@@ -119,6 +119,7 @@ const CreateProjectForm = (props: TCreateProjectForm) => {
         : {
             ...form,
             owner_id: user?.id,
+            tags: form.tags_add,
           },
     });
   };
