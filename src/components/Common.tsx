@@ -97,7 +97,7 @@ export const UserDropDown = () => {
                 lh={1}
                 display={{ base: "none", sm: "block" }}
               >
-                {user.username}
+                {user.username || user.name}
               </Text>
             </Group>
             <FiChevronDown size={16} />
@@ -124,7 +124,7 @@ export const UserDropDown = () => {
             />
             <Stack gap={2}>
               <Text fw={500} size="sm" lh={1} mr={3}>
-                {user.username}
+                {user.username || user.name}
               </Text>
               <Text size="xs" c="dimmed">
                 {user.email}
