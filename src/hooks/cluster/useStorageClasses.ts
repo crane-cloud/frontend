@@ -9,7 +9,7 @@ const useStorageClasses = ({ cluster_id }: any) => {
 
   const tableColumns = () => [
     { id: "name", header: "Name" },
-    { id: "provisioner", header: "Provisioner"},
+    { id: "provisioner", header: "Provisioner" },
     { id: "reclaimPolicy", header: "Reclaim Policy" },
     //{ id: "default", header: "Default" },
     { id: "age", header: "Age" },

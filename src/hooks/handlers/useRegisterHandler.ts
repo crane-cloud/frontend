@@ -12,7 +12,6 @@ import useNamespaces from "../cluster/useNamespaces";
 import useJobs from "../cluster/useJobs";
 import useStorageClasses from "../cluster/useStorageClasses";
 
-
 // handle register creation
 export const registerHooks: Record<string, any> = {
   users: useUsers,
@@ -27,7 +26,7 @@ export const registerHooks: Record<string, any> = {
   namespaces: useNamespaces,
   nodes: useNodeList,
   jobs: useJobs,
-  storage_classes: useStorageClasses
+  storage_classes: useStorageClasses,
 };
 export const sourceApis: Record<string, string> = {
   users: "/users",
