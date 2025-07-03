@@ -1,6 +1,4 @@
-import {
-  useSetAdminClusterSidebar,
-} from "@/utils/helpers";
+import { useSetAdminClusterSidebar } from "@/utils/helpers";
 import moment from "moment";
 
 const useStorageClasses = ({ cluster_id }: any) => {
