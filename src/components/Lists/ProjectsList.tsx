@@ -1,6 +1,15 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import useGet from "@/utils/useGet";
-import { Button, Divider, Group, Paper, Skeleton, Tabs } from "@mantine/core";
+import {
+  Badge,
+  Button,
+  Divider,
+  Group,
+  Paper,
+  Skeleton,
+  Stack,
+  Text,
+} from "@mantine/core";
 import ProjectsCard from "@/components/Cards/ProjectsCard";
 import { GridLayout } from "@/components/Layouts/ListLayouts";
 import { RxHamburgerMenu } from "react-icons/rx";
@@ -16,13 +25,24 @@ import { useInfiniteScrollWithPagination } from "@/hooks/generic/useInfiniteScro
 import { useAuth } from "@/utils/AuthContext";
 
 const ProjectsList = () => {
-  const { data: projectsData, getData, loading, success } = useGet();
   const { user } = useAuth();
+  const { data: projectsData, getData, loading, success } = useGet();
+  const {
+    data: membersData,
+    getData: getProjectMembers,
+    success: membersSuccess,
+  } = useGet();
+
+  const [membersLoaded, setMembersLoaded] = useState(false);
+  const [projectMembersMap, setProjectMembersMap] = useState<
+    Record<string, any[]>
+  >({});
+  const [currentProjectId, setCurrentProjectId] = useState<string | null>(null);
+
   const [viewMode, toggleViewMode] = useToggle<"grid" | "list">([
     "grid",
     "list",
   ]);
-  const [activeTab, setActiveTab] = React.useState<string | null>("owned");
 
   const { items: projects, lastElementRef } = useInfiniteScrollWithPagination({
     loading,
@@ -34,7 +54,7 @@ const ProjectsList = () => {
     onLoadMore: (page) => {
       getData({
         api: `${API_PROJECTS}`,
-        params: { page, per_page: 10 },
+        params: { page, per_page: 20 },
       });
     },
   });
@@ -43,20 +63,119 @@ const ProjectsList = () => {
   useEffect(() => {
     getData({
       api: `${API_PROJECTS}`,
-      params: { page: 1, per_page: 10 },
+      params: { page: 1, per_page: 20 },
     });
   }, []);
 
-  const ownedProjects = projects.filter(
-    (project: any) => project.owner_id === user?.id,
-  );
-  const invitedProjects = projects.filter(
-    (project: any) => project.owner_id !== user?.id,
-  );
+  // Fetch members for each project
+  useEffect(() => {
+    if (projects.length > 0) {
+      const projectsToFetch = projects.filter(
+        (project: any) => !projectMembersMap[project.id],
+      );
+
+      if (projectsToFetch.length > 0 && !currentProjectId) {
+        const nextProject = projectsToFetch[0];
+        setCurrentProjectId(nextProject.id);
+        getProjectMembers({
+          api: `${API_PROJECTS}/${nextProject.id}/users`,
+        });
+      }
+    }
+  }, [projects, projectMembersMap, currentProjectId]);
+
+  // Store members data when fetched
+  useEffect(() => {
+    if (membersSuccess && membersData && currentProjectId) {
+      setProjectMembersMap((prev) => ({
+        ...prev,
+        [currentProjectId]: membersData?.data?.project_users || [],
+      }));
+
+      // Reset to fetch next project
+      setCurrentProjectId(null);
+
+      // Check if we've loaded all projects' members
+      const allMembersLoaded = projects.every(
+        (project) =>
+          projectMembersMap[project.id] || project.id === currentProjectId,
+      );
+
+      if (allMembersLoaded) {
+        setMembersLoaded(true);
+      }
+    }
+  }, [membersSuccess, membersData, currentProjectId, projects]);
+
+  const { invitedProjects, personalProjects } = useMemo(() => {
+    const invited: any[] = [];
+    const personal: any[] = [];
+
+    projects.forEach((project: any) => {
+      const projectMembers = projectMembersMap[project.id] || [];
+
+      // Find the current user's record in this project's members
+      const currentUserRecord = projectMembers.find(
+        (member: any) => member.user?.id === user?.id,
+      );
+
+      // Check if current user has a pending invitation
+      if (
+        currentUserRecord &&
+        currentUserRecord.accepted_collaboration_invite === false
+      ) {
+        invited.push(project);
+      } else {
+        personal.push(project);
+      }
+    });
+
+    return { invitedProjects: invited, personalProjects: personal };
+  }, [projects, projectMembersMap, user?.id]);
+
+  const renderProjectSection = (
+    title: string,
+    projects: any[],
+    showBadge = false,
+  ) => {
+    if (projects.length === 0) {
+      return null;
+    }
+
+    return (
+      <Stack gap="md">
+        <Group gap="xs" align="center">
+          <Text size="lg" fw={600} c="dimmed">
+            {title}
+          </Text>
+          {showBadge && (
+            <Badge color="red" variant="filled" size="sm">
+              {projects.length}
+            </Badge>
+          )}
+        </Group>
+        <GridLayout columns={viewMode === "grid" ? 3 : 1}>
+          {projects.map((project: any, index: number) => {
+            const isLast = index === projects.length - 1;
+            return (
+              <div
+                key={project.id}
+                ref={isLast ? lastElementRef : null}
+                style={{ height: "100%" }}
+              >
+                <ProjectsCard project={project} h="100%" />
+              </div>
+            );
+          })}
+        </GridLayout>
+      </Stack>
+    );
+  };
 
   return (
     <div>
       <TitleText>Projects</TitleText>
+
       <Paper py="lg" radius="md">
         <Group justify="space-between" align="center">
           <Search type="projects" wide />
@@ -83,67 +202,41 @@ const ProjectsList = () => {
 
         <Divider mt="lg" mb="md" />
 
-        <Tabs value={activeTab} onChange={setActiveTab} mt="md">
-          <Tabs.List>
-            <Tabs.Tab value="owned">My Projects</Tabs.Tab>
-            <Tabs.Tab value="invited">Shared Projects</Tabs.Tab>
-          </Tabs.List>
+        {!loading && projects.length === 0 ? (
+          <DataNotFoundMessage
+            title="No projects found"
+            helpText="Try creating a new project or check the documentation."
+            helpLink={`${DOCS_URL}/projects/`}
+          />
+        ) : (
+          <Stack gap="xl">
+            {invitedProjects.length > 0 &&
+              renderProjectSection(
+                "Pending Invitations",
+                invitedProjects,
+                true,
+              )}
 
-          <Tabs.Panel value="owned" pt="xs">
-            {!loading && ownedProjects.length === 0 ? (
-              <DataNotFoundMessage
-                title="No projects found"
-                helpText="Try creating a new project or check the documentation."
-                helpLink={`${DOCS_URL}/projects/`}
-              />
-            ) : (
+            {personalProjects.length > 0 &&
+              renderProjectSection("Projects List", personalProjects)}
+
+            {!membersLoaded && (
               <GridLayout columns={viewMode === "grid" ? 3 : 1}>
-                {ownedProjects.map((project: any, index: number) => {
-                  const isLast = index === ownedProjects.length - 1;
-                  return (
-                    <div
-                      key={project.id}
-                      ref={isLast ? lastElementRef : null}
-                      style={{ height: "100%" }}
-                    >
-                      <ProjectsCard project={project} h="100%" />
-                    </div>
-                  );
-                })}
+                {[...Array(6)].map((_, i) => (
+                  <Skeleton key={i} height={100} w="100%" radius="md" />
+                ))}
               </GridLayout>
             )}
-          </Tabs.Panel>
 
-          <Tabs.Panel value="invited" pt="xs">
-            {!loading && invitedProjects.length === 0 ? (
-              <DataNotFoundMessage
-                title="No invited projects"
-                helpText="You have not been invited to any projects yet."
-                helpLink={`${DOCS_URL}/projects/`}
-              />
-            ) : (
+            {loading && (
               <GridLayout columns={viewMode === "grid" ? 3 : 1}>
-                {invitedProjects.map((project: any, index: number) => {
-                  const isLast = index === invitedProjects.length - 1;
-                  return (
-                    <div
-                      key={project.id}
-                      ref={isLast ? lastElementRef : null}
-                      style={{ height: "100%" }}
-                    >
-                      <ProjectsCard project={project} h="100%" />
-                    </div>
-                  );
-                })}
+                {[...Array(6)].map((_, i) => (
+                  <Skeleton key={i} height={100} w="100%" radius="md" />
+                ))}
               </GridLayout>
             )}
-          </Tabs.Panel>
-        </Tabs>
-
-        {loading &&
-          [...Array(6)].map((_, i) => (
-            <Skeleton key={i} height={100} w="100%" radius="md" />
-          ))}
+          </Stack>
+        )}
       </Paper>
     </div>
   );
