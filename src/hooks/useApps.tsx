@@ -5,11 +5,11 @@ import { Link } from "react-router-dom";
 
 export const useApps = () => {
   const tableColumns = () => [
-    { id: "id", header: "ID", filter: true },
+    { id: "id", header: "ID", filter: { key: "app_id", type: "text" } },
     {
       id: "name",
       header: "Name",
-      filter: { key: "app_name", type: "text" },
+      filter: { key: "keyword", type: "text" },
     },
     { id: "image", header: "Image" },
     { id: "port", header: "Port" },
@@ -20,8 +20,30 @@ export const useApps = () => {
     },
     { id: "project_id", header: "Project" },
     {
+      id: "status",
+      header: "Status",
+      filter: {
+        type: "select",
+        options: [
+          { label: "up", value: "running" },
+          { label: "down", value: "down" },
+        ],
+      },
+    },
+    {
       id: "is_notebook",
       header: <NoWrap fw="inherit">Is Notebook</NoWrap>,
+      filter: {
+        type: "select",
+        options: [
+          { label: "Yes", value: "true" },
+          { label: "No", value: "false" },
+        ],
+      },
+    },
+    {
+      id: "is_modal",
+      header: <NoWrap fw="inherit">Is Modal</NoWrap>,
       filter: {
         type: "select",
         options: [
@@ -41,7 +63,7 @@ export const useApps = () => {
         ],
       },
     },
-    { id: "age", header: "Age" },
+    { id: "age", header: "Age", filter: false },
     {
       id: "date_created",
       header: "Date Created",
@@ -56,6 +78,14 @@ export const useApps = () => {
       return [];
     }
     return data.map((item: any) => {
+      let statusValue = "Unknown";
+      if (Array.isArray(item.app_status) && item.app_status.length > 0) {
+        if (item.app_status.some((s: any) => s.status === "running")) {
+          statusValue = "Running";
+        } else if (item.app_status.some((s: any) => s.status === "failed")) {
+          statusValue = "Down";
+        }
+      }
       const row = {
         ...item,
         id: <Link to={`/admin/apps/${item.id}`}>{shortenID(item.id)}</Link>,
@@ -82,7 +112,9 @@ export const useApps = () => {
         age: <NoWrap>{item.age}</NoWrap>,
         is_public: item.verified ? "Yes" : "No",
         disabled: item.disabled ? "Yes" : "No",
+        status: statusValue,
         is_notebook: item.is_notebook ? "Yes" : "No",
+        is_modal: item.is_modal ? "Yes" : "No",
       };
       return row;
     });
