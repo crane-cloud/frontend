@@ -15,6 +15,7 @@ import { DatePickerInput } from "@mantine/dates";
 import { useState, useEffect } from "react";
 import { FaChartLine, FaEye, FaEyeSlash } from "react-icons/fa";
 import ChartTooltip from "./ChartTooltip";
+import { CiCalendarDate } from "react-icons/ci";
 
 type TLineMetricChart = {
   title: string;
@@ -287,8 +288,11 @@ export const LineLargeMetricChart = ({
                   setFilters({ ...filters, startDate: date });
                   setActivePreset(null);
                 }}
+                c="light-dark(var(--mantine-color-dark-9), white)"
                 mx="auto"
                 size="xs"
+                leftSection={<CiCalendarDate size={13} />}
+                className="dimmed-placeholder"
               />
               <DatePickerInput
                 placeholder="End date"
@@ -299,6 +303,8 @@ export const LineLargeMetricChart = ({
                 }}
                 mx="auto"
                 size="xs"
+                leftSection={<CiCalendarDate size={13} />}
+                className="dimmed-placeholder"
               />
             </Group>
           </Flex>
