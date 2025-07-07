@@ -1,3 +1,4 @@
+import { NoWrap } from "@/components/Elements/Elements";
 import { useSetAdminClusterSidebar } from "@/utils/helpers";
 import { Anchor, Text, Tooltip } from "@mantine/core";
 import moment from "moment";
@@ -33,23 +34,10 @@ const usePods = ({ cluster_id }: any) => {
       const nodeName = item?.spec?.nodeName || "N/A";
 
       const row = {
-        name: (
-          <Tooltip label={item?.metadata?.name} withArrow>
-            <Text lineClamp={1}>{item?.metadata?.name}</Text>
-          </Tooltip>
-        ),
+        name: <NoWrap lineClamp={1}>{item?.metadata?.name}</NoWrap>,
         namespace: (
           <Tooltip label={namespace} withArrow>
-            <Text lineClamp={1}>
-              <Anchor
-                href="#"
-                target="_blank"
-                underline="always"
-                onClick={(e) => e.preventDefault()}
-              >
-                {namespace}
-              </Anchor>
-            </Text>
+            <Text lineClamp={1}>{namespace}</Text>
           </Tooltip>
         ),
         containers: (
