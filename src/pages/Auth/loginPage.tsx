@@ -4,6 +4,7 @@ import {
   Checkbox,
   Divider,
   Group,
+  Image,
   Loader,
   Modal,
   Paper,
@@ -32,6 +33,7 @@ import { GuestFooter } from "@/components/Footer";
 import { API_USERS } from "@/utils/apis";
 import useGet from "@/utils/useGet";
 import { GIT_REDIRECT_URL, GOOGLE_REDIRECT_URL } from "@/config";
+import CraneCloudLogo from "../../assets/images/logo.svg";
 
 export function LoginForm(props: PaperProps) {
   const { login, loggedIn } = useAuth();
@@ -242,15 +244,18 @@ export function LoginForm(props: PaperProps) {
       >
         {!passwordReset ? (
           <>
-            <Text
-              variant="gradient"
-              gradient={{ from: "blue", to: "cyan", deg: 90 }}
-              size="xl"
-              fw={700}
-              ta="center"
-            >
-              Welcome {type === "login" && "back"} to Crane Cloud
-            </Text>
+            <Stack justify="center" align="center" gap={10} pt={10} pb={20}>
+              <Image src={CraneCloudLogo} alt="Crane Cloud" w={70} />
+              <Text
+                variant="gradient"
+                gradient={{ from: "blue", to: "cyan", deg: 90 }}
+                size="xl"
+                fw={700}
+                ta="center"
+              >
+                Welcome {type === "login" && "back"} to Crane Cloud
+              </Text>
+            </Stack>
             <Group justify="center" mt="lg" gap="sm">
               <Button
                 radius="xl"
@@ -292,6 +297,7 @@ export function LoginForm(props: PaperProps) {
               label="Or continue with email"
               labelPosition="center"
               my="lg"
+              fw={700}
             />
             <form onSubmit={handleSubmit}>
               <Stack gap="sm">
@@ -378,6 +384,7 @@ export function LoginForm(props: PaperProps) {
                     c="dimmed"
                     onClick={() => toggle()}
                     size="xs"
+                    fw={600}
                   >
                     {type === "register"
                       ? "Already have an account? Login"
@@ -388,6 +395,7 @@ export function LoginForm(props: PaperProps) {
                       component="button"
                       type="button"
                       size="sm"
+                      fw={700}
                       onClick={() => setShowPasswordReset(true)}
                     >
                       Forgot password?
@@ -450,6 +458,7 @@ export function LoginForm(props: PaperProps) {
                   c="dimmed"
                   onClick={() => setShowPasswordReset(false)}
                   size="xs"
+                  fw={700}
                 >
                   Back to Login
                 </Anchor>
