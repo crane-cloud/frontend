@@ -8,7 +8,7 @@ const useStorageClasses = ({ cluster_id }: any) => {
     { id: "name", header: "Name" },
     { id: "provisioner", header: "Provisioner" },
     { id: "reclaimPolicy", header: "Reclaim Policy" },
-    //{ id: "default", header: "Default" },
+    { id: "default", header: "Default" },
     { id: "age", header: "Age" },
   ];
 
@@ -20,12 +20,16 @@ const useStorageClasses = ({ cluster_id }: any) => {
       return [];
     }
     return data.map((item: any) => {
+      const isDefault =
+        item?.metadata?.annotations?.[
+          "storageclass.kubernetes.io/is-default-class"
+        ] === "true";
       const row = {
         // ...item,
         name: item?.metadata?.name,
         provisioner: item?.provisioner,
         reclaimPolicy: item?.reclaimPolicy,
-        //default: formatClusterServicePorts(item?.spec?.default),
+        default: isDefault ? "Yes" : "No", // 👈 You can customize this label
         age: moment(item?.metadata?.creationTimestamp).fromNow(),
       };
       return row;
