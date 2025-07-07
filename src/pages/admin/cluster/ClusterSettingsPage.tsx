@@ -63,9 +63,9 @@ const ClusterSettingsPage = () => {
 
             <Group justify="space-between" align="center">
               <Stack gap={0}>
-                <Text className="title">Delete Project</Text>
+                <Text className="title">Delete Cluster</Text>
                 <Text className="subtext">
-                  This action is irreversible and will delete the project
+                  This action is irreversible and will delete the cluster
                   permanently.
                 </Text>
               </Stack>
@@ -82,7 +82,7 @@ const ClusterSettingsPage = () => {
           <ModalConfirm
             opened={deleteConfirmOpened}
             onClose={() => setDeleteConfirmOpened(false)}
-            title="Delete Project"
+            title="Delete Cluster"
             buttonColor="red"
             buttonText="Delete"
             onConfirm={handleDelete}
