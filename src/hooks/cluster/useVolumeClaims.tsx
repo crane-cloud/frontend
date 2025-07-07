@@ -1,3 +1,4 @@
+import { NoWrap } from "@/components/Elements/Elements";
 import { useSetAdminClusterSidebar } from "@/utils/helpers";
 import moment from "moment";
 
@@ -23,7 +24,20 @@ const useVolumeClaims = ({ cluster_id }: any) => {
       storage_class: item?.spec?.storageClassName,
       size: item?.spec?.resources?.requests?.storage,
       age: moment(item?.metadata?.creationTimestamp).fromNow(),
-      status: item?.status?.phase,
+      status: (
+        <NoWrap
+          c={
+            item?.status?.phase === "Bound"
+              ? "green"
+              : item?.status?.phase === "Pending"
+                ? "orange"
+                : "black"
+          }
+          fw={500}
+        >
+          {item?.status?.phase}
+        </NoWrap>
+      ),
     }));
   };
   const dataParent = "pvcs"; // make sure your API response structure matches this
