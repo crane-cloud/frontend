@@ -22,7 +22,6 @@ const useNamespaces = ({ cluster_id }: any) => {
     }
     return data.map((item: any) => {
       const row = {
-        // ...item,
         name: <NoWrap>{item?.metadata?.name}</NoWrap>,
         labels: (
           <Text size="xs" lineClamp={1}>
