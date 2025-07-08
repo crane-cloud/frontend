@@ -188,6 +188,12 @@ export const useSetAdminContainerSize = (size: string) => {
   useEffect(() => {
     setContainerSize(size);
   }, [setContainerSize, size]);
+
+  useEffect(() => {
+    return () => {
+      setContainerSize("lg");
+    };
+  }, []);
 };
 
 export const getDatabaseStatus = (status: string) => {

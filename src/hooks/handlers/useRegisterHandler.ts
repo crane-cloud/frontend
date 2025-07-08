@@ -7,8 +7,11 @@ import usePods from "../cluster/usePods";
 import useServices from "../cluster/useServices";
 import useNodeList from "../cluster/useNodes";
 import { useApps } from "../useApps";
+import useVolumeClaims from "../cluster/useVolumeClaims";
 import useNamespaces from "../cluster/useNamespaces";
 import useDeployments from "../cluster/useDeployments";
+import useJobs from "../cluster/useJobs";
+import useStorageClasses from "../cluster/useStorageClasses";
 
 // handle register creation
 export const registerHooks: Record<string, any> = {
@@ -20,11 +23,13 @@ export const registerHooks: Record<string, any> = {
   volumes: useVolumes,
   pods: usePods,
   services: useServices,
+  volume_claims: useVolumeClaims,
   namespaces: useNamespaces,
   nodes: useNodeList,
   deployments: useDeployments,
+  jobs: useJobs,
+  storage_classes: useStorageClasses,
 };
-
 export const sourceApis: Record<string, string> = {
   users: "/users",
   databases: `${DATABASE_API_URL}/databases`,

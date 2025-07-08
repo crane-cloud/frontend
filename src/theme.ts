@@ -1,4 +1,11 @@
-import { Button, Card, createTheme, Text, TextInput } from "@mantine/core";
+import {
+  Button,
+  Card,
+  createTheme,
+  Fieldset,
+  Text,
+  TextInput,
+} from "@mantine/core";
 import { returnObject } from "./utils/helpers";
 
 export const theme = createTheme({
@@ -50,6 +57,18 @@ export const theme = createTheme({
               var(--mantine-color-default-hover),
               var(--mantine-color-gray-9)
             )`,
+          },
+        },
+      },
+    }),
+    Fieldset: Fieldset.extend({
+      defaultProps: {
+        styles: {
+          root: {
+            backgroundColor: "light-dark(white, var(--mantine-color-dark-6))",
+          },
+          legend: {
+            fontWeight: 600,
           },
         },
       },

@@ -33,6 +33,41 @@ export const Logo = () => {
   );
 };
 
+export const ProfileAvatar = ({
+  user,
+  size = 30,
+}: {
+  user: any;
+  size?: number;
+}) => {
+  return (
+    <>
+      {user?.profile_picture ? (
+        <img
+          src={user?.profile_picture}
+          alt={user.name}
+          referrerPolicy="no-referrer"
+          style={{
+            width: size,
+            height: size,
+            borderRadius: "50%",
+            objectFit: "cover",
+            border: "1px solid #e0e0e0",
+          }}
+        />
+      ) : (
+        <Avatar
+          alt={user.username}
+          name={user.name || user.username}
+          radius="xl"
+          size={size}
+          color="initials"
+        />
+      )}
+    </>
+  );
+};
+
 export const UserDropDown = () => {
   const { colorScheme, setColorScheme } = useMantineColorScheme();
   const { logout, user } = useAuth();
@@ -84,47 +119,30 @@ export const UserDropDown = () => {
         >
           <Group gap={10} display={{ base: "none", sm: "flex" }}>
             <Group gap={7}>
-              <Avatar
-                alt={user.username}
-                name={user.name}
-                radius="xl"
-                size={30}
-                color="initials"
-              />
+              <ProfileAvatar user={user} />
               <Text
                 fw={500}
                 size="sm"
                 lh={1}
                 display={{ base: "none", sm: "block" }}
               >
-                {user.username}
+                {user.username || user.name}
               </Text>
             </Group>
             <FiChevronDown size={16} />
           </Group>
           <Group display={{ base: "flex", sm: "none" }}>
-            <Avatar
-              alt={user.username}
-              name={user.name}
-              radius="xl"
-              size={30}
-              color="initials"
-            />
+            <ProfileAvatar user={user} />
           </Group>
         </UnstyledButton>
       </Menu.Target>
       <Menu.Dropdown>
         <Menu.Item onClick={() => navigate(`/profile/${user?.id}`)}>
           <Group gap={10}>
-            <Avatar
-              alt={user.username}
-              name={user.name}
-              radius="xl"
-              color="initials"
-            />
+            <ProfileAvatar user={user} />
             <Stack gap={2}>
               <Text fw={500} size="sm" lh={1} mr={3}>
-                {user.username}
+                {user.username || user.name}
               </Text>
               <Text size="xs" c="dimmed">
                 {user.email}

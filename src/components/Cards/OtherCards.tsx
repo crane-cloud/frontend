@@ -1,13 +1,6 @@
-import {
-  Avatar,
-  Card,
-  Divider,
-  Group,
-  Stack,
-  Text,
-  Tooltip,
-} from "@mantine/core";
+import { Box, Card, Divider, Group, Stack, Text, Tooltip } from "@mantine/core";
 import { PiBuildingsBold } from "react-icons/pi";
+import { ProfileAvatar } from "../Common";
 
 function UserProfileCard({ user }: { user: any }) {
   const userStats = [
@@ -26,13 +19,9 @@ function UserProfileCard({ user }: { user: any }) {
           backgroundImage: `url("data:image/svg+xml,%3Csvg width='12' height='16' viewBox='0 0 12 16' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M4 .99C4 .445 4.444 0 5 0c.552 0 1 .45 1 .99v4.02C6 5.555 5.556 6 5 6c-.552 0-1-.45-1-.99V.99zm6 8c0-.546.444-.99 1-.99.552 0 1 .45 1 .99v4.02c0 .546-.444.99-1 .99-.552 0-1-.45-1-.99V8.99z' fill='%23dde2e7' fill-opacity='0.54' fill-rule='evenodd'/%3E%3C/svg%3E")`,
         }}
       />
-      <Avatar
-        src="https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-9.png"
-        size={140}
-        radius={80}
-        mx="auto"
-        mt={-90}
-      />
+      <Box mx="auto" mt={-90}>
+        <ProfileAvatar user={user} size={140} />
+      </Box>
       <Text ta="center" fz="1.3rem" fw={500} mt="sm">
         {user?.name}
       </Text>

@@ -133,12 +133,6 @@ const LeftMenu = React.memo(
           key: "databases",
           link: "/admin/databases/list",
         },
-        {
-          label: "Settings",
-          icon: HiOutlineCog6Tooth,
-          key: "settings",
-          link: "/settings",
-        },
       ],
       [],
     );
