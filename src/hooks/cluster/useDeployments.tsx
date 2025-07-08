@@ -20,7 +20,9 @@ const formatDeploymentData = (
   age: string;
   status: string;
 }> => {
-  if (!Array.isArray(data)) return [];
+  if (!Array.isArray(data)) {
+    return [];
+  }
 
   return data.map((item: any) => {
     const name = item?.metadata?.name;
