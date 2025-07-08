@@ -10,7 +10,9 @@ const getTableColumns = () => [
   { id: "status", header: "Status" },
 ];
 
-const formatDeploymentData = (data: any): Array<{
+const formatDeploymentData = (
+  data: any,
+): Array<{
   name: string | undefined;
   namespace: string | undefined;
   pods: string;

@@ -22,8 +22,7 @@ export const registerHooks: Record<string, any> = {
   services: useServices,
   namespaces: useNamespaces,
   nodes: useNodeList,
-  deployments: useDeployments
-  
+  deployments: useDeployments,
 };
 
 export const sourceApis: Record<string, string> = {
