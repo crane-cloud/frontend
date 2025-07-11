@@ -25,3 +25,8 @@ export const MLOPS_API_URL = import.meta.env.VITE_APP_MLOPS_API_URL;
 // GitHub and Google OAuth URLs
 export const GIT_REDIRECT_URL = `https://github.com/login/oauth/authorize?client_id=${import.meta.env.VITE_APP_GITHUB_CLEINT_ID}&scope=read:user,user:email`;
 export const GOOGLE_REDIRECT_URL = `https://accounts.google.com/o/oauth2/v2/auth/oauthchooseaccount?response_type=code&redirect_uri=${import.meta.env.VITE_REDIRECT_URI}&scope=profile%20email&client_id=${import.meta.env.VITE_GOOGLE_CLIENT_ID}&service=lso&o2v=2&flowName=GeneralOAuthFlow`;
+
+// Custom domain IP address
+// This is the IP address that users will point their custom domains to.
+export const CUSTOM_DOMAIN_IP =
+  import.meta.env.VITE_CUSTOM_DOMAIN_IP || "102.134.147.233";

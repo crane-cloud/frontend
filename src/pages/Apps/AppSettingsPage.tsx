@@ -29,6 +29,17 @@ import {
   Text,
   Tooltip,
   TextInput,
+  Table as MantineTable,
+  Alert,
+  ActionIcon,
+  CopyButton,
+  Paper,
+  Modal,
+  Code,
+  List,
+  ThemeIcon,
+  Textarea,
+  Collapse,
 } from "@mantine/core";
 import { useContext, useEffect, useState } from "react";
 import {
@@ -38,15 +49,24 @@ import {
   HiPencil,
   HiPlus,
   HiTrash,
+  HiPencil as IconEdit,
+  HiCheck as IconCheck,
+  HiExclamationTriangle as IconAlertTriangle,
+  HiGlobeAlt as IconWorld,
+  HiArrowPath as IconRotateClockwise,
+  HiXMark as IconX,
 } from "react-icons/hi2";
-import { FiCalendar } from "react-icons/fi";
+import { FiCalendar, FiExternalLink } from "react-icons/fi";
 import { LiaDocker } from "react-icons/lia";
+import { FaCheck } from "react-icons/fa6";
 
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { TbCheck, TbCopy } from "react-icons/tb";
 import { useClipboard } from "@mantine/hooks";
 import { useAuth } from "@/utils/AuthContext";
 import { MenuContext } from "@/components/Layouts/DashboardLayout";
+import { FaArrowDown, FaArrowUp } from "react-icons/fa";
+import { CUSTOM_DOMAIN_IP } from "@/config";
 
 const AppSettingsPage = () => {
   const { app_id } = useParams();
@@ -67,6 +87,7 @@ const AppSettingsPage = () => {
           <Tabs.Tab value="general">General</Tabs.Tab>
           <Tabs.Tab value="ci/cd">CI / CD</Tabs.Tab>
           <Tabs.Tab value="deployments">Deployments</Tabs.Tab>
+          <Tabs.Tab value="domains">Domains</Tabs.Tab>
         </Tabs.List>
 
         <Tabs.Panel value="general" pt={10}>
@@ -77,6 +98,9 @@ const AppSettingsPage = () => {
         </Tabs.Panel>
         <Tabs.Panel value="ci/cd" pt={10}>
           <CICDTab app={app} />
+        </Tabs.Panel>
+        <Tabs.Panel value="domains" pt={10}>
+          <DomainsTab app={app} setRefresh={setRefresh} />
         </Tabs.Panel>
       </Tabs>
     </div>
@@ -212,16 +236,6 @@ const GeneralTab = ({
     },
   ];
 
-  const appSingleInfo = [
-    {
-      label: "Application Link",
-      value: app?.url || "N/A",
-    },
-    {
-      label: "Internal Link",
-      value: app?.internal_url || "N/A",
-    },
-  ];
   return (
     <Stack gap={30}>
       <Stack gap={0}>
@@ -235,19 +249,6 @@ const GeneralTab = ({
                     <Text className="subtitle">{info.label}</Text>
                     <Text size="sm">{info.value}</Text>
                   </Stack>
-                </Flex>
-              </Grid.Col>
-            ))}
-            <Grid.Col span={{ base: 12, md: 12, lg: 12 }}>
-              <Divider />
-            </Grid.Col>
-            {appSingleInfo.map((info) => (
-              <Grid.Col span={{ base: 12, md: 12, lg: 12 }}>
-                <Flex gap={20}>
-                  <Text className="subtitle">{info.label}</Text>
-                  <Text size="sm" flex={1}>
-                    {info.value}
-                  </Text>
                 </Flex>
               </Grid.Col>
             ))}
@@ -284,7 +285,7 @@ const GeneralTab = ({
         </Flex>
       </Stack>
       <Stack gap={0}>
-        <TitleText>Danger Zone</TitleText>
+        <TitleText>Manage App</TitleText>
         <Card p="lg" radius="md" withBorder>
           <Stack gap={10}>
             <Group justify="space-between" align="center">
@@ -697,6 +698,462 @@ const CICDTab = ({ app }: { app: any }) => {
           </Card>
         </Stack>
       </Stack>
+    </div>
+  );
+};
+
+const DomainsTab = ({
+  app,
+  setRefresh,
+}: {
+  app: any;
+  setRefresh: (refresh: boolean) => void;
+}) => {
+  const [newDomain, setNewDomain] = useState("");
+  const [isAddingDomain, setIsAddingDomain] = useState(false);
+  const [isEditingCustomDomain, setIsEditingCustomDomain] = useState(false);
+  const [customDomainValue, setCustomDomainValue] = useState(app?.url || "");
+  const [isDnsInstructionsOpen, setIsDnsInstructionsOpen] = useState(false);
+
+  const {
+    uploadData: addCustomDomain,
+    submitting: addingCustomDomain,
+    success: addedCustomDomainSuccess,
+    error: addCustomDomainError,
+  } = usePost();
+  const {
+    uploadData: revertCustomDomain,
+    submitting: revertingCustomDomain,
+    success: revertedCustomDomainSuccess,
+    error: verificationError,
+  } = usePost();
+
+  useEffect(() => {
+    if (addedCustomDomainSuccess) {
+      setRefresh(true);
+      setNewDomain("");
+      setCustomDomainValue("");
+      setIsAddingDomain(false);
+      setIsEditingCustomDomain(false);
+    }
+  }, [addedCustomDomainSuccess]);
+
+  useEffect(() => {
+    if (revertedCustomDomainSuccess) {
+      setRefresh(true);
+      setCustomDomainValue(app?.url || "");
+    }
+  }, [revertedCustomDomainSuccess]);
+
+  interface DnsRecord {
+    type: string;
+    name: string;
+    value: string;
+    ttl: string;
+    description: string;
+  }
+
+  const dnsInstructions = [
+    {
+      title: "Record Type",
+      value: "A",
+      description: "Select A-record type",
+    },
+    {
+      title: "Host",
+      value: "app",
+      description: "This will point to your domain",
+    },
+    {
+      title: "Address/Value",
+      value: CUSTOM_DOMAIN_IP,
+      description: "IP address we provide",
+    },
+    {
+      title: "TTL",
+      value: "1 Hour",
+      description: "Time to live setting",
+    },
+  ];
+
+  const dnsRecords: DnsRecord[] = [
+    {
+      type: "A",
+      name: "app",
+      value: CUSTOM_DOMAIN_IP,
+      ttl: "1 Hour",
+      description: "Points to your domain",
+    },
+    {
+      type: "A",
+      name: "@",
+      value: CUSTOM_DOMAIN_IP,
+      ttl: "1 Hour",
+      description: "Root domain pointer",
+    },
+  ];
+
+  const handleAddDomain = async () => {
+    if (!app?.id || (!newDomain.trim() && !customDomainValue.trim())) {
+      return;
+    }
+
+    addCustomDomain({
+      api: "apps",
+      id: app?.id,
+      method: "PATCH",
+      params: {
+        custom_domain: newDomain.trim() || customDomainValue.trim(),
+      },
+    });
+  };
+
+  const handleRevertDomain = async () => {
+    if (!app?.id) {
+      return;
+    }
+
+    revertCustomDomain({
+      api: `apps/${app?.id}/revert_url`,
+      method: "PATCH",
+    });
+  };
+
+  const renderDnsInstructions = () => (
+    <Stack gap="md" mt="md">
+      <Group justify="flex-start">
+        <Button
+          variant="subtle"
+          color="blue"
+          size="sm"
+          leftSection={
+            isDnsInstructionsOpen ? (
+              <FaArrowUp size={16} />
+            ) : (
+              <FaArrowDown size={16} />
+            )
+          }
+          onClick={() => setIsDnsInstructionsOpen(!isDnsInstructionsOpen)}
+        >
+          {isDnsInstructionsOpen
+            ? "Hide DNS Setup Instructions"
+            : "View DNS Setup Instructions"}
+        </Button>
+      </Group>
+
+      <Collapse in={isDnsInstructionsOpen}>
+        <Paper p="md" withBorder radius="md">
+          <Alert
+            icon={<IconAlertTriangle size={16} />}
+            color="blue"
+            variant="light"
+            radius="md"
+            mb="md"
+          >
+            <Text size="sm" fw={500}>
+              DNS Configuration Required
+            </Text>
+            <Text size="sm" c="dimmed" mt={4}>
+              Configure your DNS provider with the following settings to connect
+              your custom domain
+            </Text>
+          </Alert>
+
+          <Tabs defaultValue="dns-records" variant="outline">
+            <Tabs.List>
+              <Tabs.Tab value="dns-records">Required DNS Records</Tabs.Tab>
+              <Tabs.Tab value="instructions">Step-by-Step Guide</Tabs.Tab>
+            </Tabs.List>
+
+            <Tabs.Panel value="dns-records" pt="md">
+              <Text size="sm" c="dimmed" mb="md">
+                Add these DNS records to your domain provider to connect your
+                custom domain.
+              </Text>
+
+              <MantineTable>
+                <MantineTable.Thead>
+                  <MantineTable.Tr>
+                    <MantineTable.Th>Type</MantineTable.Th>
+                    <MantineTable.Th>Name</MantineTable.Th>
+                    <MantineTable.Th>Value</MantineTable.Th>
+                    <MantineTable.Th>TTL</MantineTable.Th>
+                    <MantineTable.Th>Action</MantineTable.Th>
+                  </MantineTable.Tr>
+                </MantineTable.Thead>
+                <MantineTable.Tbody>
+                  {dnsRecords.map((record, index) => (
+                    <MantineTable.Tr key={index}>
+                      <MantineTable.Td>
+                        <Badge variant="light" color="blue">
+                          {record.type}
+                        </Badge>
+                      </MantineTable.Td>
+                      <MantineTable.Td>
+                        <Code>{record.name}</Code>
+                      </MantineTable.Td>
+                      <MantineTable.Td>
+                        <Code>{record.value}</Code>
+                      </MantineTable.Td>
+                      <MantineTable.Td>
+                        <Text size="sm">{record.ttl}</Text>
+                      </MantineTable.Td>
+                      <MantineTable.Td>
+                        <CopyButton value={record.value}>
+                          {({ copied, copy }) => (
+                            <Tooltip label={copied ? "Copied" : "Copy Value"}>
+                              <ActionIcon
+                                variant="subtle"
+                                color={copied ? "green" : "gray"}
+                                onClick={copy}
+                                size="sm"
+                              >
+                                {copied ? (
+                                  <IconCheck size={14} />
+                                ) : (
+                                  <TbCopy size={14} />
+                                )}
+                              </ActionIcon>
+                            </Tooltip>
+                          )}
+                        </CopyButton>
+                      </MantineTable.Td>
+                    </MantineTable.Tr>
+                  ))}
+                </MantineTable.Tbody>
+              </MantineTable>
+            </Tabs.Panel>
+
+            <Tabs.Panel value="instructions" pt="md">
+              <Text size="sm" fw={500} mb="md">
+                Follow these steps in your DNS provider dashboard:
+              </Text>
+
+              <List spacing="xs" size="sm">
+                {dnsInstructions.map((instruction, index) => (
+                  <List.Item key={index}>
+                    <Group gap="xs">
+                      <Text fw={500}>{instruction.title}:</Text>
+                      <Code>{instruction.value}</Code>
+                      <Text c="dimmed" size="xs">
+                        {instruction.description}
+                      </Text>
+                    </Group>
+                  </List.Item>
+                ))}
+              </List>
+
+              <Alert color="blue" variant="light" mt="md">
+                <Text size="sm">
+                  After configuring your DNS records, it may take up to 24 hours
+                  for changes to propagate. You can verify your domain
+                  configuration once the DNS changes are active.
+                </Text>
+              </Alert>
+            </Tabs.Panel>
+          </Tabs>
+        </Paper>
+      </Collapse>
+    </Stack>
+  );
+
+  return (
+    <div>
+      <TitleText>Domains</TitleText>
+
+      <Card p="lg" radius="md" withBorder mb={20}>
+        <Stack gap="md">
+          <Group gap="sm">
+            <Text className="subtitle" size="sm">
+              Application URL:
+            </Text>
+            <Text
+              component={Link}
+              size="sm"
+              to={app?.url}
+              target="_blank"
+              className="link"
+            >
+              {app?.url}
+              <FiExternalLink />
+            </Text>
+          </Group>
+          <Group gap="sm">
+            <Text className="subtitle" size="sm">
+              Internal URL:
+            </Text>
+            <Text size="sm">{app?.internal_url || "N/A"}</Text>
+          </Group>
+        </Stack>
+      </Card>
+
+      {/* Custom Domain Section */}
+      {app?.has_custom_domain ? (
+        <Card p="md" withBorder radius="md">
+          <Group justify="space-between" align="flex-start" mb="md">
+            <Text fw={500} size="lg">
+              Custom Domain
+            </Text>
+            <Group gap="sm">
+              <Button
+                variant="subtle"
+                color="blue"
+                size="sm"
+                leftSection={<IconEdit size={16} />}
+                onClick={() => setIsEditingCustomDomain(!isEditingCustomDomain)}
+              >
+                Edit Domain
+              </Button>
+              <Button
+                variant="subtle"
+                color="blue"
+                size="sm"
+                leftSection={<IconRotateClockwise size={16} />}
+                onClick={handleRevertDomain}
+                loading={revertingCustomDomain}
+              >
+                Revert to Default
+              </Button>
+            </Group>
+          </Group>
+
+          {isEditingCustomDomain ? (
+            <Stack gap="md">
+              <Textarea
+                label="Domain Name"
+                placeholder="Enter your custom domain here"
+                value={customDomainValue}
+                onChange={(e) => setCustomDomainValue(e.currentTarget.value)}
+                error={verificationError.data?.message}
+                autosize
+                minRows={1}
+              />
+              <Group gap="sm">
+                <Button
+                  leftSection={<FaCheck size={16} />}
+                  onClick={handleAddDomain}
+                  loading={addingCustomDomain}
+                  disabled={!customDomainValue.trim()}
+                >
+                  Save Changes
+                </Button>
+                <Button
+                  variant="subtle"
+                  leftSection={<IconX size={16} />}
+                  onClick={() => {
+                    setIsEditingCustomDomain(false);
+                    setCustomDomainValue(app?.url || "");
+                  }}
+                >
+                  Cancel
+                </Button>
+              </Group>
+            </Stack>
+          ) : (
+            <Stack gap="md">
+              <Card p="sm" withBorder radius="sm">
+                <Text size="sm" c="dimmed" mb="xs">
+                  Current Custom Domain:
+                </Text>
+                <Text>{app?.url || "N/A"}</Text>
+              </Card>
+            </Stack>
+          )}
+
+          {renderDnsInstructions()}
+        </Card>
+      ) : (
+        <Card
+          p="xl"
+          withBorder
+          radius="md"
+          style={{
+            minHeight: "200px",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            border: "2px dashed #dee2e6",
+          }}
+        >
+          <Stack align="center" gap="md">
+            <ThemeIcon size="xl" variant="light" color="gray">
+              <IconWorld size={24} />
+            </ThemeIcon>
+            <Text size="lg" c="dimmed" ta="center">
+              No custom domain configured
+            </Text>
+            <Text size="sm" c="dimmed" ta="center" maw={400}>
+              Add a custom domain to make your application accessible through
+              your own domain name.
+            </Text>
+            <Button
+              variant="light"
+              leftSection={<HiPlus size={16} />}
+              onClick={() => setIsAddingDomain(true)}
+            >
+              Add Custom Domain
+            </Button>
+          </Stack>
+        </Card>
+      )}
+
+      <Modal
+        opened={isAddingDomain}
+        onClose={() => setIsAddingDomain(false)}
+        title="Add Custom Domain"
+        size="lg"
+      >
+        <Stack gap="md">
+          <Alert
+            icon={<IconAlertTriangle size={16} />}
+            color="blue"
+            variant="light"
+            radius="md"
+          >
+            <Text size="sm" fw={500} mb="xs">
+              Accepted Domain Formats
+            </Text>
+            <List size="sm" spacing="xs">
+              <List.Item>
+                <Code>example.com</Code> - Root domain
+              </List.Item>
+              <List.Item>
+                <Code>www.example.com</Code> - Subdomain with www
+              </List.Item>
+              <List.Item>
+                <Code>app.example.com</Code> - Custom subdomain
+              </List.Item>
+              <List.Item>
+                <Code>my-app.example.com</Code> - Subdomain with hyphens
+              </List.Item>
+            </List>
+            <Text size="xs" c="dimmed" mt="xs">
+              Note: Do not include http:// or https:// in your domain name
+            </Text>
+          </Alert>
+
+          <TextInput
+            label="Domain Name"
+            placeholder="Enter your domain here"
+            value={newDomain}
+            onChange={(e) => setNewDomain(e.currentTarget.value)}
+            error={addCustomDomainError?.data?.message}
+          />
+
+          <Group justify="flex-end">
+            <Button variant="subtle" onClick={() => setIsAddingDomain(false)}>
+              Cancel
+            </Button>
+            <Button
+              onClick={handleAddDomain}
+              loading={addingCustomDomain}
+              disabled={!newDomain.trim()}
+            >
+              {addingCustomDomain ? "Adding..." : "Add Domain"}
+            </Button>
+          </Group>
+        </Stack>
+      </Modal>
     </div>
   );
 };
