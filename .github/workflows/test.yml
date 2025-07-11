@@ -25,7 +25,5 @@ jobs:
       - name: Setup Dependencies
         run: yarn
 
-      - name: Run Test and Coverage
-        run: yarn test --detectOpenHandles --coverage --coverageReporters=lcov
-
-      # TODO add coverage report to code climate
+      - name: Run Test
+        run: yarn test
