@@ -7,7 +7,14 @@ import eslintPluginReact from "eslint-plugin-react";
 import typescriptEslintParser from "@typescript-eslint/parser";
 
 export default tseslint.config(...mantine, {
-  ignores: ["**/*.{mjs,cjs,js,d.ts,d.mts}", "./.storybook/main.ts","node_modules", "build", "dist", "public"],
+  ignores: [
+    "**/*.{mjs,cjs,js,d.ts,d.mts}",
+    "./.storybook/main.ts",
+    "node_modules",
+    "build",
+    "dist",
+    "public",
+  ],
   languageOptions: {
     parser: typescriptEslintParser,
     ecmaVersion: 2020,

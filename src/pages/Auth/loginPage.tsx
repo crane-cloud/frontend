@@ -117,8 +117,8 @@ export function LoginForm(props: PaperProps) {
       const passwordError = form.validateField("password");
 
       if (emailError.hasError || passwordError.hasError) {
-  return;
-}
+        return;
+      }
 
       loginUser({
         api: `${API_USERS}/login`,
@@ -131,8 +131,8 @@ export function LoginForm(props: PaperProps) {
       });
     } else {
       if (form.validate().hasErrors) {
-  return;
-}
+        return;
+      }
 
       registerUser({
         api: `${API_USERS}`,
@@ -152,8 +152,8 @@ export function LoginForm(props: PaperProps) {
     event.preventDefault();
     const emailError = form.validateField("email");
     if (emailError.hasError) {
-  return;
-}
+      return;
+    }
 
     resetPassword({
       api: `${API_USERS}/forgot_password`,
@@ -174,10 +174,10 @@ export function LoginForm(props: PaperProps) {
   }, [loginSuccess]);
 
   useEffect(() => {
-   if (loggedIn) {
-  navigate("/");
-}
-});
+    if (loggedIn) {
+      navigate("/");
+    }
+  });
 
   useEffect(() => {
     if (registerSuccess) {
@@ -189,8 +189,8 @@ export function LoginForm(props: PaperProps) {
 
   useEffect(() => {
     if (linkSentSuccess) {
-  setResetLinkModalOpened(true);
-}
+      setResetLinkModalOpened(true);
+    }
   }, [linkSentSuccess]);
 
   useEffect(() => {
