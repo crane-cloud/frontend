@@ -72,19 +72,18 @@ export const useGetProject = (project_id: string) => {
   return { project, cluster, loading, success, refresh, setRefresh };
 };
 
-export const useGetApp = (app_id: string) => {
+export const useGetApp = (app_id: string, refresh?: number) => {
   const { setMenuType, setProjectId, setAppId, setTitle, setSubtitle } =
     useContext(MenuContext);
   const { data: appData, getData, success, loading } = useGet();
   const [app, setApp] = useState<any>({});
-  const [refresh, setRefresh] = useState(false);
 
   useEffect(() => {
     getData({
       id: app_id,
       api: `/apps`,
     });
-  }, [refresh]);
+  }, [app_id, refresh]);
 
   useEffect(() => {
     if (success) {
@@ -117,7 +116,7 @@ export const useGetApp = (app_id: string) => {
     }
   }, [setMenuType, setAppId, app_id, appData, success]);
 
-  return { app, loading, success, refresh, setRefresh };
+  return { app, loading, success, refresh };
 };
 
 export const useGetAdminCluster = (cluster_id: string) => {

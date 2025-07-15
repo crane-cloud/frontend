@@ -37,9 +37,8 @@ import {
   Modal,
   Code,
   List,
-  ThemeIcon,
-  Textarea,
   Collapse,
+  Box,
 } from "@mantine/core";
 import { useContext, useEffect, useState } from "react";
 import {
@@ -49,16 +48,11 @@ import {
   HiPencil,
   HiPlus,
   HiTrash,
-  HiPencil as IconEdit,
   HiCheck as IconCheck,
   HiExclamationTriangle as IconAlertTriangle,
-  HiGlobeAlt as IconWorld,
-  HiArrowPath as IconRotateClockwise,
-  HiXMark as IconX,
 } from "react-icons/hi2";
 import { FiCalendar, FiExternalLink } from "react-icons/fi";
 import { LiaDocker } from "react-icons/lia";
-import { FaCheck } from "react-icons/fa6";
 
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { TbCheck, TbCopy } from "react-icons/tb";
@@ -67,10 +61,13 @@ import { useAuth } from "@/utils/AuthContext";
 import { MenuContext } from "@/components/Layouts/DashboardLayout";
 import { FaArrowDown, FaArrowUp } from "react-icons/fa";
 import { CUSTOM_DOMAIN_IP } from "@/config";
+import { GoPlus } from "react-icons/go";
+import { HiRefresh } from "react-icons/hi";
 
 const AppSettingsPage = () => {
   const { app_id } = useParams();
-  const { app, setRefresh } = useGetApp(app_id || "");
+  const [refresh, setRefresh] = useState<number>(0);
+  const { app } = useGetApp(app_id || "", refresh);
   const { setContainerSize } = useContext(MenuContext);
 
   useEffect(() => {
@@ -114,7 +111,7 @@ const GeneralTab = ({
   setRefresh,
 }: {
   app: any;
-  setRefresh: (refresh: boolean) => void;
+  setRefresh: React.Dispatch<React.SetStateAction<number>>;
 }) => {
   const [deleteConfirmOpened, setDeleteConfirmOpened] = useState(false);
   const [disableConfirmOpened, setDisableConfirmOpened] = useState(false);
@@ -161,7 +158,7 @@ const GeneralTab = ({
   }, [enabledAppSuccess, disabledAppSuccess]);
 
   useEffect(() => {
-    setRefresh(true);
+    setRefresh((prev) => prev + 1);
   }, [addedEnvVariablesSuccess]);
 
   const submitEnvVariables = () => {
@@ -411,7 +408,7 @@ const GeneralTab = ({
               showEnvs={false}
               showTitle={false}
               onCancel={() => setUpdateConfirmOpened(false)}
-              refresh={() => setRefresh(true)}
+              refresh={() => setRefresh((prev) => prev + 1)}
             />
           </ModalConfirm>
 
@@ -707,44 +704,8 @@ const DomainsTab = ({
   setRefresh,
 }: {
   app: any;
-  setRefresh: (refresh: boolean) => void;
+  setRefresh: React.Dispatch<React.SetStateAction<number>>;
 }) => {
-  const [newDomain, setNewDomain] = useState("");
-  const [isAddingDomain, setIsAddingDomain] = useState(false);
-  const [isEditingCustomDomain, setIsEditingCustomDomain] = useState(false);
-  const [customDomainValue, setCustomDomainValue] = useState(app?.url || "");
-  const [isDnsInstructionsOpen, setIsDnsInstructionsOpen] = useState(false);
-
-  const {
-    uploadData: addCustomDomain,
-    submitting: addingCustomDomain,
-    success: addedCustomDomainSuccess,
-    error: addCustomDomainError,
-  } = usePost();
-  const {
-    uploadData: revertCustomDomain,
-    submitting: revertingCustomDomain,
-    success: revertedCustomDomainSuccess,
-    error: verificationError,
-  } = usePost();
-
-  useEffect(() => {
-    if (addedCustomDomainSuccess) {
-      setRefresh(true);
-      setNewDomain("");
-      setCustomDomainValue("");
-      setIsAddingDomain(false);
-      setIsEditingCustomDomain(false);
-    }
-  }, [addedCustomDomainSuccess]);
-
-  useEffect(() => {
-    if (revertedCustomDomainSuccess) {
-      setRefresh(true);
-      setCustomDomainValue(app?.url || "");
-    }
-  }, [revertedCustomDomainSuccess]);
-
   interface DnsRecord {
     type: string;
     name: string;
@@ -793,17 +754,107 @@ const DomainsTab = ({
     },
   ];
 
-  const handleAddDomain = async () => {
-    if (!app?.id || (!newDomain.trim() && !customDomainValue.trim())) {
+  const [newDomain, setNewDomain] = useState("");
+  const [isAddingDomain, setIsAddingDomain] = useState(false);
+  const [isDnsInstructionsOpen, setIsDnsInstructionsOpen] = useState(false);
+  const [editOpen, setEditOpen] = useState(false);
+  const [domainValue, setDomainValue] = useState(app?.url || "");
+  const [editingType, setEditingType] = useState<
+    "custom" | "default" | "internal" | null
+  >(null);
+  const [domains, setDomains] = useState([
+    {
+      type: "default",
+      value: app?.url,
+      status: app?.status || "active",
+    },
+    {
+      type: "internal",
+      value: app?.internal_url,
+      status: app?.status || "active",
+    },
+  ]);
+
+  const {
+    uploadData: addCustomDomain,
+    submitting: addingCustomDomain,
+    success: addedCustomDomainSuccess,
+    error: addCustomDomainError,
+  } = usePost();
+  const {
+    uploadData: revertCustomDomain,
+    submitting: revertingCustomDomain,
+    success: revertedCustomDomainSuccess,
+    error: revertCustomDomainError,
+  } = usePost();
+
+  useEffect(() => {
+    if (addedCustomDomainSuccess) {
+      setRefresh((prev) => prev + 1);
+      setNewDomain("");
+      setIsAddingDomain(false);
+      setEditOpen(false);
+      setEditingType(null);
+    }
+  }, [addedCustomDomainSuccess]);
+
+  useEffect(() => {
+    if (revertedCustomDomainSuccess) {
+      setEditOpen(false);
+      setEditingType(null);
+      setRefresh((prev) => prev + 1);
+    }
+  }, [revertedCustomDomainSuccess]);
+
+  const handleEdit = (type: "custom" | "default", value: string) => {
+    const cleanValue = value?.replace(/^https?:\/\//, "");
+    setEditingType(type);
+    setDomainValue(cleanValue);
+    setEditOpen(true);
+  };
+
+  const handleCancel = () => {
+    setEditOpen(false);
+    setEditingType(null);
+    setDomainValue("");
+  };
+
+  const handleSave = () => {
+    if (!app?.id || !domainValue.trim()) {
       return;
     }
+
+    const cleanUrl = domainValue.trim().replace(/^https?:\/\//, "");
+    addCustomDomain({
+      api: "apps",
+      id: app?.id,
+      method: "PATCH",
+      params: {
+        custom_domain: cleanUrl,
+      },
+    });
+  };
+
+  const handleAddDomain = async () => {
+    if (!app?.id || !newDomain.trim()) {
+      return;
+    }
+
+    setDomains((prev) => [
+      {
+        type: "custom",
+        value: newDomain,
+        status: "pending",
+      },
+      ...prev,
+    ]);
 
     addCustomDomain({
       api: "apps",
       id: app?.id,
       method: "PATCH",
       params: {
-        custom_domain: newDomain.trim() || customDomainValue.trim(),
+        custom_domain: newDomain.trim(),
       },
     });
   };
@@ -957,203 +1008,206 @@ const DomainsTab = ({
     </Stack>
   );
 
-  return (
-    <div>
-      <TitleText>Domains</TitleText>
-
-      <Card p="lg" radius="md" withBorder mb={20}>
-        <Stack gap="md">
-          <Group gap="sm">
-            <Text className="subtitle" size="sm">
-              Application URL:
-            </Text>
-            <Text
-              component={Link}
-              size="sm"
-              to={app?.url}
-              target="_blank"
-              className="link"
-            >
-              {app?.url}
-              <FiExternalLink />
-            </Text>
-          </Group>
-          <Group gap="sm">
-            <Text className="subtitle" size="sm">
-              Internal URL:
-            </Text>
-            <Text size="sm">{app?.internal_url || "N/A"}</Text>
-          </Group>
-        </Stack>
-      </Card>
-
-      {/* Custom Domain Section */}
-      {app?.has_custom_domain ? (
-        <Card p="md" withBorder radius="md">
-          <Group justify="space-between" align="flex-start" mb="md">
-            <Text fw={500} size="lg">
-              Custom Domain
-            </Text>
-            <Group gap="sm">
-              <Button
-                variant="subtle"
-                color="blue"
-                size="sm"
-                leftSection={<IconEdit size={16} />}
-                onClick={() => setIsEditingCustomDomain(!isEditingCustomDomain)}
+  const renderDomainRow = (
+    value: string,
+    badge?: string,
+    type?: "custom" | "default" | "internal",
+  ) => (
+    <Box py="sm">
+      <Group justify="space-between" align="flex-start">
+        <Group align="center">
+          <Stack gap={6} align="flex-start">
+            {type !== "internal" ? (
+              <Text
+                component={Link}
+                size="md"
+                to={app?.url}
+                target="_blank"
+                className="link"
               >
-                Edit Domain
+                {value}
+                {badge === "Current" && <FiExternalLink />}
+              </Text>
+            ) : (
+              <Text size="md">{value}</Text>
+            )}
+            {badge === "Current" && (
+              <Badge color="green" size="xs" leftSection={<TbCheck />}>
+                {badge}
+              </Badge>
+            )}
+          </Stack>
+        </Group>
+        <Group>
+          <Group>
+            {type !== "internal" &&
+              !(type === "default" && value?.includes("cranecloud.io")) && (
+                <Button
+                  variant="outline"
+                  size="xs"
+                  onClick={() => type && handleEdit(type, value)}
+                >
+                  Edit
+                </Button>
+              )}
+          </Group>
+        </Group>
+      </Group>
+      <Collapse in={editOpen && editingType === type}>
+        <Stack gap="md" mt="md">
+          <TextInput
+            label="Domain"
+            value={domainValue}
+            onChange={(e) => setDomainValue(e.currentTarget.value)}
+            autoFocus
+            error={
+              revertCustomDomainError?.data?.message ||
+              addCustomDomainError?.data?.message
+            }
+          />
+          <Group justify="space-between" mt="sm">
+            <Group>
+              {badge === "Current" && (
+                <Button
+                  variant="outline"
+                  leftSection={<HiRefresh size={16} />}
+                  onClick={handleRevertDomain}
+                  loading={revertingCustomDomain}
+                  disabled={revertingCustomDomain}
+                >
+                  Revert to Default
+                </Button>
+              )}
+            </Group>
+            <Group>
+              <Button variant="default" onClick={handleCancel}>
+                Cancel
               </Button>
               <Button
-                variant="subtle"
-                color="blue"
-                size="sm"
-                leftSection={<IconRotateClockwise size={16} />}
-                onClick={handleRevertDomain}
-                loading={revertingCustomDomain}
+                variant="filled"
+                onClick={handleSave}
+                loading={addingCustomDomain}
+                disabled={!domainValue.trim() || addingCustomDomain}
               >
-                Revert to Default
+                Save
               </Button>
             </Group>
           </Group>
+        </Stack>
+      </Collapse>
+    </Box>
+  );
 
-          {isEditingCustomDomain ? (
-            <Stack gap="md">
-              <Textarea
-                label="Domain Name"
-                placeholder="Enter your custom domain here"
-                value={customDomainValue}
-                onChange={(e) => setCustomDomainValue(e.currentTarget.value)}
-                error={verificationError.data?.message}
-                autosize
-                minRows={1}
-              />
-              <Group gap="sm">
+  useEffect(() => {
+    if (app?.url || app?.internal_url) {
+      setDomains([
+        {
+          type: "default",
+          value: app?.url,
+          status: app?.status || "active",
+        },
+        {
+          type: "internal",
+          value: app?.internal_url,
+          status: app?.status || "active",
+        },
+      ]);
+    }
+  }, [app?.url, app?.internal_url, app?.status]);
+
+  return (
+    <div>
+      <div>
+        <TitleText
+          rightSection={
+            <>
+              <Group gap="sm" justify="flex-end">
                 <Button
-                  leftSection={<FaCheck size={16} />}
-                  onClick={handleAddDomain}
-                  loading={addingCustomDomain}
-                  disabled={!customDomainValue.trim()}
+                  leftSection={<GoPlus />}
+                  onClick={() => setIsAddingDomain(true)}
                 >
-                  Save Changes
-                </Button>
-                <Button
-                  variant="subtle"
-                  leftSection={<IconX size={16} />}
-                  onClick={() => {
-                    setIsEditingCustomDomain(false);
-                    setCustomDomainValue(app?.url || "");
-                  }}
-                >
-                  Cancel
+                  Add Domain
                 </Button>
               </Group>
-            </Stack>
-          ) : (
-            <Stack gap="md">
-              <Card p="sm" withBorder radius="sm">
-                <Text size="sm" c="dimmed" mb="xs">
-                  Current Custom Domain:
-                </Text>
-                <Text>{app?.url || "N/A"}</Text>
-              </Card>
-            </Stack>
-          )}
-
-          {renderDnsInstructions()}
-        </Card>
-      ) : (
-        <Card
-          p="xl"
-          withBorder
-          radius="md"
-          style={{
-            minHeight: "200px",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            border: "2px dashed #dee2e6",
-          }}
+            </>
+          }
         >
-          <Stack align="center" gap="md">
-            <ThemeIcon size="xl" variant="light" color="gray">
-              <IconWorld size={24} />
-            </ThemeIcon>
-            <Text size="lg" c="dimmed" ta="center">
-              No custom domain configured
-            </Text>
-            <Text size="sm" c="dimmed" ta="center" maw={400}>
-              Add a custom domain to make your application accessible through
-              your own domain name.
-            </Text>
-            <Button
+          Domains
+        </TitleText>
+
+        <Modal
+          opened={isAddingDomain}
+          onClose={() => setIsAddingDomain(false)}
+          title="Add Custom Domain"
+          size="lg"
+        >
+          <Stack gap="md">
+            <Alert
+              icon={<IconAlertTriangle size={16} />}
+              color="blue"
               variant="light"
-              leftSection={<HiPlus size={16} />}
-              onClick={() => setIsAddingDomain(true)}
+              radius="md"
             >
-              Add Custom Domain
-            </Button>
+              <Text size="sm" fw={500} mb="xs">
+                Accepted Domain Formats
+              </Text>
+              <List size="sm" spacing="xs">
+                <List.Item>
+                  <Code>example.com</Code> - Root domain
+                </List.Item>
+                <List.Item>
+                  <Code>www.example.com</Code> - Subdomain with www
+                </List.Item>
+                <List.Item>
+                  <Code>app.example.com</Code> - Custom subdomain
+                </List.Item>
+                <List.Item>
+                  <Code>my-app.example.com</Code> - Subdomain with hyphens
+                </List.Item>
+              </List>
+              <Text size="xs" c="dimmed" mt="xs">
+                Note: Do not include http:// or https:// in your domain name
+              </Text>
+            </Alert>
+
+            <TextInput
+              label="Domain Name"
+              placeholder="Enter your domain here"
+              value={newDomain}
+              onChange={(e) => setNewDomain(e.currentTarget.value)}
+              error={addCustomDomainError?.data?.message}
+            />
+
+            <Group justify="flex-end">
+              <Button variant="subtle" onClick={() => setIsAddingDomain(false)}>
+                Cancel
+              </Button>
+              <Button
+                onClick={handleAddDomain}
+                loading={addingCustomDomain}
+                disabled={!newDomain.trim()}
+              >
+                {addingCustomDomain ? "Adding..." : "Add Domain"}
+              </Button>
+            </Group>
           </Stack>
-        </Card>
-      )}
+        </Modal>
+      </div>
 
-      <Modal
-        opened={isAddingDomain}
-        onClose={() => setIsAddingDomain(false)}
-        title="Add Custom Domain"
-        size="lg"
-      >
-        <Stack gap="md">
-          <Alert
-            icon={<IconAlertTriangle size={16} />}
-            color="blue"
-            variant="light"
-            radius="md"
-          >
-            <Text size="sm" fw={500} mb="xs">
-              Accepted Domain Formats
-            </Text>
-            <List size="sm" spacing="xs">
-              <List.Item>
-                <Code>example.com</Code> - Root domain
-              </List.Item>
-              <List.Item>
-                <Code>www.example.com</Code> - Subdomain with www
-              </List.Item>
-              <List.Item>
-                <Code>app.example.com</Code> - Custom subdomain
-              </List.Item>
-              <List.Item>
-                <Code>my-app.example.com</Code> - Subdomain with hyphens
-              </List.Item>
-            </List>
-            <Text size="xs" c="dimmed" mt="xs">
-              Note: Do not include http:// or https:// in your domain name
-            </Text>
-          </Alert>
+      <Card withBorder radius="md" mb="md" p="md">
+        {domains.map((domain, idx) => (
+          <Box key={domain.type + domain.value}>
+            {renderDomainRow(
+              domain.value,
+              domain.type === "default" ? "Current" : "",
+              domain.type as "custom" | "default" | "internal",
+            )}
+            {idx < domains.length - 1 && <Divider my="sm" />}
+          </Box>
+        ))}
+      </Card>
 
-          <TextInput
-            label="Domain Name"
-            placeholder="Enter your domain here"
-            value={newDomain}
-            onChange={(e) => setNewDomain(e.currentTarget.value)}
-            error={addCustomDomainError?.data?.message}
-          />
-
-          <Group justify="flex-end">
-            <Button variant="subtle" onClick={() => setIsAddingDomain(false)}>
-              Cancel
-            </Button>
-            <Button
-              onClick={handleAddDomain}
-              loading={addingCustomDomain}
-              disabled={!newDomain.trim()}
-            >
-              {addingCustomDomain ? "Adding..." : "Add Domain"}
-            </Button>
-          </Group>
-        </Stack>
-      </Modal>
+      {renderDnsInstructions()}
     </div>
   );
 };
