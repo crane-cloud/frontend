@@ -12,13 +12,21 @@ export const GuestFooter = () => {
           © {new Date().getFullYear()} Crane Cloud. All rights reserved.
         </Text>
         <Group gap="md">
-          <Anchor href="#" size="xs" c="dimmed">
+          <Anchor
+            href="https://cranecloud.io/privacy-policy"
+            size="xs"
+            c="dimmed"
+          >
             Privacy Policy
           </Anchor>
-          <Anchor href="#" size="xs" c="dimmed">
+          <Anchor
+            href="https://cranecloud.io/terms-of-service"
+            size="xs"
+            c="dimmed"
+          >
             Terms of Service
           </Anchor>
-          <Anchor href="#" size="xs" c="dimmed">
+          <Anchor href="https://cranecloud.io/contact" size="xs" c="dimmed">
             Contact Support
           </Anchor>
         </Group>

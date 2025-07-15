@@ -1,5 +1,6 @@
+import { NoWrap } from "@/components/Elements/Elements";
 import { useSetAdminClusterSidebar } from "@/utils/helpers";
-import { Anchor, Text, Tooltip } from "@mantine/core";
+import { Text, Tooltip, Group, Box } from "@mantine/core";
 import moment from "moment";
 
 const usePods = ({ cluster_id }: any) => {
@@ -30,70 +31,70 @@ const usePods = ({ cluster_id }: any) => {
       const controlledBy = item?.metadata?.ownerReferences
         ? item?.metadata?.ownerReferences[0]?.kind
         : "N/A";
-      const nodeName = item?.spec?.nodeName || "N/A";
+
+      // Get container statuses for determining running/failed state
+      const containerStatuses = item?.status?.containerStatuses || [];
+      const containers = item?.spec?.containers || [];
+
+      // Create container status mapping
+      const containerStatusMap = containerStatuses.reduce(
+        (acc: any, status: any) => {
+          acc[status.name] = status;
+          return acc;
+        },
+        {},
+      );
 
       const row = {
-        name: (
-          <Tooltip label={item?.metadata?.name} withArrow>
-            <Text lineClamp={1}>{item?.metadata?.name}</Text>
-          </Tooltip>
-        ),
+        name: <NoWrap>{item?.metadata?.name}</NoWrap>,
         namespace: (
           <Tooltip label={namespace} withArrow>
-            <Text lineClamp={1}>
-              <Anchor
-                href="#"
-                target="_blank"
-                underline="always"
-                onClick={(e) => e.preventDefault()}
-              >
-                {namespace}
-              </Anchor>
-            </Text>
+            <NoWrap>{namespace}</NoWrap>
           </Tooltip>
         ),
         containers: (
-          <Tooltip
-            label={item?.spec?.containers?.map((c: any) => c.name).join(", ")}
-            withArrow
-          >
-            <Text lineClamp={1}>
-              {item?.spec?.containers?.map((c: any) => c.name).join(", ")}
-            </Text>
-          </Tooltip>
+          <Group gap={3} style={{ cursor: "pointer" }}>
+            {containers.map((container: any, index: number) => {
+              const status = containerStatusMap[container.name];
+              const isRunning = status?.ready && status?.state?.running;
+              const isFailed =
+                status?.state?.waiting?.reason === "CrashLoopBackOff" ||
+                status?.state?.terminated?.reason === "Error" ||
+                status?.state?.terminated?.exitCode !== 0;
+
+              return (
+                <Tooltip label={container.name} withArrow>
+                  <Box
+                    key={index}
+                    w={10}
+                    h={10}
+                    style={{
+                      backgroundColor: isRunning
+                        ? "#40c057"
+                        : isFailed
+                          ? "#fa5252"
+                          : "#868e96",
+                    }}
+                  />
+                </Tooltip>
+              );
+            })}
+          </Group>
         ),
         restarts: item?.status?.containerStatuses?.reduce(
           (acc: number, c: any) => acc + (c.restartCount || 0),
           0,
         ),
-        controlled_by: (
-          <Text lineClamp={1}>
-            <Anchor
-              href="#"
-              target="_blank"
-              underline="always"
-              onClick={(e) => e.preventDefault()}
-            >
-              {controlledBy}
-            </Anchor>
-          </Text>
-        ),
+        controlled_by: <Text size="xs">{controlledBy}</Text>,
         node: (
-          <Tooltip label={nodeName} withArrow>
-            <Text lineClamp={1}>
-              <Anchor
-                href="#"
-                target="_blank"
-                underline="always"
-                onClick={(e) => e.preventDefault()}
-              >
-                {nodeName}
-              </Anchor>
-            </Text>
+          <Tooltip label={item?.spec?.nodeName || "N/A"} withArrow>
+            <NoWrap>{item?.spec?.nodeName || "N/A"}</NoWrap>
           </Tooltip>
         ),
-        qos: item?.status?.qosClass || "N/A",
-        age: moment(item?.metadata?.creationTimestamp).fromNow(),
+        qos: <Text size="xs">{item?.status?.qosClass || "N/A"}</Text>,
+        age: (
+          <NoWrap>{moment(item?.metadata?.creationTimestamp).fromNow()}</NoWrap>
+        ),
         status: (
           <Text
             c={item?.status?.phase === "Running" ? "green" : "red"}

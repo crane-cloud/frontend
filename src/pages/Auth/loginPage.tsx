@@ -4,6 +4,7 @@ import {
   Checkbox,
   Divider,
   Group,
+  Image,
   Loader,
   Modal,
   Paper,
@@ -39,6 +40,7 @@ import { GuestHeader } from "@/components/Header";
 import { GuestFooter } from "@/components/Footer";
 import { API_USERS } from "@/utils/apis";
 import { GIT_REDIRECT_URL, GOOGLE_REDIRECT_URL } from "@/config";
+import CraneCloudLogo from "../../assets/images/logo.svg";
 
 export function LoginForm(props: PaperProps) {
   const { login, loggedIn } = useAuth();
@@ -211,10 +213,18 @@ export function LoginForm(props: PaperProps) {
       <Paper radius="md" p="xl" miw={{ base: "100%", sm: 400 }} withBorder {...props}>
         {!passwordReset ? (
           <>
-            <Text variant="gradient" gradient={{ from: "blue", to: "cyan", deg: 90 }} size="xl" fw={700} ta="center">
-              Welcome {type === "login" && "back"} to Crane Cloud
-            </Text>
-
+            <Stack justify="center" align="center" gap={10} pt={10} pb={20}>
+              <Image src={CraneCloudLogo} alt="Crane Cloud" w={70} />
+              <Text
+                variant="gradient"
+                gradient={{ from: "blue", to: "cyan", deg: 90 }}
+                size="xl"
+                fw={700}
+                ta="center"
+              >
+                Welcome {type === "login" && "back"} to Crane Cloud
+              </Text>
+            </Stack>
             <Group justify="center" mt="lg" gap="sm">
               <Button radius="xl" leftSection={<FaGithub />} onClick={handleGithubAuth} flex={1}>
                 {gitLogin ? <Loader size="sm" color="gray" /> : "Continue with GitHub"}
@@ -223,9 +233,12 @@ export function LoginForm(props: PaperProps) {
                 {googleLogin ? <Loader size="sm" color="gray" /> : "Continue with Google"}
               </Button>
             </Group>
-
-            <Divider label="Or continue with email" labelPosition="center" my="lg" />
-
+            <Divider
+              label="Or continue with email"
+              labelPosition="center"
+              my="lg"
+              fw={700}
+            />
             <form onSubmit={handleSubmit}>
               <Stack gap="sm">
                 {type === "register" && (
@@ -305,11 +318,26 @@ export function LoginForm(props: PaperProps) {
 
               <Stack mt="xl">
                 <Group justify="space-between">
-                  <Anchor component="button" type="button" c="dimmed" onClick={() => toggle()} size="xs">
-                    {type === "register" ? "Already have an account? Login" : "Don't have an account? Register"}
+                  <Anchor
+                    component="button"
+                    type="button"
+                    c="dimmed"
+                    onClick={() => toggle()}
+                    size="xs"
+                    fw={600}
+                  >
+                    {type === "register"
+                      ? "Already have an account? Login"
+                      : "Don't have an account? Register"}
                   </Anchor>
                   {type === "login" && (
-                    <Anchor component="button" type="button" size="sm" onClick={() => setShowPasswordReset(true)}>
+                    <Anchor
+                      component="button"
+                      type="button"
+                      size="sm"
+                      fw={700}
+                      onClick={() => setShowPasswordReset(true)}
+                    >
                       Forgot password?
                     </Anchor>
                   )}
@@ -335,7 +363,14 @@ export function LoginForm(props: PaperProps) {
                 <Button type="submit" variant="gradient" gradient={{ from: "blue", to: "cyan", deg: 90 }}>
                   {sendingResetLink ? <Loader size="sm" color="white" /> : "Reset"}
                 </Button>
-                <Anchor component="button" type="button" c="dimmed" onClick={() => setShowPasswordReset(false)} size="xs">
+                <Anchor
+                  component="button"
+                  type="button"
+                  c="dimmed"
+                  onClick={() => setShowPasswordReset(false)}
+                  size="xs"
+                  fw={700}
+                >
                   Back to Login
                 </Anchor>
               </Stack>

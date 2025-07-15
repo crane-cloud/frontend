@@ -182,7 +182,9 @@ const RegisterLayoutHandler = (props: any) => {
         tableTotals={tableTotals ? tableTotals(registerData) : {}}
         pagination={pagination}
         filters={filters}
-        onFilterChange={setFilter}
+        onFilterChange={(data) => {
+          setFilter({ filters, ...data });
+        }}
         striped
         showPagination
       />

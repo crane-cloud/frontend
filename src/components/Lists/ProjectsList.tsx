@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import useGet from "@/utils/useGet";
-import { Button, Divider, Group, Paper, Skeleton } from "@mantine/core";
+import { Box, Button, Divider, Group, Skeleton } from "@mantine/core";
 import ProjectsCard from "@/components/Cards/ProjectsCard";
 import { GridLayout } from "@/components/Layouts/ListLayouts";
 import { RxHamburgerMenu } from "react-icons/rx";
@@ -49,7 +49,7 @@ const ProjectsList = () => {
     <div>
       <TitleText>Projects</TitleText>
 
-      <Paper py="lg" radius="md">
+      <Box py="lg">
         <Group justify="space-between" align="center">
           <Search type="projects" wide />
           <Group gap={0}>
@@ -102,7 +102,7 @@ const ProjectsList = () => {
               ))}
           </GridLayout>
         )}
-      </Paper>
+      </Box>
     </div>
   );
 };

@@ -25,13 +25,5 @@ jobs:
       - name: Setup Dependencies
         run: yarn
 
-      - name: Setup Code Climate test-reporter
-        run: |
-          curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
-          chmod +x ./cc-test-reporter
-          ./cc-test-reporter before-build
-
-      - name: Run Test and Coverage
-        run: yarn test --detectOpenHandles --coverage --coverageReporters=lcov
-
-      # TODO add coverage report to code climate
+      - name: Run Test
+        run: yarn test

@@ -7,10 +7,7 @@ import { useEffect, useState } from "react";
 interface TTableFilterProps {
   column: TColumn;
   value: any;
-  onChange: (
-    key: string,
-    value: string | number | { start: string; end: string } | null,
-  ) => void;
+  onChange: (key: string, value: string | number | null) => void;
 }
 
 const FilterInput = styled.div`
@@ -78,22 +75,33 @@ const TableFilter = ({ column, value, onChange }: TTableFilterProps) => {
     case "date_range": {
       const [dateValue, setDateValue] = useState<[any, any]>([null, null]);
 
-      useEffect(() => {
-        if (dateValue[0] && dateValue[1]) {
-          onChange("start", dateValue[0] || "");
-          onChange("end", dateValue[1] || "");
+      const handleDateChange = (newRange: [Date | null, Date | null]) => {
+        setDateValue(newRange);
+        const [start, end] = newRange;
+
+        if (start) {
+          const isoStart = start.toISOString();
+          onChange("start", isoStart);
         }
-      }, [dateValue]);
+        if (end) {
+          const isoEnd = end.toISOString();
+          onChange("end", isoEnd);
+        }
+      };
+
+      useEffect(() => {
+        if (value?.start && value?.end) {
+          setDateValue([new Date(value.start), new Date(value.end)]);
+        }
+      }, [value?.start, value?.end]);
 
       return (
         <FilterInput>
           <DatePickerInput
             placeholder={column.filter.placeholder || "Select Dates"}
             type="range"
-            value={
-              value ? [new Date(value.start), new Date(value.end)] : undefined
-            }
-            onChange={setDateValue}
+            value={dateValue}
+            onChange={handleDateChange}
             size="xs"
             style={{ width: "100%", whiteSpace: "nowrap" }}
             clearable
