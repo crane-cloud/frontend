@@ -116,7 +116,9 @@ export function LoginForm(props: PaperProps) {
       const emailError = form.validateField("email");
       const passwordError = form.validateField("password");
 
-      if (emailError.hasError || passwordError.hasError) return;
+      if (emailError.hasError || passwordError.hasError) {
+  return;
+}
 
       loginUser({
         api: `${API_USERS}/login`,
@@ -128,7 +130,9 @@ export function LoginForm(props: PaperProps) {
         errorMessage: "Login failed",
       });
     } else {
-      if (form.validate().hasErrors) return;
+      if (form.validate().hasErrors) {
+  return;
+}
 
       registerUser({
         api: `${API_USERS}`,
@@ -147,7 +151,9 @@ export function LoginForm(props: PaperProps) {
   const handlePasswordReset = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const emailError = form.validateField("email");
-    if (emailError.hasError) return;
+    if (emailError.hasError) {
+  return;
+}
 
     resetPassword({
       api: `${API_USERS}/forgot_password`,
@@ -168,8 +174,10 @@ export function LoginForm(props: PaperProps) {
   }, [loginSuccess]);
 
   useEffect(() => {
-    if (loggedIn) navigate("/");
-  }, []);
+   if (loggedIn) {
+  navigate("/");
+}
+});
 
   useEffect(() => {
     if (registerSuccess) {
@@ -180,7 +188,9 @@ export function LoginForm(props: PaperProps) {
   }, [registerSuccess]);
 
   useEffect(() => {
-    if (linkSentSuccess) setResetLinkModalOpened(true);
+    if (linkSentSuccess) {
+  setResetLinkModalOpened(true);
+}
   }, [linkSentSuccess]);
 
   useEffect(() => {
