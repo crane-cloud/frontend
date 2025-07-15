@@ -102,6 +102,7 @@ export const CreateSingleAppForm = (props: {
   const [envVariables, setEnvVariables] = useState([{ key: "", value: "" }]);
   const [pasteModalOpened, setPasteModalOpened] = useState(false);
   const [pastedContent, setPastedContent] = useState("");
+  const [formatError, setFormatError] = useState<string | null>(null);
 
   const navigate = useNavigate();
   useEffect(() => {
@@ -119,8 +120,9 @@ export const CreateSingleAppForm = (props: {
     return lines
       .map((line) => {
         const [key, ...values] = line.split("=");
-        // eslint-disable-next-line curly
-        if (!key || values.length === 0) return null;
+        if (!key || values.length === 0) {
+          return null;
+        }
         return {
           key: key.trim(),
           value: values.join("=").trim(),
@@ -129,9 +131,35 @@ export const CreateSingleAppForm = (props: {
       .filter(Boolean) as { key: string; value: string }[];
   };
 
+  const validateEnvFormat = (content: string) => {
+    if (!content.trim()) {
+      setFormatError(null);
+      return true;
+    }
+
+    const invalidLines = content
+      .split("\n")
+      .filter((line) => line.trim() && !line.includes("="));
+
+    if (invalidLines.length > 0) {
+      setFormatError(
+        `Invalid format in line(s): Each line must follow a KEY=VALUE format.`,
+      );
+      return false;
+    }
+
+    setFormatError(null);
+    return true;
+  };
+
   const addVariablesFromPaste = () => {
-    // eslint-disable-next-line curly
-    if (!pastedContent) return;
+    if (!pastedContent) {
+      return;
+    }
+
+    if (!validateEnvFormat(pastedContent)) {
+      return;
+    }
 
     const newVariables = parseVariablesFromContent(pastedContent);
     if (newVariables.length > 0) {
@@ -147,6 +175,12 @@ export const CreateSingleAppForm = (props: {
     }
     setPastedContent("");
     setPasteModalOpened(false);
+  };
+
+  const handleContentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const content = e.currentTarget.value;
+    setPastedContent(content);
+    validateEnvFormat(content);
   };
 
   const removeEnvVariable = (index: number) => {
@@ -345,6 +379,7 @@ export const CreateSingleAppForm = (props: {
               opened={pasteModalOpened}
               onClose={() => {
                 setPastedContent("");
+                setFormatError(null);
                 setPasteModalOpened(false);
               }}
               title="Add from .env"
@@ -353,7 +388,7 @@ export const CreateSingleAppForm = (props: {
               <Stack>
                 <Text size="sm" c="dimmed">
                   Paste your .env contents to add multiple environment variables
-                  at once. Each line should be in KEY=VALUE format.
+                  at once.
                 </Text>
 
                 <Textarea
@@ -362,14 +397,33 @@ export const CreateSingleAppForm = (props: {
                   maxRows={10}
                   autosize
                   value={pastedContent}
-                  onChange={(e) => setPastedContent(e.currentTarget.value)}
+                  onChange={handleContentChange}
+                  styles={{
+                    input: {
+                      borderColor: formatError
+                        ? "var(--mantine-color-red-6)"
+                        : undefined,
+                      "&:focus": {
+                        borderColor: formatError
+                          ? "var(--mantine-color-red-6)"
+                          : undefined,
+                      },
+                    },
+                  }}
                 />
+
+                {formatError && (
+                  <Text size="sm" color="red">
+                    {formatError}
+                  </Text>
+                )}
 
                 <Group justify="flex-end" mt="md">
                   <Button
                     variant="outline"
                     onClick={() => {
                       setPastedContent("");
+                      setFormatError(null);
                       setPasteModalOpened(false);
                     }}
                   >
@@ -378,7 +432,7 @@ export const CreateSingleAppForm = (props: {
                   <Button
                     variant="filled"
                     onClick={addVariablesFromPaste}
-                    disabled={!pastedContent.trim()}
+                    disabled={!pastedContent.trim() || !!formatError}
                   >
                     Add Variables
                   </Button>
