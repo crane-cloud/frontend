@@ -52,7 +52,9 @@ export function LoginForm(props: PaperProps) {
   const [registrationModalOpened, setRegistrationModalOpened] = useState(false);
   const [password, setPassword] = useState("");
   const [strength, setStrength] = useState<PasswordStrength>("weak");
-  const [confirmFeedback, setConfirmFeedback] = useState<"match" | "mismatch" | "none">("none");
+  const [confirmFeedback, setConfirmFeedback] = useState<
+    "match" | "mismatch" | "none"
+  >("none");
 
   const {
     uploadData: gitOAuth,
@@ -210,7 +212,13 @@ export function LoginForm(props: PaperProps) {
 
   return (
     <Stack justify="center" mt="lg">
-      <Paper radius="md" p="xl" miw={{ base: "100%", sm: 400 }} withBorder {...props}>
+      <Paper
+        radius="md"
+        p="xl"
+        miw={{ base: "100%", sm: 400 }}
+        withBorder
+        {...props}
+      >
         {!passwordReset ? (
           <>
             <Stack justify="center" align="center" gap={10} pt={10} pb={20}>
@@ -226,11 +234,29 @@ export function LoginForm(props: PaperProps) {
               </Text>
             </Stack>
             <Group justify="center" mt="lg" gap="sm">
-              <Button radius="xl" leftSection={<FaGithub />} onClick={handleGithubAuth} flex={1}>
-                {gitLogin ? <Loader size="sm" color="gray" /> : "Continue with GitHub"}
+              <Button
+                radius="xl"
+                leftSection={<FaGithub />}
+                onClick={handleGithubAuth}
+                flex={1}
+              >
+                {gitLogin ? (
+                  <Loader size="sm" color="gray" />
+                ) : (
+                  "Continue with GitHub"
+                )}
               </Button>
-              <Button radius="xl" flex={1} leftSection={<FaGoogle style={{ color: "#EA4335" }} />} onClick={handleGoogleAuth}>
-                {googleLogin ? <Loader size="sm" color="gray" /> : "Continue with Google"}
+              <Button
+                radius="xl"
+                flex={1}
+                leftSection={<FaGoogle style={{ color: "#EA4335" }} />}
+                onClick={handleGoogleAuth}
+              >
+                {googleLogin ? (
+                  <Loader size="sm" color="gray" />
+                ) : (
+                  "Continue with Google"
+                )}
               </Button>
             </Group>
             <Divider
@@ -243,13 +269,33 @@ export function LoginForm(props: PaperProps) {
               <Stack gap="sm">
                 {type === "register" && (
                   <Stack>
-                    <TextInput required label="Name" {...form.getInputProps("name")} leftSection={<MdDriveFileRenameOutline />} />
-                    <TextInput required label="Username" {...form.getInputProps("username")} leftSection={<MdOutlinePerson />} />
-                    <TextInput required label="Organisation" {...form.getInputProps("organisation")} leftSection={<MdOutlineBusiness />} />
+                    <TextInput
+                      required
+                      label="Name"
+                      {...form.getInputProps("name")}
+                      leftSection={<MdDriveFileRenameOutline />}
+                    />
+                    <TextInput
+                      required
+                      label="Username"
+                      {...form.getInputProps("username")}
+                      leftSection={<MdOutlinePerson />}
+                    />
+                    <TextInput
+                      required
+                      label="Organisation"
+                      {...form.getInputProps("organisation")}
+                      leftSection={<MdOutlineBusiness />}
+                    />
                   </Stack>
                 )}
 
-                <TextInput required label="Email" {...form.getInputProps("email")} leftSection={<MdOutlineEmail />} />
+                <TextInput
+                  required
+                  label="Email"
+                  {...form.getInputProps("email")}
+                  leftSection={<MdOutlineEmail />}
+                />
 
                 <PasswordInput
                   required
@@ -274,10 +320,19 @@ export function LoginForm(props: PaperProps) {
 
                 {form.values.password && (
                   <>
-                    <Progress value={strengthValueMap[strength]} color={strengthColorMap[strength]} radius="xl" size="sm" />
-                    <Text size="sm" c={strengthColorMap[strength]}>{strength.toUpperCase()} password</Text>
+                    <Progress
+                      value={strengthValueMap[strength]}
+                      color={strengthColorMap[strength]}
+                      radius="xl"
+                      size="sm"
+                    />
+                    <Text size="sm" c={strengthColorMap[strength]}>
+                      {strength.toUpperCase()} password
+                    </Text>
                     {form.values.password.length < 6 && (
-                      <Text size="xs" c="red">Password must be at least 6 characters</Text>
+                      <Text size="xs" c="red">
+                        Password must be at least 6 characters
+                      </Text>
                     )}
                   </>
                 )}
@@ -300,17 +355,23 @@ export function LoginForm(props: PaperProps) {
                       }}
                     />
                     {confirmFeedback === "mismatch" && (
-                      <Text size="xs" c="red">Passwords do not match</Text>
+                      <Text size="xs" c="red">
+                        Passwords do not match
+                      </Text>
                     )}
                     {confirmFeedback === "match" && (
-                      <Text size="xs" c="teal">Passwords match</Text>
+                      <Text size="xs" c="teal">
+                        Passwords match
+                      </Text>
                     )}
 
                     <Checkbox
                       required
                       label="I agree to the terms and conditions"
                       checked={form.values.terms}
-                      onChange={(e) => form.setFieldValue("terms", e.currentTarget.checked)}
+                      onChange={(e) =>
+                        form.setFieldValue("terms", e.currentTarget.checked)
+                      }
                     />
                   </>
                 )}
@@ -342,26 +403,54 @@ export function LoginForm(props: PaperProps) {
                     </Anchor>
                   )}
                 </Group>
-                <Button type="submit" variant="gradient" gradient={{ from: "blue", to: "cyan", deg: 90 }}>
-                  {loggingIn || registering ? <Loader size="sm" color="white" /> : upperFirst(type)}
+                <Button
+                  type="submit"
+                  variant="gradient"
+                  gradient={{ from: "blue", to: "cyan", deg: 90 }}
+                >
+                  {loggingIn || registering ? (
+                    <Loader size="sm" color="white" />
+                  ) : (
+                    upperFirst(type)
+                  )}
                 </Button>
               </Stack>
             </form>
           </>
         ) : (
           <Stack>
-            <Text variant="gradient" gradient={{ from: "blue", to: "cyan", deg: 90 }} size="xl" fw={700} ta="center">
+            <Text
+              variant="gradient"
+              gradient={{ from: "blue", to: "cyan", deg: 90 }}
+              size="xl"
+              fw={700}
+              ta="center"
+            >
               Reset Your Password
             </Text>
             <Text ta="center" size="sm" c="dimmed">
-              Enter your email address so we can send you a link to reset your password.
+              Enter your email address so we can send you a link to reset your
+              password.
             </Text>
 
             <form onSubmit={handlePasswordReset}>
               <Stack>
-                <TextInput required label="Email Address" {...form.getInputProps("email")} leftSection={<MdOutlineEmail />} />
-                <Button type="submit" variant="gradient" gradient={{ from: "blue", to: "cyan", deg: 90 }}>
-                  {sendingResetLink ? <Loader size="sm" color="white" /> : "Reset"}
+                <TextInput
+                  required
+                  label="Email Address"
+                  {...form.getInputProps("email")}
+                  leftSection={<MdOutlineEmail />}
+                />
+                <Button
+                  type="submit"
+                  variant="gradient"
+                  gradient={{ from: "blue", to: "cyan", deg: 90 }}
+                >
+                  {sendingResetLink ? (
+                    <Loader size="sm" color="white" />
+                  ) : (
+                    "Reset"
+                  )}
                 </Button>
                 <Anchor
                   component="button"
@@ -378,19 +467,37 @@ export function LoginForm(props: PaperProps) {
           </Stack>
         )}
 
-        <Modal opened={registrationModalOpened} onClose={() => setRegistrationModalOpened(false)} title={<Text fw={700}>Registration Successful</Text>} centered size="md">
+        <Modal
+          opened={registrationModalOpened}
+          onClose={() => setRegistrationModalOpened(false)}
+          title={<Text fw={700}>Registration Successful</Text>}
+          centered
+          size="md"
+        >
           <Text>
-            We've sent a link to your email address: <strong>{form.values.email}</strong>.
-            <br /><br />
-            The link will expire after 24 hours. Please use this link to activate and start using your account.
+            We've sent a link to your email address:{" "}
+            <strong>{form.values.email}</strong>.
+            <br />
+            <br />
+            The link will expire after 24 hours. Please use this link to
+            activate and start using your account.
           </Text>
         </Modal>
 
-        <Modal opened={resetLinkModalOpened} onClose={() => setResetLinkModalOpened(false)} title={<Text fw={700}>Password Reset Link</Text>} centered size="md">
+        <Modal
+          opened={resetLinkModalOpened}
+          onClose={() => setResetLinkModalOpened(false)}
+          title={<Text fw={700}>Password Reset Link</Text>}
+          centered
+          size="md"
+        >
           <Text>
-            We've sent a link to your email address to create a new password: <strong>{form.values.email}</strong>.
-            <br /><br />
-            The link will expire after 24 hours. Please use this link to update password and resume using your account.
+            We've sent a link to your email address to create a new password:{" "}
+            <strong>{form.values.email}</strong>.
+            <br />
+            <br />
+            The link will expire after 24 hours. Please use this link to update
+            password and resume using your account.
           </Text>
         </Modal>
       </Paper>

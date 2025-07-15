@@ -1,4 +1,4 @@
-        import UserProfileCard, { StatsList } from "@/components/Cards/OtherCards";
+import UserProfileCard, { StatsList } from "@/components/Cards/OtherCards";
 import TitleText from "@/components/TitleText";
 import { useAuth } from "@/utils/AuthContext";
 import { useSetContainerSize, useSetNoSidebar } from "@/utils/helpers";
