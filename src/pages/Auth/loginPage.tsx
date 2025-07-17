@@ -114,7 +114,7 @@ export function LoginForm(props: PaperProps) {
 
     if (type === "login") {
       const emailError = form.validateField("email");
-      const passwordError = form.validateField("password");
+      const passwordError = form.validateField("Password");
 
       if (emailError.hasError || passwordError.hasError) {
         return;
@@ -219,6 +219,20 @@ export function LoginForm(props: PaperProps) {
       gitOAuth({ api: `${API_USERS}/oauth`, params: { code } });
     }
   }, []);
+  const validatepassword = (value: string) => {
+    form.setFieldValue("password", value);
+    setPassword(value);
+    if (value.length < 6) {
+      form.setFieldError("password", "Password must be at least 6 characters");
+    }else {
+      form.clearFieldError("password");
+    }
+    form.validateField("password");
+    if (value === form.values.confirmPassword) {
+      setConfirmFeedback("match");
+    } else {
+      setConfirmFeedback("mismatch");
+    }}
 
   return (
     <Stack justify="center" mt="lg">
@@ -282,18 +296,21 @@ export function LoginForm(props: PaperProps) {
                     <TextInput
                       required
                       label="Name"
+                      placeholder="Your name"
                       {...form.getInputProps("name")}
                       leftSection={<MdDriveFileRenameOutline />}
                     />
                     <TextInput
                       required
                       label="Username"
+                      placeholder="Your username"
                       {...form.getInputProps("username")}
                       leftSection={<MdOutlinePerson />}
                     />
                     <TextInput
                       required
                       label="Organisation"
+                      placeholder="Your organisation"
                       {...form.getInputProps("organisation")}
                       leftSection={<MdOutlineBusiness />}
                     />
@@ -303,6 +320,7 @@ export function LoginForm(props: PaperProps) {
                 <TextInput
                   required
                   label="Email"
+                  placeholder="Email Address"
                   {...form.getInputProps("email")}
                   leftSection={<MdOutlineEmail />}
                 />
@@ -310,25 +328,17 @@ export function LoginForm(props: PaperProps) {
                 <PasswordInput
                   required
                   label="Password"
+                  placeholder="Your password"
                   value={form.values.password}
                   onChange={(e) => {
-                    const val = e.currentTarget.value;
-                    form.setFieldValue("password", val);
-                    setPassword(val);
-                    form.validateField("password");
-                    if (form.values.confirmPassword) {
-                      if (val === form.values.confirmPassword) {
-                        setConfirmFeedback("match");
-                      } else {
-                        setConfirmFeedback("mismatch");
-                      }
-                    }
+                    validatepassword(e.currentTarget.value);
+                    
                   }}
-                  error={form.errors.password}
+                  error={type === "register" ? form.errors.password : undefined}
                   leftSection={<MdOutlineLock />}
                 />
 
-                {form.values.password && (
+                {type === "register" && form.values.password && (
                   <>
                     <Progress
                       value={strengthValueMap[strength]}
@@ -339,11 +349,8 @@ export function LoginForm(props: PaperProps) {
                     <Text size="sm" c={strengthColorMap[strength]}>
                       {strength.toUpperCase()} password
                     </Text>
-                    {form.values.password.length < 6 && (
-                      <Text size="xs" c="red">
-                        Password must be at least 6 characters
-                      </Text>
-                    )}
+                    
+                  
                   </>
                 )}
 
