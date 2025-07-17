@@ -224,7 +224,7 @@ export function LoginForm(props: PaperProps) {
     setPassword(value);
     if (value.length < 6) {
       form.setFieldError("password", "Password must be at least 6 characters");
-    }else {
+    } else {
       form.clearFieldError("password");
     }
     form.validateField("password");
@@ -232,7 +232,8 @@ export function LoginForm(props: PaperProps) {
       setConfirmFeedback("match");
     } else {
       setConfirmFeedback("mismatch");
-    }}
+    }
+  };
 
   return (
     <Stack justify="center" mt="lg">
@@ -332,7 +333,6 @@ export function LoginForm(props: PaperProps) {
                   value={form.values.password}
                   onChange={(e) => {
                     validatepassword(e.currentTarget.value);
-                    
                   }}
                   error={type === "register" ? form.errors.password : undefined}
                   leftSection={<MdOutlineLock />}
@@ -349,8 +349,6 @@ export function LoginForm(props: PaperProps) {
                     <Text size="sm" c={strengthColorMap[strength]}>
                       {strength.toUpperCase()} password
                     </Text>
-                    
-                  
                   </>
                 )}
 
