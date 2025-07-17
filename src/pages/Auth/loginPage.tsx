@@ -114,7 +114,7 @@ export function LoginForm(props: PaperProps) {
 
     if (type === "login") {
       const emailError = form.validateField("email");
-      const passwordError = form.validateField("Password");
+      const passwordError = form.validateField("password");
 
       if (emailError.hasError || passwordError.hasError) {
         return;
