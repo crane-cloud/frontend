@@ -107,3 +107,7 @@ a:hover {
 .navlink:hover {
   text-decoration: none !important;
 }
+
+.dimmed-placeholder .mantine-InputPlaceholder-placeholder {
+  color: light-dark(var(--mantine-color-gray-6), var(--mantine-color-gray-5)) !important;
+}

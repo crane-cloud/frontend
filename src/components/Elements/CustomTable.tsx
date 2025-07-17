@@ -85,10 +85,7 @@ export const Table = ({
     ? Math.min(pagination?.page * pagination?.per_page, pagination?.total)
     : data?.length;
 
-  const onChange = (
-    key: string,
-    value: string | number | { start: string; end: string } | null,
-  ) => {
+  const onChange = (key: string, value: string | number | null) => {
     const updatedFilters = { ...filters };
     delete updatedFilters.page;
     if (value === "" || value === null || value === undefined) {
@@ -173,7 +170,7 @@ export const Table = ({
                 ) : data?.length ? (
                   data.map((item, idx) => (
                     <StyledTableRow
-                      key={item.id || idx}
+                      key={idx}
                       onClick={() => rowClick && rowClick(item)}
                       $hover={rowHover}
                       $clickable={!!rowClick}

@@ -29,7 +29,13 @@ export const ModalConfirm = (props: TModalConfirm) => {
     size = "md",
   } = props;
   return (
-    <Modal opened={opened} onClose={onClose} title={title} size={size}>
+    <Modal
+      opened={opened}
+      onClose={onClose}
+      title={title}
+      size={size}
+      padding="md"
+    >
       <Divider pb="md" />
       <Text size="sm" mb="md">
         {children}

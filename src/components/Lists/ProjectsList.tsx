@@ -2,6 +2,7 @@ import React, { useEffect, useMemo } from "react";
 import useGet from "@/utils/useGet";
 import {
   Badge,
+  Box,
   Button,
   Divider,
   Group,
@@ -112,7 +113,7 @@ const ProjectsList = () => {
     <div>
       <TitleText>Projects</TitleText>
 
-      <Paper py="lg" radius="md">
+      <Box py="lg">
         <Group justify="space-between" align="center">
           <Search type="projects" wide />
           <Group gap={0}>
@@ -164,7 +165,7 @@ const ProjectsList = () => {
             )}
           </Stack>
         )}
-      </Paper>
+      </Box>
     </div>
   );
 };

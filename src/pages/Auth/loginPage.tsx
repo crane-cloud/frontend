@@ -4,6 +4,7 @@ import {
   Checkbox,
   Divider,
   Group,
+  Image,
   Loader,
   Modal,
   Paper,
@@ -13,7 +14,7 @@ import {
   Text,
   TextInput,
 } from "@mantine/core";
-import { FaGithub } from "react-icons/fa";
+import { FaGithub, FaGoogle } from "react-icons/fa";
 import { useForm } from "@mantine/form";
 import { upperFirst, useToggle } from "@mantine/hooks";
 import usePost from "@/utils/usePost";
@@ -27,10 +28,12 @@ import {
   MdOutlinePerson,
   MdOutlineBusiness,
 } from "react-icons/md";
-import { GIT_REDIRECT_URL } from "@/config";
 import { GuestHeader } from "@/components/Header";
 import { GuestFooter } from "@/components/Footer";
 import { API_USERS } from "@/utils/apis";
+import useGet from "@/utils/useGet";
+import { GIT_REDIRECT_URL, GOOGLE_REDIRECT_URL } from "@/config";
+import CraneCloudLogo from "../../assets/images/logo.svg";
 
 export function LoginForm(props: PaperProps) {
   const { login, loggedIn } = useAuth();
@@ -47,6 +50,12 @@ export function LoginForm(props: PaperProps) {
     success: gitLoginSuccess,
     data: gitUserDetails,
   } = usePost();
+  const {
+    getData: googleOAuth,
+    loading: googleLogin,
+    success: googleLoginSuccess,
+    data: googleUserDetails,
+  } = useGet();
   const {
     uploadData: loginUser,
     submitting: loggingIn,
@@ -152,6 +161,14 @@ export function LoginForm(props: PaperProps) {
     });
   };
 
+  const initiateGoogleLogin = (code: string) => {
+    googleOAuth({
+      api: `${API_USERS}/oauth/google`,
+      params: { code },
+      errorMessage: "Failed to authorize Google user",
+    });
+  };
+
   useEffect(() => {
     if (loginSuccess && !passwordReset) {
       login(loginDetails);
@@ -189,16 +206,31 @@ export function LoginForm(props: PaperProps) {
   }, [gitLoginSuccess]);
 
   useEffect(() => {
+    if (googleLoginSuccess) {
+      login(googleUserDetails);
+      navigate("/");
+    }
+  }, [googleLoginSuccess]);
+
+  useEffect(() => {
     const queryParams = new URLSearchParams(window.location.search);
     const code = queryParams.get("code");
-    if (code) {
+    const oauth = queryParams.get("oauth");
+    if (oauth === "google" && code) {
+      localStorage.clear();
+      initiateGoogleLogin(code);
+    } else if (code) {
       localStorage.clear();
       initiateGitHubLogin(code);
     }
   }, []);
 
+  // OAuth handlers
   const handleGithubAuth = () => {
     window.location.href = GIT_REDIRECT_URL;
+  };
+  const handleGoogleAuth = () => {
+    window.location.href = GOOGLE_REDIRECT_URL;
   };
 
   return (
@@ -212,15 +244,18 @@ export function LoginForm(props: PaperProps) {
       >
         {!passwordReset ? (
           <>
-            <Text
-              variant="gradient"
-              gradient={{ from: "blue", to: "cyan", deg: 90 }}
-              size="xl"
-              fw={700}
-              ta="center"
-            >
-              Welcome {type === "login" && "back"} to Crane Cloud
-            </Text>
+            <Stack justify="center" align="center" gap={10} pt={10} pb={20}>
+              <Image src={CraneCloudLogo} alt="Crane Cloud" w={70} />
+              <Text
+                variant="gradient"
+                gradient={{ from: "blue", to: "cyan", deg: 90 }}
+                size="xl"
+                fw={700}
+                ta="center"
+              >
+                Welcome {type === "login" && "back"} to Crane Cloud
+              </Text>
+            </Stack>
             <Group justify="center" mt="lg" gap="sm">
               <Button
                 radius="xl"
@@ -232,32 +267,37 @@ export function LoginForm(props: PaperProps) {
                 flex={1}
               >
                 {gitLogin ? (
-                  <Loader size="sm" color="white" />
+                  <Loader size="sm" color="gray" />
                 ) : (
                   "Continue with GitHub"
                 )}
               </Button>
-              {/* <Button
-              radius="xl"
-              flex={1}
-              leftSection={
-                <FaGoogle
-                  style={{
-                    color: "#EA4335",
-                  }}
-                />
-              }
-              variant="default"
-              style={{ borderColor: "theme.red" }}
-              onClick={handleGoogleAuth}
-            >
-              Google
-            </Button> */}
+              <Button
+                radius="xl"
+                flex={1}
+                leftSection={
+                  <FaGoogle
+                    style={{
+                      color: "#EA4335",
+                    }}
+                  />
+                }
+                variant="default"
+                style={{ borderColor: "theme.red" }}
+                onClick={handleGoogleAuth}
+              >
+                {googleLogin ? (
+                  <Loader size="sm" color="gray" />
+                ) : (
+                  "Continue with Google"
+                )}
+              </Button>
             </Group>
             <Divider
               label="Or continue with email"
               labelPosition="center"
               my="lg"
+              fw={700}
             />
             <form onSubmit={handleSubmit}>
               <Stack gap="sm">
@@ -344,6 +384,7 @@ export function LoginForm(props: PaperProps) {
                     c="dimmed"
                     onClick={() => toggle()}
                     size="xs"
+                    fw={600}
                   >
                     {type === "register"
                       ? "Already have an account? Login"
@@ -354,6 +395,7 @@ export function LoginForm(props: PaperProps) {
                       component="button"
                       type="button"
                       size="sm"
+                      fw={700}
                       onClick={() => setShowPasswordReset(true)}
                     >
                       Forgot password?
@@ -416,6 +458,7 @@ export function LoginForm(props: PaperProps) {
                   c="dimmed"
                   onClick={() => setShowPasswordReset(false)}
                   size="xs"
+                  fw={700}
                 >
                   Back to Login
                 </Anchor>

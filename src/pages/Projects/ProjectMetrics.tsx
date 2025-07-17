@@ -4,7 +4,7 @@ import {
 } from "@/components/Elements/Charts";
 import TitleText from "@/components/TitleText";
 import { MONITORING_API_URL } from "@/config";
-import { bytesToMB, useGetProject } from "@/utils/helpers";
+import { bytesToMB, useGetProject, useSetContainerSize } from "@/utils/helpers";
 import usePost from "@/utils/usePost";
 import { Grid } from "@mantine/core";
 import { useEffect, useMemo, useState } from "react";
@@ -13,6 +13,7 @@ import { useParams } from "react-router-dom";
 const ProjectMetrics = () => {
   const { project_id } = useParams();
   useGetProject(project_id || "");
+  useSetContainerSize("xl");
   const {
     uploadData: getCPUMetrics,
     data: cpuMetricsData,
