@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useEffect, useMemo } from "react";
 import useGet from "@/utils/useGet";
 import {
   Badge,
@@ -22,22 +22,9 @@ import { API_PROJECTS } from "@/utils/apis";
 import { DOCS_URL } from "@/config";
 import DataNotFoundMessage from "@/pages/common/DataFoundMessage";
 import { useInfiniteScrollWithPagination } from "@/hooks/generic/useInfiniteScroll";
-import { useAuth } from "@/utils/AuthContext";
 
 const ProjectsList = () => {
-  const { user } = useAuth();
   const { data: projectsData, getData, loading, success } = useGet();
-  const {
-    data: membersData,
-    getData: getProjectMembers,
-    success: membersSuccess,
-  } = useGet();
-
-  const [membersLoaded, setMembersLoaded] = useState(false);
-  const [projectMembersMap, setProjectMembersMap] = useState<
-    Record<string, any[]>
-  >({});
-  const [currentProjectId, setCurrentProjectId] = useState<string | null>(null);
 
   const [viewMode, toggleViewMode] = useToggle<"grid" | "list">([
     "grid",
@@ -48,7 +35,16 @@ const ProjectsList = () => {
     loading,
     success,
     data: projectsData,
-    extractItems: (data) => data?.data?.projects || [],
+    extractItems: (data) => {
+      const owned = data?.data?.projects || [];
+      const invited = (data?.data?.pending_invitations || []).map(
+        (project: any) => ({
+          ...project,
+          is_invited: true,
+        }),
+      );
+      return [...invited, ...owned];
+    },
     extractPagination: (data) => data?.data?.pagination || {},
     extractItemId: (project) => project.id,
     onLoadMore: (page) => {
@@ -59,7 +55,7 @@ const ProjectsList = () => {
     },
   });
 
-  // Initial data fetch
+  // Initial fetch
   useEffect(() => {
     getData({
       api: `${API_PROJECTS}`,
@@ -67,73 +63,13 @@ const ProjectsList = () => {
     });
   }, []);
 
-  // Fetch members for each project
-  useEffect(() => {
-    if (projects.length > 0) {
-      const projectsToFetch = projects.filter(
-        (project: any) => !projectMembersMap[project.id],
-      );
-
-      if (projectsToFetch.length > 0 && !currentProjectId) {
-        const nextProject = projectsToFetch[0];
-        setCurrentProjectId(nextProject.id);
-        getProjectMembers({
-          api: `${API_PROJECTS}/${nextProject.id}/users`,
-        });
-      }
-    }
-  }, [projects, projectMembersMap, currentProjectId]);
-
-  // Store members data when fetched
-  useEffect(() => {
-    if (membersSuccess && membersData && currentProjectId) {
-      setProjectMembersMap((prev) => ({
-        ...prev,
-        [currentProjectId]: membersData?.data?.project_users || [],
-      }));
-
-      // Reset to fetch next project
-      setCurrentProjectId(null);
-
-      // Check if we've loaded all projects' members
-      const allMembersLoaded = projects.every(
-        (project) =>
-          projectMembersMap[project.id] || project.id === currentProjectId,
-      );
-
-      if (allMembersLoaded) {
-        setMembersLoaded(true);
-      }
-    }
-  }, [membersSuccess, membersData, currentProjectId, projects]);
-
   const { invitedProjects, personalProjects } = useMemo(() => {
-    const invited: any[] = [];
-    const personal: any[] = [];
-
-    projects.forEach((project: any) => {
-      const projectMembers = projectMembersMap[project.id] || [];
-
-      // Find the current user's record in this project's members
-      const currentUserRecord = projectMembers.find(
-        (member: any) => member.user?.id === user?.id,
-      );
-
-      // Check if current user has a pending invitation
-      if (
-        currentUserRecord &&
-        currentUserRecord.accepted_collaboration_invite === false
-      ) {
-        invited.push(project);
-      } else {
-        personal.push(project);
-      }
-    });
-
+    const invited = projects.filter((p: any) => p.is_invited === true);
+    const personal = projects.filter((p: any) => !p.is_invited);
     return { invitedProjects: invited, personalProjects: personal };
-  }, [projects, projectMembersMap, user?.id]);
+  }, [projects]);
 
-  const renderProjectSection = (
+  const ProjectListSection = (
     title: string,
     projects: any[],
     showBadge = false,
@@ -211,22 +147,13 @@ const ProjectsList = () => {
         ) : (
           <Stack gap="xl">
             {invitedProjects.length > 0 &&
-              renderProjectSection(
-                "Pending Invitations",
-                invitedProjects,
-                true,
-              )}
+              ProjectListSection("Pending Invitations", invitedProjects, true)}
 
             {personalProjects.length > 0 &&
-              renderProjectSection("Projects List", personalProjects)}
-
-            {!membersLoaded && (
-              <GridLayout columns={viewMode === "grid" ? 3 : 1}>
-                {[...Array(6)].map((_, i) => (
-                  <Skeleton key={i} height={100} w="100%" radius="md" />
-                ))}
-              </GridLayout>
-            )}
+              ProjectListSection(
+                invitedProjects.length > 0 ? "Projects List" : "",
+                personalProjects,
+              )}
 
             {loading && (
               <GridLayout columns={viewMode === "grid" ? 3 : 1}>

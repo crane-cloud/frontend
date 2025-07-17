@@ -18,8 +18,6 @@ import { RiBookLine } from "react-icons/ri";
 import { GoClock } from "react-icons/go";
 import { LiaUserSolid } from "react-icons/lia";
 import { IoPersonAddOutline, IoRocketOutline } from "react-icons/io5";
-import { useAuth } from "@/utils/AuthContext";
-import useGet from "@/utils/useGet";
 import usePost from "@/utils/usePost";
 import { API_PROJECTS } from "@/utils/apis";
 import { useNavigate } from "react-router-dom";
@@ -39,14 +37,13 @@ export type ProjectUserRecord = {
 
 const ProjectsCard = (props: any) => {
   const { project } = props;
-  const { user } = useAuth();
   const navigate = useNavigate();
 
-  const [currentUserRecord, setCurrentUserRecord] =
-    useState<ProjectUserRecord | null>(null);
   const [showInviteModal, setShowInviteModal] = useState(false);
-
-  const { data: members, getData: getProjectMembers, success } = useGet();
+  const [currentUserRecord, setCurrentUserRecord] = useState<Pick<
+    ProjectUserRecord,
+    "accepted_collaboration_invite"
+  > | null>(null);
 
   const {
     uploadData: acceptInvitation,
@@ -81,19 +78,12 @@ const ProjectsCard = (props: any) => {
   };
 
   useEffect(() => {
-    getProjectMembers({
-      api: `/projects/${project?.id}/users`,
-    });
-  }, [project?.id]);
-
-  useEffect(() => {
-    if (success && members?.data?.project_users) {
-      const userRecord = members?.data?.project_users?.find(
-        (item: any) => item.user?.id === user?.id,
-      );
-      setCurrentUserRecord(userRecord || {});
+    if (project?.is_invited) {
+      setCurrentUserRecord({ accepted_collaboration_invite: false });
+    } else {
+      setCurrentUserRecord({ accepted_collaboration_invite: true });
     }
-  }, [success, members, user]);
+  }, [project?.is_invited]);
 
   useEffect(() => {
     if (invitationAccepted) {
@@ -250,12 +240,7 @@ const ProjectsCard = (props: any) => {
               <Flex gap={2} align="center" justify="center" wrap="nowrap">
                 <LiaUserSolid size={15} color="var(--mantine-color-dimmed)" />
                 <Text size="sm" c="dimmed" className="no-wrap">
-                  {formatPlural(
-                    members?.data?.project_users?.filter(
-                      (u: any) => u.accepted_collaboration_invite !== false,
-                    ).length || 1,
-                    "member",
-                  )}
+                  {formatPlural(project?.members_count, "member")}
                 </Text>
               </Flex>
             </ActionIcon>
