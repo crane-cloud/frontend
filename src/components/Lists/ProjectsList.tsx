@@ -6,7 +6,6 @@ import {
   Button,
   Divider,
   Group,
-  Paper,
   Skeleton,
   Stack,
   Text,
