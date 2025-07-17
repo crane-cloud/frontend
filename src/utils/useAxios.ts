@@ -77,7 +77,9 @@ function useAxios() {
     return {
       method,
       headers,
-      url: options.isExternal ? options.api : `${API_BASE_URL}${options.api}`,
+      url: options.isExternal
+        ? options.api
+        : `${API_BASE_URL.replace(/\/$/, "")}/${options.api.replace(/^\//, "")}`,
       [method === "get" ? "params" : "data"]: options.params,
     };
   };

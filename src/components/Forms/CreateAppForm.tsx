@@ -16,7 +16,11 @@ import {
 } from "@mantine/core";
 import TitleText from "../TitleText";
 import { IoIosArrowDown, IoMdAdd } from "react-icons/io";
-import { useGetProject, useSetContainerSize } from "@/utils/helpers";
+import {
+  convertArrayToObject,
+  useGetProject,
+  useSetContainerSize,
+} from "@/utils/helpers";
 import { useEffect, useState } from "react";
 import { HiCommandLine, HiTrash } from "react-icons/hi2";
 import usePost from "@/utils/usePost";
@@ -127,19 +131,29 @@ export const CreateSingleAppForm = (props: {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    const envObject = convertArrayToObject(envVariables);
+
     if (app) {
       uploadData({
         api: API_APPS,
         id: app?.id,
-        params: editedForm,
+        method: "PATCH",
+        params: {
+          ...editedForm,
+          env_vars: envObject,
+        },
       });
-      return;
+    } else {
+      uploadData({
+        api: `${API_PROJECTS}/${project?.id}/apps`,
+        method: "POST",
+        params: {
+          ...form,
+          env_vars: envObject,
+        },
+      });
     }
-
-    uploadData({
-      api: `${API_PROJECTS}/${project?.id}/apps`,
-      params: form,
-    });
   };
 
   useEffect(() => {
