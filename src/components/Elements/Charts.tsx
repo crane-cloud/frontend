@@ -23,9 +23,9 @@ type TLineMetricChart = {
   valueFormatter: (value: number) => string;
   showAllXValues?: boolean;
   height?: number;
-  setBigChart?: (chartType: "cpu" | "memory" | "network") => void;
-  chartType?: "cpu" | "memory" | "network";
-  currentChart?: "cpu" | "memory" | "network";
+  setBigChart?: (chartType: "cpu" | "memory" | "network" | "gpu") => void;
+  chartType?: "cpu" | "memory" | "network" | "gpu";
+  currentChart?: "cpu" | "memory" | "network" | "gpu";
   isLoading?: boolean;
 };
 
@@ -132,7 +132,7 @@ type TLineLargeMetricChart = TLineMetricChart & {
     endDate: Date | null;
   };
   setFilters: (filter: any) => void;
-  currentChart?: "cpu" | "memory" | "network";
+  currentChart?: "cpu" | "memory" | "network" | "gpu";
 };
 
 export const LineLargeMetricChart = ({
@@ -175,7 +175,7 @@ export const LineLargeMetricChart = ({
 
       const daysToGoBack = daysMap[range];
       const startDate = new Date(
-        now.getTime() - daysToGoBack * 24 * 60 * 60 * 1000,
+        now.getTime() - daysToGoBack * 24 * 60 * 60 * 1000
       );
 
       setFilters({

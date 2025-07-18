@@ -28,7 +28,14 @@ const AppMetrics = () => {
     data: networkMetricsData,
     submitting: gettingNetworkMetrics,
   } = usePost();
-  const [bigChart, setBigChart] = useState<"cpu" | "memory" | "network">("cpu");
+  const {
+    uploadData: getGPUMetrics,
+    data: gpuMetricsData,
+    submitting: gettingGPUMetrics,
+  } = usePost();
+  const [bigChart, setBigChart] = useState<
+    "cpu" | "memory" | "network" | "gpu"
+  >("cpu");
 
   const { setMenuType, setContainerSize } = useContext(MenuContext);
 
@@ -82,6 +89,12 @@ const AppMetrics = () => {
         isExternal: true,
         showNotifications: false,
       });
+      getGPUMetrics({
+        api: `${MONITORING_API_URL}/apps/gpu/metrics`,
+        params: requestBody,
+        isExternal: true,
+        showNotifications: false,
+      });
     };
 
     fetchMetrics();
@@ -101,6 +114,14 @@ const AppMetrics = () => {
         data: memoryMetricsData?.data?.values,
         title: "Memory Usage",
         unit: "MB/s",
+        numberOfDecimals: 0,
+      };
+    }
+    if (bigChart === "gpu") {
+      return {
+        data: gpuMetricsData?.data?.values,
+        title: "GPU Usage",
+        unit: "GPUs",
         numberOfDecimals: 0,
       };
     }
@@ -168,6 +189,18 @@ const AppMetrics = () => {
             chartType="network"
             currentChart={bigChart}
             isLoading={gettingNetworkMetrics}
+          />
+        </Grid.Col>
+        <Grid.Col span={4}>
+          <LineMetricChart
+            title="GPU Usage"
+            data={gpuMetricsData?.data?.values}
+            valueFormatter={(value) => `${value.toFixed(0)} GPUs`}
+            height={180}
+            setBigChart={setBigChart}
+            chartType="gpu"
+            currentChart={bigChart}
+            isLoading={gettingGPUMetrics}
           />
         </Grid.Col>
       </Grid>
