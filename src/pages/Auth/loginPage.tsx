@@ -220,20 +220,34 @@ export function LoginForm(props: PaperProps) {
     }
   }, []);
   const validatepassword = (value: string) => {
-    form.setFieldValue("password", value);
-    setPassword(value);
-    if (value.length < 6) {
-      form.setFieldError("password", "Password must be at least 6 characters");
-    } else {
-      form.clearFieldError("password");
-    }
-    form.validateField("password");
+  form.setFieldValue("password", value);
+  setPassword(value);
+
+  const hasUppercase = /[A-Z]/.test(value);
+  const hasLowercase = /[a-z]/.test(value);
+  const hasNumberOrSpecial = /[0-9!@#$%^&*(),.?":{}|<>]/.test(value);
+
+  if (value.length < 6) {
+    form.setFieldError("password", "Password must be at least 6 characters");
+  } else if (!hasUppercase) {
+    form.setFieldError("password", "Password must include at least one uppercase letter");
+  } else if (!hasLowercase) {
+    form.setFieldError("password", "Password must include at least one lowercase letter");
+  } else if (!hasNumberOrSpecial) {
+    form.setFieldError("password", "Password must include a number or special character");
+  } else {
+    form.clearFieldError("password");
+  }
+
+  
+  if (type === "register") {
     if (value === form.values.confirmPassword) {
       setConfirmFeedback("match");
     } else {
       setConfirmFeedback("mismatch");
     }
-  };
+  }
+};
 
   return (
     <Stack justify="center" mt="lg">
