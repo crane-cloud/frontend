@@ -1,6 +1,15 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import useGet from "@/utils/useGet";
-import { Box, Button, Divider, Group, Skeleton } from "@mantine/core";
+import {
+  Badge,
+  Box,
+  Button,
+  Divider,
+  Group,
+  Skeleton,
+  Stack,
+  Text,
+} from "@mantine/core";
 import ProjectsCard from "@/components/Cards/ProjectsCard";
 import { GridLayout } from "@/components/Layouts/ListLayouts";
 import { RxHamburgerMenu } from "react-icons/rx";
@@ -26,24 +35,78 @@ const ProjectsList = () => {
     loading,
     success,
     data: projectsData,
-    extractItems: (data) => data?.data?.projects || [],
+    extractItems: (data) => {
+      const owned = data?.data?.projects || [];
+      const invited = (data?.data?.pending_invitations || []).map(
+        (project: any) => ({
+          ...project,
+          is_invited: true,
+        }),
+      );
+      return [...invited, ...owned];
+    },
     extractPagination: (data) => data?.data?.pagination || {},
     extractItemId: (project) => project.id,
     onLoadMore: (page) => {
       getData({
         api: `${API_PROJECTS}`,
-        params: { page, per_page: 10 },
+        params: { page, per_page: 20 },
       });
     },
   });
 
-  // Initial data fetch
+  // Initial fetch
   useEffect(() => {
     getData({
       api: `${API_PROJECTS}`,
-      params: { page: 1, per_page: 10 },
+      params: { page: 1, per_page: 20 },
     });
   }, []);
+
+  const { invitedProjects, personalProjects } = useMemo(() => {
+    const invited = projects.filter((p: any) => p.is_invited === true);
+    const personal = projects.filter((p: any) => !p.is_invited);
+    return { invitedProjects: invited, personalProjects: personal };
+  }, [projects]);
+
+  const ProjectListSection = (
+    title: string,
+    projects: any[],
+    showBadge = false,
+  ) => {
+    if (projects.length === 0) {
+      return null;
+    }
+
+    return (
+      <Stack gap="md">
+        <Group gap="xs" align="center">
+          <Text size="lg" fw={600} c="dimmed">
+            {title}
+          </Text>
+          {showBadge && (
+            <Badge color="red" variant="filled" size="sm">
+              {projects.length}
+            </Badge>
+          )}
+        </Group>
+        <GridLayout columns={viewMode === "grid" ? 3 : 1}>
+          {projects.map((project: any, index: number) => {
+            const isLast = index === projects.length - 1;
+            return (
+              <div
+                key={project.id}
+                ref={isLast ? lastElementRef : null}
+                style={{ height: "100%" }}
+              >
+                <ProjectsCard project={project} h="100%" />
+              </div>
+            );
+          })}
+        </GridLayout>
+      </Stack>
+    );
+  };
 
   return (
     <div>
@@ -82,25 +145,24 @@ const ProjectsList = () => {
             helpLink={`${DOCS_URL}/projects/`}
           />
         ) : (
-          <GridLayout columns={viewMode === "grid" ? 3 : 1}>
-            {projects.map((project: any, index: number) => {
-              const isLast = index === projects.length - 1;
-              return (
-                <div
-                  key={project.id}
-                  ref={isLast ? lastElementRef : null}
-                  style={{ height: "100%" }}
-                >
-                  <ProjectsCard project={project} h="100%" />
-                </div>
-              );
-            })}
+          <Stack gap="xl">
+            {invitedProjects.length > 0 &&
+              ProjectListSection("Pending Invitations", invitedProjects, true)}
 
-            {loading &&
-              [...Array(6)].map((_, i) => (
-                <Skeleton key={i} height={100} w="100%" radius="md" />
-              ))}
-          </GridLayout>
+            {personalProjects.length > 0 &&
+              ProjectListSection(
+                invitedProjects.length > 0 ? "Projects List" : "",
+                personalProjects,
+              )}
+
+            {loading && (
+              <GridLayout columns={viewMode === "grid" ? 3 : 1}>
+                {[...Array(6)].map((_, i) => (
+                  <Skeleton key={i} height={100} w="100%" radius="md" />
+                ))}
+              </GridLayout>
+            )}
+          </Stack>
         )}
       </Box>
     </div>
