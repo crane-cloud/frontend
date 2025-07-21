@@ -39,6 +39,7 @@ export const useProjects = () => {
       filter: { type: "date_range" },
     },
   ];
+
   const tableData = (data: any) => {
     if (!data) {
       return [];
@@ -68,5 +69,16 @@ export const useProjects = () => {
     });
   };
 
-  return { tableColumns, tableData };
+  const metaData = (data: any) => {
+    return {
+      disabled: data?.disabled || 0,
+      personal: data?.project_type?.Personal || 0,
+      student: data?.project_type?.Student || 0,
+      commercial: data?.project_type?.Commercial || 0,
+      charity: data?.project_type?.Charity || 0,
+      research: data?.project_type?.Research || 0,
+    };
+  };
+
+  return { tableColumns, tableData, metaData };
 };
