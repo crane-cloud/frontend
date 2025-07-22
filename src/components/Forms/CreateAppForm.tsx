@@ -1,11 +1,14 @@
 import {
   ActionIcon,
+  Alert,
   Button,
+  Code,
   Divider,
   Fieldset,
   Flex,
   Group,
   Input,
+  List,
   Paper,
   Select,
   Stack,
@@ -46,6 +49,8 @@ import { Table } from "../Elements/CustomTable";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { RiRobot2Line } from "react-icons/ri";
 import useForm from "@/hooks/generic/useForm";
+import { useHuggingFaceTasks } from "@/hooks/useHuggingFaceTasks";
+import { SiMlflow, SiScikitlearn } from "react-icons/si";
 
 const CreateAppForm = () => {
   useSetContainerSize("sm");
@@ -749,6 +754,11 @@ export const DeployAppModalForm = ({
   onCancel = () => {},
   refresh = () => {},
 }: DeployNotebookFormProps) => {
+  const {
+    tasks: hfTasks,
+    loading: loadingTasks,
+    fetchTasks,
+  } = useHuggingFaceTasks();
   const { uploadData, submitting, error, success } = usePost();
   const { form, onChange, updateFormValue } = useForm();
 
@@ -777,12 +787,23 @@ export const DeployAppModalForm = ({
     }
   }, [success]);
 
+  // Check if the form is for Hugging Face, MLflow, or Sklearn
+  const isHuggingFace = form.model_server === "HUGGINGFACE_SERVER";
+  const isMLflow = form.model_server === "MLFLOW_SERVER";
+  const isSklearn = form.model_server === "SKLEARN_SERVER";
+
+  useEffect(() => {
+    if (isHuggingFace) {
+      fetchTasks();
+    }
+  }, [isHuggingFace]);
+
   return (
     <div style={{ marginTop: showTitle ? 10 : 0 }}>
       {showTitle && (
         <TitleText>
           <Flex align="center" gap="xs">
-            <IoRocketSharp size={15} />
+            <RiRobot2Line size={15} />
             Deploy a Trained Model
           </Flex>
         </TitleText>
@@ -790,32 +811,194 @@ export const DeployAppModalForm = ({
       <Paper p="lg" radius="md">
         <form onSubmit={handleSubmit}>
           <Stack>
+            <Select
+              label="Model Server"
+              name="model_server"
+              placeholder="Select the server that hosts your model"
+              description="Choose where your model is hosted"
+              required
+              value={form.model_server as string}
+              onChange={(value) => updateFormValue("model_server", value)}
+              error={error?.model_server}
+              data={MODAL_SERVERS.map((server) => ({
+                ...server,
+                leftSection: server.icon ? (
+                  <server.icon size={16} />
+                ) : undefined,
+              }))}
+              leftSection={<LuServer />}
+            />
+
+            {/* Hugging Face Guidelines */}
+            {isHuggingFace && (
+              <Alert
+                icon={<RiRobot2Line size={24} />}
+                color="blue"
+                variant="light"
+                radius="md"
+              >
+                <Text size="sm" fw={500} mb="xs">
+                  Hugging Face Model Deployment
+                </Text>
+                <Text size="sm" mb="xs">
+                  You're deploying from Hugging Face Hub. Here's what you need
+                  to know:
+                </Text>
+                <List size="sm">
+                  <List.Item>
+                    Use the full model path (e.g.,{" "}
+                    <Code>microsoft/DialoGPT-medium</Code>)
+                  </List.Item>
+                  <List.Item>Ensure the model supports inference API</List.Item>
+                  <List.Item>
+                    Some models may require authentication tokens
+                  </List.Item>
+                  <List.Item>
+                    Check model compatibility with transformers library
+                  </List.Item>
+                </List>
+              </Alert>
+            )}
+
+            {/* MLflow Guidelines */}
+            {isMLflow && (
+              <Alert
+                icon={<SiMlflow size={24} />}
+                color="blue"
+                variant="light"
+                radius="md"
+              >
+                <Text size="sm" fw={500} mb="xs">
+                  MLflow Model Deployment
+                </Text>
+                <Text size="sm" mb="xs">
+                  You're deploying from MLflow Model Registry. Here's what you
+                  need to know:
+                </Text>
+                <List size="sm">
+                  <List.Item>
+                    Use the run ID format: <Code>runs:/run_id/model</Code>
+                  </List.Item>
+                  <List.Item>
+                    Ensure MLflow tracking server is accessible
+                  </List.Item>
+                  <List.Item>
+                    Model must be logged with MLflow tracking
+                  </List.Item>
+                  <List.Item>
+                    Supports multiple ML frameworks (sklearn, pytorch, etc.)
+                  </List.Item>
+                </List>
+              </Alert>
+            )}
+
+            {/* Sklearn Guidelines */}
+            {isSklearn && (
+              <Alert
+                icon={<SiScikitlearn size={24} />}
+                color="orange"
+                variant="light"
+                radius="md"
+              >
+                <Text size="sm" fw={500} mb="xs">
+                  Scikit-learn Model Deployment
+                </Text>
+                <Text size="sm" mb="xs">
+                  You're deploying a scikit-learn model. Here's what you need to
+                  know:
+                </Text>
+                <List size="sm">
+                  <List.Item>
+                    Model should be saved as pickle file: <Code>model.pkl</Code>
+                  </List.Item>
+                  <List.Item>
+                    Or use joblib format: <Code>model.joblib</Code>
+                  </List.Item>
+                  <List.Item>Ensure sklearn version compatibility</List.Item>
+                  <List.Item>
+                    Include preprocessing pipeline if needed
+                  </List.Item>
+                  <List.Item>Model must implement predict() method</List.Item>
+                </List>
+              </Alert>
+            )}
+
             <TextInput
               label="Model Name"
               name="name"
               placeholder="Enter model name"
-              description="Enter the name of the model"
+              description="Enter a descriptive name for your model"
               required
               value={form?.name as string}
               onChange={onChange}
               error={error?.name}
               leftSection={<MdDriveFileRenameOutline />}
             />
+
             <TextInput
-              label="Modal Url"
+              label={
+                isHuggingFace
+                  ? "Model Repository"
+                  : isMLflow
+                    ? "Model URI"
+                    : isSklearn
+                      ? "Model File Path"
+                      : "Model URL"
+              }
               name="model_image_uri"
-              placeholder="Enter modal url"
-              description="Enter the url to where the model is hosted"
+              placeholder={
+                isHuggingFace
+                  ? "e.g., microsoft/DialoGPT-medium"
+                  : isMLflow
+                    ? "e.g., models:/my_model/1 or runs:/abc123/model"
+                    : isSklearn
+                      ? "e.g., /path/to/model.pkl or https://example.com/model.pkl"
+                      : "Enter model URL"
+              }
+              description={
+                isHuggingFace
+                  ? "Enter the Hugging Face model repository path"
+                  : isMLflow
+                    ? "Enter the MLflow model URI (models:/ or runs:/ format)"
+                    : isSklearn
+                      ? "Enter the path to your sklearn model file"
+                      : "Enter the URL where the model is hosted"
+              }
               required
               value={form?.model_image_uri as string}
               onChange={onChange}
               error={error?.model_image_uri}
               leftSection={<LuLink />}
             />
+
+            {isHuggingFace && (
+              <Stack gap="sm">
+                <Select
+                  label="Task Type"
+                  name="task"
+                  placeholder="Select model task"
+                  description="What task is this model designed for?"
+                  value={form.task as string}
+                  onChange={(value) => updateFormValue("task", value)}
+                  data={hfTasks}
+                  leftSection={<TbPlugConnected />}
+                  disabled={loadingTasks}
+                  rightSection={
+                    loadingTasks ? (
+                      <Text size="xs">Loading tasks...</Text>
+                    ) : undefined
+                  }
+                  searchable
+                  clearable
+                />
+              </Stack>
+            )}
+
             <Select
-              label="Modal Api type"
+              label="API Type"
               name="api_type"
-              placeholder="Select framework"
+              placeholder="Select API framework"
+              description="Choose the API framework for your model"
               required
               value={form.api_type as string}
               onChange={(value) => updateFormValue("api_type", value)}
@@ -824,19 +1007,14 @@ export const DeployAppModalForm = ({
               defaultValue={MODAL_API_TYPES[0].value}
               leftSection={<TbPlugConnected />}
             />
-            <Select
-              label="Modal Server"
-              name="model_server"
-              placeholder="Select the server that created the model"
-              required
-              value={form.model_server as string}
-              onChange={(value) => updateFormValue("model_server", value)}
-              error={error?.model_server}
-              data={MODAL_SERVERS}
-              leftSection={<LuServer />}
-            />
+
             <Divider mt="md" />
-            <Group justify="flex-end">
+            <Group justify="space-between">
+              <Text size="xs" c="dimmed">
+                {isHuggingFace
+                  ? "Deploying from Hugging Face Hub"
+                  : "Ready to deploy your model"}
+              </Text>
               <Button
                 type="submit"
                 variant="filled"

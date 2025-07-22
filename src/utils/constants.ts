@@ -1,3 +1,6 @@
+import { HiOutlineFaceSmile } from "react-icons/hi2";
+import { SiMlflow, SiScikitlearn } from "react-icons/si";
+
 // Boolean values
 export const YES = "Yes";
 export const NO = "No";
@@ -25,14 +28,20 @@ export const MODAL_API_TYPES = [
 ];
 
 export const MODAL_SERVERS = [
-  { label: "SKLEARN", id: 1, value: "SKLEARN_SERVER" },
-  { label: "TENSORFLOW", id: 2, value: "TENSORFLOW_SERVER" },
-  { label: "XGBOOST", id: 3, value: "XGBOOST_SERVER" },
-  { label: "MLFlow", id: 4, value: "MLFLOW_SERVER" },
-  { label: "Triton", id: 5, value: "TRITON_SERVER" },
-  { label: "Tempo", id: 6, value: "TEMPO_SERVER" },
-  { label: "Hugging Face", id: 7, value: "HUGGINGFACE_SERVER" },
-  { label: "Custom Inference", id: 8, value: "CUSTOM_INFERENCE_SERVER" },
+  { label: "SKLEARN", id: 1, value: "SKLEARN_SERVER", icon: SiScikitlearn },
+
+  { label: "MLFlow", id: 4, value: "MLFLOW_SERVER", icon: SiMlflow },
+  {
+    label: "Hugging Face",
+    id: 7,
+    value: "HUGGINGFACE_SERVER",
+    icon: HiOutlineFaceSmile,
+  },
+  // { label: "Triton", id: 5, value: "TRITON_SERVER" },
+  // { label: "Tempo", id: 6, value: "TEMPO_SERVER" },
+  // { label: "TENSORFLOW", id: 2, value: "TENSORFLOW_SERVER" },
+  // { label: "XGBOOST", id: 3, value: "XGBOOST_SERVER" },
+  // { label: "Custom Inference", id: 8, value: "CUSTOM_INFERENCE_SERVER" },
 ];
 
 export const DATABASE_FLAVOURS = [
