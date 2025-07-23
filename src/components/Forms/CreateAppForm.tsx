@@ -12,11 +12,17 @@ import {
   Tabs,
   Text,
   TextInput,
+  Textarea,
+  Modal,
   Tooltip,
 } from "@mantine/core";
 import TitleText from "../TitleText";
 import { IoIosArrowDown, IoMdAdd } from "react-icons/io";
-import { useGetProject, useSetContainerSize } from "@/utils/helpers";
+import {
+  convertArrayToObject,
+  useGetProject,
+  useSetContainerSize,
+} from "@/utils/helpers";
 import { useEffect, useState } from "react";
 import { HiCommandLine, HiTrash } from "react-icons/hi2";
 import usePost from "@/utils/usePost";
@@ -98,6 +104,9 @@ export const CreateSingleAppForm = (props: {
     useForm();
   const { uploadData, submitting, error, success } = usePost();
   const [envVariables, setEnvVariables] = useState([{ key: "", value: "" }]);
+  const [pasteModalOpened, setPasteModalOpened] = useState(false);
+  const [pastedContent, setPastedContent] = useState("");
+  const [formatError, setFormatError] = useState<string | null>(null);
 
   const navigate = useNavigate();
   useEffect(() => {
@@ -108,6 +117,74 @@ export const CreateSingleAppForm = (props: {
 
   const addEnvVariable = () => {
     setEnvVariables([...envVariables, { key: "", value: "" }]);
+  };
+
+  const parseVariablesFromContent = (content: string) => {
+    const lines = content.split("\n");
+    return lines
+      .map((line) => {
+        const [key, ...values] = line.split("=");
+        if (!key || values.length === 0) {
+          return null;
+        }
+        return {
+          key: key.trim(),
+          value: values.join("=").trim(),
+        };
+      })
+      .filter(Boolean) as { key: string; value: string }[];
+  };
+
+  const validateEnvFormat = (content: string) => {
+    if (!content.trim()) {
+      setFormatError(null);
+      return true;
+    }
+
+    const invalidLines = content
+      .split("\n")
+      .filter((line) => line.trim() && !line.includes("="));
+
+    if (invalidLines.length > 0) {
+      setFormatError(
+        `Invalid format in line(s): Each line must follow a KEY=VALUE format.`,
+      );
+      return false;
+    }
+
+    setFormatError(null);
+    return true;
+  };
+
+  const addVariablesFromPaste = () => {
+    if (!pastedContent) {
+      return;
+    }
+
+    if (!validateEnvFormat(pastedContent)) {
+      return;
+    }
+
+    const newVariables = parseVariablesFromContent(pastedContent);
+    if (newVariables.length > 0) {
+      if (
+        envVariables.length === 1 &&
+        !envVariables[0].key &&
+        !envVariables[0].value
+      ) {
+        setEnvVariables([...newVariables]);
+      } else {
+        setEnvVariables([...envVariables, ...newVariables]);
+      }
+    }
+    setPastedContent("");
+    setPasteModalOpened(false);
+  };
+
+  const handleContentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const content = e.currentTarget.value;
+    setPastedContent(content);
+    validateEnvFormat(content);
   };
 
   const removeEnvVariable = (index: number) => {
@@ -127,19 +204,29 @@ export const CreateSingleAppForm = (props: {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    const envObject = convertArrayToObject(envVariables);
+
     if (app) {
       uploadData({
         api: API_APPS,
         id: app?.id,
-        params: editedForm,
+        method: "PATCH",
+        params: {
+          ...editedForm,
+          env_vars: envObject,
+        },
       });
-      return;
+    } else {
+      uploadData({
+        api: `${API_PROJECTS}/${project?.id}/apps`,
+        method: "POST",
+        params: {
+          ...form,
+          env_vars: envObject,
+        },
+      });
     }
-
-    uploadData({
-      api: `${API_PROJECTS}/${project?.id}/apps`,
-      params: form,
-    });
   };
 
   useEffect(() => {
@@ -239,10 +326,7 @@ export const CreateSingleAppForm = (props: {
               leftSection={<HiCommandLine />}
             />
             {showEnvs && (
-              <Fieldset
-                legend="Environment Variables"
-                // description="Add environment variables for your application"
-              >
+              <Fieldset legend="Environment Variables">
                 <Stack gap="sm">
                   {envVariables.map((env, index) => (
                     <Flex key={index} gap="md" align="flex-end">
@@ -257,7 +341,6 @@ export const CreateSingleAppForm = (props: {
                           handleEnvChange(index, "key", e.target.value)
                         }
                         flex={1}
-                        //   required
                       />
                       <TextInput
                         label="Value"
@@ -270,7 +353,6 @@ export const CreateSingleAppForm = (props: {
                           handleEnvChange(index, "value", e.target.value)
                         }
                         flex={1}
-                        //   required
                       />
                       {envVariables.length > 1 && (
                         <Button
@@ -286,17 +368,91 @@ export const CreateSingleAppForm = (props: {
                       )}
                     </Flex>
                   ))}
-                  <Button
-                    variant="outline"
-                    leftSection={<IoMdAdd />}
-                    onClick={addEnvVariable}
-                    mt="sm"
-                  >
-                    Add Variable
-                  </Button>
+                  <Flex justify="flex-end" gap="sm">
+                    <Button
+                      variant="outline"
+                      leftSection={<IoMdAdd />}
+                      onClick={addEnvVariable}
+                      mt="sm"
+                    >
+                      Add Variable
+                    </Button>
+                    <Button
+                      variant="outline"
+                      leftSection={<TbCopy />}
+                      onClick={() => setPasteModalOpened(true)}
+                      mt="sm"
+                    >
+                      Paste Variables
+                    </Button>
+                  </Flex>
                 </Stack>
               </Fieldset>
             )}
+            <Modal
+              opened={pasteModalOpened}
+              onClose={() => {
+                setPastedContent("");
+                setFormatError(null);
+                setPasteModalOpened(false);
+              }}
+              title="Add from .env"
+              size="lg"
+            >
+              <Stack>
+                <Text size="sm" c="dimmed">
+                  Paste your .env contents to add multiple environment variables
+                  at once.
+                </Text>
+
+                <Textarea
+                  placeholder={`KEY_1=VALUE_1\nKEY_2=VALUE_2\nKEY_3=VALUE_3`}
+                  minRows={5}
+                  maxRows={10}
+                  autosize
+                  value={pastedContent}
+                  onChange={handleContentChange}
+                  styles={{
+                    input: {
+                      borderColor: formatError
+                        ? "var(--mantine-color-red-6)"
+                        : undefined,
+                      "&:focus": {
+                        borderColor: formatError
+                          ? "var(--mantine-color-red-6)"
+                          : undefined,
+                      },
+                    },
+                  }}
+                />
+
+                {formatError && (
+                  <Text size="sm" color="red">
+                    {formatError}
+                  </Text>
+                )}
+
+                <Group justify="flex-end" mt="md">
+                  <Button
+                    variant="outline"
+                    onClick={() => {
+                      setPastedContent("");
+                      setFormatError(null);
+                      setPasteModalOpened(false);
+                    }}
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    variant="filled"
+                    onClick={addVariablesFromPaste}
+                    disabled={!pastedContent.trim() || !!formatError}
+                  >
+                    Add Variables
+                  </Button>
+                </Group>
+              </Stack>
+            </Modal>
             <Divider mt="md" />
             <Group justify="flex-end">
               <Button

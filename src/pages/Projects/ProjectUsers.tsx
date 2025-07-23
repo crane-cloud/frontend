@@ -156,6 +156,10 @@ export const MembersSection = ({ project }: { project: any }) => {
       .find((m) => m?.user?.id === user?.id)
       ?.role.split(".")[1];
 
+    const acceptedMembers = members.filter(
+      (m) => m.accepted_collaboration_invite === true && m.user.id !== user?.id,
+    );
+
     const actions = [];
 
     if (isSelf) {
@@ -164,6 +168,7 @@ export const MembersSection = ({ project }: { project: any }) => {
           label: "Transfer",
           icon: <MdTransferWithinAStation />,
           onClick: () => setModal({ type: "transfer", member }),
+          disabled: acceptedMembers.length === 0,
         });
       }
     } else if (myRole === "owner") {
@@ -262,6 +267,7 @@ export const MembersSection = ({ project }: { project: any }) => {
                     onClick={() => action.onClick()}
                     leftSection={action?.icon}
                     key={action.label}
+                    disabled={action.disabled}
                   >
                     {action.label}
                   </Menu.Item>
