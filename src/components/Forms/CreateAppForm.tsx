@@ -26,7 +26,7 @@ import usePost from "@/utils/usePost";
 import { API_APPS, API_PROJECTS } from "@/utils/apis";
 import { useNavigate, useParams } from "react-router-dom";
 import { IoRocketSharp } from "react-icons/io5";
-import { FaDocker } from "react-icons/fa";
+import { FaCheck, FaDocker } from "react-icons/fa";
 import {
   TbCopy,
   TbUpload,
@@ -40,6 +40,7 @@ import {
   FRAMEWORKS,
   MODAL_API_TYPES,
   MODAL_SERVERS,
+  MODEL_DEPLOYMENT_INSTRUCTIONS,
   REGISTRIES,
 } from "@/utils/constants";
 import { Dropzone, FileWithPath, MIME_TYPES } from "@mantine/dropzone";
@@ -50,7 +51,111 @@ import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { RiRobot2Line } from "react-icons/ri";
 import useForm from "@/hooks/generic/useForm";
 import { useHuggingFaceTasks } from "@/hooks/useHuggingFaceTasks";
-import { SiMlflow, SiScikitlearn } from "react-icons/si";
+
+// Types for deployment instructions
+interface InstructionItem {
+  label?: string;
+  description: string;
+  code?: string;
+  additional?: string;
+}
+
+interface InstructionExample {
+  code: string;
+  description: string;
+}
+
+interface InstructionSection {
+  title: string;
+  colorKey: string;
+  items?: InstructionItem[];
+  examples?: InstructionExample[];
+  frameworks?: string[];
+}
+
+export interface DeploymentInstruction {
+  title: string;
+  icon: React.ComponentType<{ size: number }>;
+  color: string;
+  description: string;
+  sections: InstructionSection[];
+}
+
+// Helper component to render deployment instructions
+const DeploymentInstructions = ({ serverType }: { serverType: string }) => {
+  const instructions = MODEL_DEPLOYMENT_INSTRUCTIONS[serverType];
+
+  if (!instructions) {
+    return null;
+  }
+
+  const IconComponent = instructions.icon;
+
+  return (
+    <Alert
+      icon={<IconComponent size={20} />}
+      color={instructions.color}
+      variant="light"
+      radius="md"
+      title={instructions.title}
+    >
+      <Stack gap="md">
+        <Text size="sm" c="dimmed">
+          {instructions.description}
+        </Text>
+
+        {instructions.sections.map((section, sectionIndex) => (
+          <div key={sectionIndex}>
+            <Text size="sm" fw={600} mb="xs" c={section.colorKey}>
+              {section.title}
+            </Text>
+
+            {section.items && (
+              <List size="sm" spacing="xs">
+                {section.items.map((item, itemIndex) => (
+                  <List.Item key={itemIndex}>
+                    {item.label && <strong>{item.label}</strong>}{" "}
+                    {item.description}
+                    {item.code && (
+                      <>
+                        {item.label ? " " : ""}
+                        <Code ml={item.label ? "xs" : undefined}>
+                          {item.code}
+                        </Code>
+                        {item.additional && ` ${item.additional}`}
+                      </>
+                    )}
+                  </List.Item>
+                ))}
+              </List>
+            )}
+
+            {section.examples && (
+              <Stack gap="xs">
+                {section.examples.map((example, exampleIndex) => (
+                  <Group gap="xs" key={exampleIndex}>
+                    <Code>{example.code}</Code>
+                    <Text size="xs" c="dimmed">
+                      - {example.description}
+                    </Text>
+                  </Group>
+                ))}
+              </Stack>
+            )}
+
+            {section.frameworks && (
+              <Group gap="xs">
+                {section.frameworks.map((framework, frameworkIndex) => (
+                  <Code key={frameworkIndex}>{framework}</Code>
+                ))}
+              </Group>
+            )}
+          </div>
+        ))}
+      </Stack>
+    </Alert>
+  );
+};
 
 const CreateAppForm = () => {
   useSetContainerSize("sm");
@@ -820,107 +925,45 @@ export const DeployAppModalForm = ({
               value={form.model_server as string}
               onChange={(value) => updateFormValue("model_server", value)}
               error={error?.model_server}
-              data={MODAL_SERVERS.map((server) => ({
-                ...server,
-                leftSection: server.icon ? (
-                  <server.icon size={16} />
-                ) : undefined,
-              }))}
-              leftSection={<LuServer />}
+              data={MODAL_SERVERS}
+              leftSection={
+                typeof form.model_server === "string" ? (
+                  (() => {
+                    const server = MODAL_SERVERS.find(
+                      (s) => s.value === form.model_server,
+                    );
+                    const IconComponent = server?.icon;
+                    return IconComponent ? (
+                      <IconComponent size={16} />
+                    ) : undefined;
+                  })()
+                ) : (
+                  <LuServer />
+                )
+              }
+              renderOption={({ option, checked }) => {
+                const server = MODAL_SERVERS.find(
+                  (s) => s.value === option.value,
+                );
+                const IconComponent = server?.icon;
+
+                return (
+                  <Group flex="1" gap="xs">
+                    {IconComponent && (
+                      <IconComponent size={16} color={server?.color} />
+                    )}
+                    <span>{option.label}</span>
+                    {checked && <FaCheck size={14} color="#228BE6" />}
+                  </Group>
+                );
+              }}
             />
 
-            {/* Hugging Face Guidelines */}
-            {isHuggingFace && (
-              <Alert
-                icon={<RiRobot2Line size={24} />}
-                color="blue"
-                variant="light"
-                radius="md"
-              >
-                <Text size="sm" fw={500} mb="xs">
-                  Hugging Face Model Deployment
-                </Text>
-                <Text size="sm" mb="xs">
-                  You're deploying from Hugging Face Hub. Here's what you need
-                  to know:
-                </Text>
-                <List size="sm">
-                  <List.Item>
-                    Use the full model path (e.g.,{" "}
-                    <Code>microsoft/DialoGPT-medium</Code>)
-                  </List.Item>
-                  <List.Item>Ensure the model supports inference API</List.Item>
-                  <List.Item>
-                    Some models may require authentication tokens
-                  </List.Item>
-                  <List.Item>
-                    Check model compatibility with transformers library
-                  </List.Item>
-                </List>
-              </Alert>
-            )}
-
-            {/* MLflow Guidelines */}
-            {isMLflow && (
-              <Alert
-                icon={<SiMlflow size={24} />}
-                color="blue"
-                variant="light"
-                radius="md"
-              >
-                <Text size="sm" fw={500} mb="xs">
-                  MLflow Model Deployment
-                </Text>
-                <Text size="sm" mb="xs">
-                  You're deploying from MLflow Model Registry. Here's what you
-                  need to know:
-                </Text>
-                <List size="sm">
-                  <List.Item>
-                    Use the run ID format: <Code>runs:/run_id/model</Code>
-                  </List.Item>
-                  <List.Item>
-                    Ensure MLflow tracking server is accessible
-                  </List.Item>
-                  <List.Item>
-                    Model must be logged with MLflow tracking
-                  </List.Item>
-                  <List.Item>
-                    Supports multiple ML frameworks (sklearn, pytorch, etc.)
-                  </List.Item>
-                </List>
-              </Alert>
-            )}
-
-            {/* Sklearn Guidelines */}
-            {isSklearn && (
-              <Alert
-                icon={<SiScikitlearn size={24} />}
-                color="orange"
-                variant="light"
-                radius="md"
-              >
-                <Text size="sm" fw={500} mb="xs">
-                  Scikit-learn Model Deployment
-                </Text>
-                <Text size="sm" mb="xs">
-                  You're deploying a scikit-learn model. Here's what you need to
-                  know:
-                </Text>
-                <List size="sm">
-                  <List.Item>
-                    Model should be saved as pickle file: <Code>model.pkl</Code>
-                  </List.Item>
-                  <List.Item>
-                    Or use joblib format: <Code>model.joblib</Code>
-                  </List.Item>
-                  <List.Item>Ensure sklearn version compatibility</List.Item>
-                  <List.Item>
-                    Include preprocessing pipeline if needed
-                  </List.Item>
-                  <List.Item>Model must implement predict() method</List.Item>
-                </List>
-              </Alert>
+            {/* Deployment Guidelines */}
+            {form.model_server && (
+              <DeploymentInstructions
+                serverType={form.model_server as string}
+              />
             )}
 
             <TextInput

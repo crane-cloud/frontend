@@ -2,14 +2,13 @@ import { useState } from "react";
 
 export const useHuggingFaceTasks = () => {
   const [tasks, setTasks] = useState([
-    { value: "text-generation", label: "Text Generation" },
-    { value: "text-classification", label: "Text Classification" },
-    { value: "question-answering", label: "Question Answering" },
+    { value: "text-generation", label: "Text-Generation" },
+    { value: "text-classification", label: "Text-Classification" },
+    { value: "question-answering", label: "Question-Answering" },
     { value: "summarization", label: "Summarization" },
     { value: "translation", label: "Translation" },
-    { value: "image-classification", label: "Image Classification" },
-    { value: "object-detection", label: "Object Detection" },
-    { value: "other", label: "Other" },
+    { value: "image-classification", label: "Image-Classification" },
+    { value: "object-detection", label: "Object-Detection" },
   ]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -28,14 +27,9 @@ export const useHuggingFaceTasks = () => {
       const formattedTasks = Object.entries(tasksData).map(
         ([key, task]: [string, any]) => ({
           value: key,
-          label:
-            task.displayName ||
-            task.name ||
-            key.replace(/-/g, " ").replace(/\b\w/g, (l) => l.toUpperCase()),
+          label: task.label,
         }),
       );
-
-      formattedTasks.push({ value: "other", label: "Other" });
       setTasks(formattedTasks);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to fetch tasks");
