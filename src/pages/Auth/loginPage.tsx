@@ -108,6 +108,8 @@ export function LoginForm(props: PaperProps) {
     },
     validate: {
       email: (val) => (/^\S+@\S+$/.test(val) ? null : "Invalid email"),
+      username: (val) =>
+        val.trim().length < 3 ? "Username must be at least 3 characters" : null,
       password: () => null, // handled by validatePassword function
       confirmPassword: (val, values) => {
         // Only validate if explicitly triggered (not on every keystroke)
@@ -128,17 +130,17 @@ export function LoginForm(props: PaperProps) {
     event.preventDefault();
 
     if (type === "login") {
-      const emailError = form.validateField("email");
+      const usernameError = form.validateField("username");
       const passwordError = form.validateField("password");
 
-      if (emailError.hasError || passwordError.hasError) {
+      if (usernameError.hasError || passwordError.hasError) {
         return;
       }
 
       loginUser({
         api: `${API_USERS}/login`,
         params: {
-          email: form.values.email,
+          username: form.values.username,
           password: form.values.password,
         },
         successMessage: "Login successful",
@@ -336,17 +338,24 @@ export function LoginForm(props: PaperProps) {
 
   const isSubmitDisabled = () => {
     // Check for basic field errors
-    if (form.errors.email || form.errors.password) {
+    if (form.errors.password) {
       return true;
     }
 
-    // For registration, check additional requirements
-    if (type === "register") {
+    if (type === "login") {
+      // For login, check username errors
+      if (form.errors.username) {
+        return true;
+      }
+    } else {
+      // For registration, check email and username errors
+      if (form.errors.email || form.errors.username) {
+        return true;
+      }
       // Check if confirm password has errors
       if (form.errors.confirmPassword) {
         return true;
       }
-      return false;
     }
 
     return false;
@@ -432,16 +441,24 @@ export function LoginForm(props: PaperProps) {
                       {...form.getInputProps("organisation")}
                       leftSection={<MdOutlineBusiness />}
                     />
+                    <TextInput
+                      required
+                      label="Email"
+                      placeholder="Email Address"
+                      {...form.getInputProps("email")}
+                      leftSection={<MdOutlineEmail />}
+                    />
                   </Stack>
                 )}
-
-                <TextInput
-                  required
-                  label="Email"
-                  placeholder="Email Address"
-                  {...form.getInputProps("email")}
-                  leftSection={<MdOutlineEmail />}
-                />
+                {type === "login" && (
+                  <TextInput
+                    required
+                    label="Username"
+                    placeholder="Your username or email"
+                    {...form.getInputProps("username")}
+                    leftSection={<MdOutlinePerson />}
+                  />
+                )}
 
                 <PasswordInput
                   required
