@@ -1,7 +1,7 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
 
 :root {
-  --font-family: 'Inter', sans-serif;
+  --font-family: "Inter", sans-serif;
 }
 
 :root[data-mantine-color-scheme="dark"] {
@@ -12,21 +12,19 @@
 
 :root[data-mantine-color-scheme="light"] {
   --mantine-color-gray-3: #d1d9e0;
-  --mantine-color-dimmed: #5a7089 ;
-  --input-bg: var(--mantine-color-gray-2)!important;
+  --mantine-color-dimmed: #5a7089;
+  --input-bg: var(--mantine-color-gray-2) !important;
 }
 
-:root[data-mantine-color-scheme="dark"] .mantine-Paper-root{
+:root[data-mantine-color-scheme="dark"] .mantine-Paper-root {
   /* --mantine-color-body: #212529!important; */
-  --mantine-color-body: #121518!important;
+  --mantine-color-body: #121518 !important;
 }
-
 
 body {
   /* background-color: light-dark(#edeff1, #222222); */
   font-family: var(--font-family);
   font-size: 0.8rem;
-
 }
 
 /* links */
@@ -77,9 +75,9 @@ a:hover {
   padding: 0;
 }
 
-.subtext>span{
+.subtext > span {
   text-decoration: underline;
-  color:#008AC1;
+  color: #008ac1;
   cursor: pointer;
 }
 
@@ -109,5 +107,8 @@ a:hover {
 }
 
 .dimmed-placeholder .mantine-InputPlaceholder-placeholder {
-  color: light-dark(var(--mantine-color-gray-6), var(--mantine-color-gray-5)) !important;
+  color: light-dark(
+    var(--mantine-color-gray-6),
+    var(--mantine-color-gray-5)
+  ) !important;
 }
