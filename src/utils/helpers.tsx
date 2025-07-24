@@ -301,33 +301,6 @@ export const createDeleteAction = ({
   };
 };
 
-export type PasswordStrength = "weak" | "medium" | "strong";
-
-export const strengthColorMap: Record<PasswordStrength, string> = {
-  weak: "red",
-  medium: "yellow",
-  strong: "green",
-};
-
-export const strengthValueMap: Record<PasswordStrength, number> = {
-  weak: 33,
-  medium: 66,
-  strong: 100,
-};
-
-export const getPasswordStrength = (password: string): PasswordStrength => {
-  const hasLetters = /[a-zA-Z]/.test(password);
-  const hasNumbers = /\d/.test(password);
-  const hasSymbols = /[^a-zA-Z0-9]/.test(password);
-
-  if (password.length >= 8 && hasLetters && hasNumbers && hasSymbols) {
-    return "strong";
-  } else if (password.length >= 6 && hasLetters && hasNumbers) {
-    return "medium";
-  }
-  return "weak";
-};
-
 export const bytesToMB = (bytesPerSecond: number) => bytesPerSecond / 1_000_000;
 
 export const formatMetricValue = (chartType: string, value: number) => {
@@ -392,4 +365,237 @@ export const formatClusterServicePorts = (ports: any) => {
     return portValue;
   });
   return portValue;
+};
+
+// Password Validation
+export type PasswordStrength =
+  | "very-weak"
+  | "weak"
+  | "fair"
+  | "good"
+  | "strong";
+
+export const strengthColorMap: Record<PasswordStrength, string> = {
+  "very-weak": "red.7",
+  weak: "red.5",
+  fair: "orange.5",
+  good: "blue.5",
+  strong: "green.6",
+};
+
+export const strengthValueMap: Record<PasswordStrength, number> = {
+  "very-weak": 20,
+  weak: 40,
+  fair: 60,
+  good: 80,
+  strong: 100,
+};
+
+export const strengthLabelMap: Record<PasswordStrength, string> = {
+  "very-weak": "Very Weak",
+  weak: "Weak",
+  fair: "Fair",
+  good: "Good",
+  strong: "Strong",
+};
+
+export const strengthDescriptionMap: Record<PasswordStrength, string> = {
+  "very-weak": "Your password is vulnerable to attacks",
+  weak: "Add more characters and variety",
+  fair: "Consider adding special characters",
+  good: "Almost there! Add more complexity",
+  strong: "Excellent! Your password is secure",
+};
+
+export const getPasswordStrength = (password: string): PasswordStrength => {
+  if (!password) {
+    return "very-weak";
+  }
+
+  let score = 0;
+
+  // Length scoring (0-30 points)
+  if (password.length >= 8) {
+    score += 10;
+  }
+  if (password.length >= 12) {
+    score += 10;
+  }
+  if (password.length >= 16) {
+    score += 10;
+  }
+
+  // Character variety scoring (0-40 points)
+  if (/[a-z]/.test(password)) {
+    score += 5; // lowercase
+  }
+  if (/[A-Z]/.test(password)) {
+    score += 5; // uppercase
+  }
+  if (/[0-9]/.test(password)) {
+    score += 10; // numbers
+  }
+  if (/[^a-zA-Z0-9]/.test(password)) {
+    score += 15; // special characters
+  }
+  if (/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
+    score += 5; // common special chars
+  }
+
+  // Pattern complexity (0-20 points)
+  if (!/(.)\1{2,}/.test(password)) {
+    score += 5; // no repeating chars (3+)
+  }
+  if (!/123|abc|qwe|pass|admin/i.test(password)) {
+    score += 5; // no common patterns
+  }
+  if (password.length > 0 && !/^(.)\1*$/.test(password)) {
+    score += 5; // not all same char
+  }
+  if (!/^[a-zA-Z]+$/.test(password) && !/^[0-9]+$/.test(password)) {
+    score += 5; // mixed types
+  }
+
+  // Entropy bonus (0-10 points)
+  const uniqueChars = new Set(password.toLowerCase()).size;
+  if (uniqueChars >= 8) {
+    score += 5;
+  }
+  if (uniqueChars >= 12) {
+    score += 5;
+  }
+
+  // Convert score to strength level
+  if (score < 25) {
+    return "very-weak";
+  }
+  if (score < 45) {
+    return "weak";
+  }
+  if (score < 65) {
+    return "fair";
+  }
+  if (score < 85) {
+    return "good";
+  }
+  return "strong";
+};
+
+export const getPasswordCriteria = (password: string) => {
+  return [
+    {
+      label: "At least 8 characters",
+      met: password.length >= 8,
+      critical: true,
+    },
+    {
+      label: "Contains uppercase letter",
+      met: /[A-Z]/.test(password),
+      critical: true,
+    },
+    {
+      label: "Contains lowercase letter",
+      met: /[a-z]/.test(password),
+      critical: true,
+    },
+    {
+      label: "Contains number",
+      met: /[0-9]/.test(password),
+      critical: true,
+    },
+    {
+      label: "Contains special character",
+      met: /[^a-zA-Z0-9]/.test(password),
+      critical: true,
+    },
+    {
+      label: "At least 12 characters (recommended)",
+      met: password.length >= 12,
+      critical: false,
+    },
+    {
+      label: "No common patterns",
+      met: !/123|abc|qwe|pass|admin|password/i.test(password),
+      critical: false,
+    },
+  ];
+};
+
+export const getPasswordRequirements = (value: string) => [
+  {
+    test: value.length >= 6,
+    message: "At least 6 characters",
+    met: value.length >= 6,
+  },
+  {
+    test: /[A-Z]/.test(value),
+    message: "One uppercase letter",
+    met: /[A-Z]/.test(value),
+  },
+  {
+    test: /[a-z]/.test(value),
+    message: "One lowercase letter",
+    met: /[a-z]/.test(value),
+  },
+  {
+    test: /[0-9]/.test(value),
+    message: "One number",
+    met: /[0-9]/.test(value),
+  },
+  {
+    test: /[!@#$%^&*(),.?":{}|<>]/.test(value),
+    message: "One special character",
+    met: /[!@#$%^&*(),.?":{}|<>]/.test(value),
+  },
+];
+
+export const validatePasswordRequirements = (password: string) => {
+  const requirements = getPasswordRequirements(password);
+  const unmetRequirements = requirements.filter((req) => !req.met);
+
+  return {
+    isValid: unmetRequirements.length === 0,
+    unmetRequirements,
+    allRequirements: requirements,
+    errorMessage:
+      unmetRequirements.length > 0 ? "Password requirements not met" : null,
+  };
+};
+
+export const validatePasswordsMatch = (
+  password: string,
+  confirmPassword: string,
+) => {
+  if (!confirmPassword) {
+    return {
+      isValid: false,
+      errorMessage: "Please confirm your password",
+    };
+  }
+
+  if (password !== confirmPassword) {
+    return {
+      isValid: false,
+      errorMessage: "Passwords do not match",
+    };
+  }
+
+  return {
+    isValid: true,
+    errorMessage: null,
+  };
+};
+
+export const getPasswordValidationState = (
+  password: string,
+  type: "login" | "register",
+) => {
+  if (type === "login") {
+    return {
+      isValid: password.length > 0,
+      errorMessage: password.length === 0 ? "Password is required" : null,
+    };
+  }
+
+  return validatePasswordRequirements(password);
 };

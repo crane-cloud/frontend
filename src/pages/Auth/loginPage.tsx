@@ -22,11 +22,17 @@ import {
   PasswordStrength,
   strengthColorMap,
   strengthValueMap,
+  strengthLabelMap,
+  strengthDescriptionMap,
+  getPasswordCriteria,
+  validatePasswordRequirements,
+  validatePasswordsMatch,
+  getPasswordValidationState,
 } from "@/utils/helpers";
 import { upperFirst, useToggle } from "@mantine/hooks";
 import usePost from "@/utils/usePost";
 import useGet from "@/utils/useGet";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useAuth } from "@/utils/AuthContext";
 import { useNavigate } from "react-router-dom";
 import {
@@ -52,9 +58,10 @@ export function LoginForm(props: PaperProps) {
   const [registrationModalOpened, setRegistrationModalOpened] = useState(false);
   const [password, setPassword] = useState("");
   const [strength, setStrength] = useState<PasswordStrength>("weak");
-  const [confirmFeedback, setConfirmFeedback] = useState<
-    "match" | "mismatch" | "none"
-  >("none");
+  const [passwordTouched, setPasswordTouched] = useState(false);
+  const [confirmPasswordTouched, setConfirmPasswordTouched] = useState(false);
+  const validationTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const passwordValidationTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const {
     uploadData: gitOAuth,
@@ -101,11 +108,19 @@ export function LoginForm(props: PaperProps) {
     },
     validate: {
       email: (val) => (/^\S+@\S+$/.test(val) ? null : "Invalid email"),
-      password: (val) =>
-        type === "register" && val.length < 6
-          ? "Password must be at least 6 characters"
-          : null,
-      confirmPassword: () => null, // manual feedback shown below
+      password: () => null, // handled by validatePassword function
+      confirmPassword: (val, values) => {
+        // Only validate if explicitly triggered (not on every keystroke)
+        if (type === "register" && confirmPasswordTouched) {
+          if (!val) {
+            return "Please confirm your password";
+          }
+          if (val !== values.password) {
+            return "Passwords do not match";
+          }
+        }
+        return null;
+      },
     },
   });
 
@@ -219,39 +234,123 @@ export function LoginForm(props: PaperProps) {
       gitOAuth({ api: `${API_USERS}/oauth`, params: { code } });
     }
   }, []);
-  
-  const validatepassword = (value: string) => {
-  form.setFieldValue("password", value);
-  setPassword(value);
 
-  const hasUppercase = /[A-Z]/.test(value);
-  const hasLowercase = /[a-z]/.test(value);
-  const hasNumber = /[0-9]/.test(value);
-  const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(value);
+  const validatePassword = (value: string) => {
+    form.setFieldValue("password", value);
+    setPassword(value);
 
-  if (value.length < 6) {
-    form.setFieldError("password", "Password must be at least 6 characters");
-  } else if (!hasUppercase) {
-    form.setFieldError("password", "Password must include at least one uppercase letter");
-  } else if (!hasLowercase) {
-    form.setFieldError("password", "Password must include at least one lowercase letter");
-  } else if (!hasNumber) {
-    form.setFieldError("password", "Password must include at least one number");
-  } else if (!hasSpecialChar) {
-    form.setFieldError("password", "Password must include at least one special character");
-  } else {
-    form.clearFieldError("password");
-  }
-
-  if (type === "register") {
-    if (value === form.values.confirmPassword) {
-      setConfirmFeedback("match");
-    } else {
-      setConfirmFeedback("mismatch");
+    // Mark as touched when user starts typing
+    if (value.length > 0) {
+      setPasswordTouched(true);
     }
-  }
-};
 
+    // Clear any existing timeout
+    if (passwordValidationTimeoutRef.current) {
+      clearTimeout(passwordValidationTimeoutRef.current);
+    }
+
+    // Get validation state using helper
+    const validationState = getPasswordValidationState(
+      value,
+      type as "login" | "register",
+    );
+
+    // Clear error immediately if valid
+    if (validationState.isValid && value.length > 0) {
+      form.clearFieldError("password");
+      return;
+    }
+
+    // For registration, show error immediately if login validation passes but password requirements don't
+    if (type === "register" && passwordTouched && value.length > 0) {
+      passwordValidationTimeoutRef.current = setTimeout(() => {
+        if (!validationState.isValid && validationState.errorMessage) {
+          form.setFieldError("password", validationState.errorMessage);
+        }
+      }, 500);
+    } else if (type === "login") {
+      // For login, show error immediately
+      if (validationState.errorMessage) {
+        form.setFieldError("password", validationState.errorMessage);
+      } else {
+        form.clearFieldError("password");
+      }
+    }
+  };
+
+  const validateConfirmPassword = (value: string) => {
+    form.setFieldValue("confirmPassword", value);
+    setConfirmPasswordTouched(true);
+
+    // Clear any existing timeout
+    if (validationTimeoutRef.current) {
+      clearTimeout(validationTimeoutRef.current);
+    }
+
+    // Use helper function for validation
+    const validationState = validatePasswordsMatch(form.values.password, value);
+
+    // Clear error immediately if passwords match
+    if (validationState.isValid && value.length > 0) {
+      form.clearFieldError("confirmPassword");
+      return;
+    }
+
+    // Debounce validation - only validate after user stops typing for 800ms
+    validationTimeoutRef.current = setTimeout(() => {
+      if (value.length > 0 && !validationState.isValid) {
+        form.setFieldError(
+          "confirmPassword",
+          validationState.errorMessage || "",
+        );
+      }
+    }, 800);
+  };
+
+  const handlePasswordBlur = () => {
+    // Validate immediately on blur if there's content and it's registration
+    if (type === "register" && form.values.password.length > 0) {
+      const validationState = validatePasswordRequirements(
+        form.values.password,
+      );
+
+      if (!validationState.isValid && validationState.errorMessage) {
+        form.setFieldError("password", validationState.errorMessage);
+      }
+    }
+  };
+
+  const handleConfirmPasswordBlur = () => {
+    // Validate immediately on blur if there's content
+    if (form.values.confirmPassword.length > 0) {
+      const validationState = validatePasswordsMatch(
+        form.values.password,
+        form.values.confirmPassword,
+      );
+
+      if (!validationState.isValid && validationState.errorMessage) {
+        form.setFieldError("confirmPassword", validationState.errorMessage);
+      }
+    }
+  };
+
+  const isSubmitDisabled = () => {
+    // Check for basic field errors
+    if (form.errors.email || form.errors.password) {
+      return true;
+    }
+
+    // For registration, check additional requirements
+    if (type === "register") {
+      // Check if confirm password has errors
+      if (form.errors.confirmPassword) {
+        return true;
+      }
+      return false;
+    }
+
+    return false;
+  };
 
   return (
     <Stack justify="center" mt="lg">
@@ -350,24 +449,70 @@ export function LoginForm(props: PaperProps) {
                   placeholder="Your password"
                   value={form.values.password}
                   onChange={(e) => {
-                    validatepassword(e.currentTarget.value);
+                    validatePassword(e.currentTarget.value);
                   }}
-                  error={type === "register" ? form.errors.password : undefined}
+                  onBlur={handlePasswordBlur}
+                  error={form.errors.password}
                   leftSection={<MdOutlineLock />}
                 />
 
                 {type === "register" && form.values.password && (
-                  <>
+                  // !form.errors.password && (
+                  <Stack gap={4}>
+                    <Group justify="space-between" align="center">
+                      <Text size="sm" fw={600} c={strengthColorMap[strength]}>
+                        {strengthLabelMap[strength]}
+                      </Text>
+                      <Text size="xs" c="dimmed">
+                        {Math.round(strengthValueMap[strength])}% secure
+                      </Text>
+                    </Group>
+
                     <Progress
                       value={strengthValueMap[strength]}
                       color={strengthColorMap[strength]}
                       radius="xl"
-                      size="sm"
+                      size="md"
+                      striped
+                      animated={strength !== "strong"}
                     />
-                    <Text size="sm" c={strengthColorMap[strength]}>
-                      {strength.toUpperCase()} password
+
+                    <Text
+                      size="xs"
+                      c={strengthColorMap[strength]}
+                      ta="center"
+                      fs="italic"
+                    >
+                      {strengthDescriptionMap[strength]}
                     </Text>
-                  </>
+
+                    {strength !== "strong" && (
+                      <Stack gap="xs" mt="xs">
+                        <Text size="xs" fw={500} c="dimmed">
+                          Requirements:
+                        </Text>
+                        <Stack gap={4}>
+                          {getPasswordCriteria(form.values.password)
+                            .filter(
+                              (criterion) =>
+                                criterion.critical || !criterion.met,
+                            )
+                            .slice(0, 5)
+                            .map((criterion, index) => (
+                              <Group key={index} gap="xs" align="center">
+                                <Text
+                                  size="xs"
+                                  c={criterion.met ? "teal.6" : "gray.6"}
+                                  fw={criterion.met ? 600 : 400}
+                                >
+                                  {criterion.met ? "✓" : "•"} {criterion.label}
+                                </Text>
+                              </Group>
+                            ))}
+                        </Stack>
+                      </Stack>
+                    )}
+                  </Stack>
                 )}
 
                 {type === "register" && (
@@ -378,25 +523,12 @@ export function LoginForm(props: PaperProps) {
                       required
                       value={form.values.confirmPassword}
                       onChange={(e) => {
-                        const val = e.currentTarget.value;
-                        form.setFieldValue("confirmPassword", val);
-                        if (val === form.values.password) {
-                          setConfirmFeedback("match");
-                        } else {
-                          setConfirmFeedback("mismatch");
-                        }
+                        validateConfirmPassword(e.currentTarget.value);
                       }}
+                      onBlur={handleConfirmPasswordBlur}
+                      error={form.errors.confirmPassword}
+                      leftSection={<MdOutlineLock />}
                     />
-                    {confirmFeedback === "mismatch" && (
-                      <Text size="xs" c="red">
-                        Passwords do not match
-                      </Text>
-                    )}
-                    {confirmFeedback === "match" && (
-                      <Text size="xs" c="teal">
-                        Passwords match
-                      </Text>
-                    )}
 
                     <Checkbox
                       required
@@ -440,6 +572,7 @@ export function LoginForm(props: PaperProps) {
                   type="submit"
                   variant="gradient"
                   gradient={{ from: "blue", to: "cyan", deg: 90 }}
+                  disabled={isSubmitDisabled()}
                 >
                   {loggingIn || registering ? (
                     <Loader size="sm" color="white" />
