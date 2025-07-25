@@ -71,6 +71,7 @@ export const useProjects = () => {
 
   const metaData = (data: any) => {
     return {
+      total_projects: data?.total_projects || 0,
       disabled: data?.disabled || 0,
       personal: data?.project_type?.Personal || 0,
       student: data?.project_type?.Student || 0,
