@@ -1,6 +1,8 @@
 import {
   ActionIcon,
+  Box,
   Button,
+  Chip,
   Divider,
   Fieldset,
   Flex,
@@ -17,7 +19,7 @@ import {
 import TitleText from "../TitleText";
 import { IoIosArrowDown, IoMdAdd } from "react-icons/io";
 import { useGetProject, useSetContainerSize } from "@/utils/helpers";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { HiCommandLine, HiTrash } from "react-icons/hi2";
 import usePost from "@/utils/usePost";
 import { API_APPS, API_PROJECTS } from "@/utils/apis";
@@ -34,10 +36,8 @@ import {
 import { LuLink, LuScreenShare, LuServer } from "react-icons/lu";
 import { MdDriveFileRenameOutline } from "react-icons/md";
 import {
-  FRAMEWORKS,
   MODAL_API_TYPES,
   MODAL_SERVERS,
-  REGISTRIES,
 } from "@/utils/constants";
 import { Dropzone, FileWithPath, MIME_TYPES } from "@mantine/dropzone";
 import { useAuth } from "@/utils/AuthContext";
@@ -46,6 +46,10 @@ import { Table } from "../Elements/CustomTable";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { RiRobot2Line } from "react-icons/ri";
 import useForm from "@/hooks/generic/useForm";
+import { Terminal } from "xterm";
+import { FitAddon } from "xterm-addon-fit";
+import "xterm/css/xterm.css";
+import { BiCode } from "react-icons/bi";
 
 const CreateAppForm = () => {
   useSetContainerSize("sm");
@@ -321,7 +325,15 @@ const CreateMIRAAppForm = (props: { project: any }) => {
   const { authToken } = useAuth();
   const [files, setFiles] = useState<FileWithPath[]>([]);
   const { form, onChange, updateFormValue, updateFormValues } = useForm();
-  const { uploadData, submitting, error } = usePost();
+  const { uploadData, submitting, error, data } = usePost();
+  const [webSocketPath, setWebSocketPath] = useState(null)
+  const [terminal, setTerminal] = useState<Terminal | null>(null);
+  const [socket, setSocket] = useState<WebSocket | null>(null);
+  const terminalRef = useRef(null);
+  const [detectedFramework, setDetectedFramework] = useState([]);
+  const [detecting, setDetecting] = useState(false);
+  const { project_id } = useParams();
+
 
   useEffect(() => {
     updateFormValues({
@@ -330,21 +342,116 @@ const CreateMIRAAppForm = (props: { project: any }) => {
   }, [files]);
 
   useEffect(() => {
+    if(data){
+      console.log(data)
+    if (data.message === "Image generation started") {
+      
+      setWebSocketPath(data.data.wspath)
+    }}
+  }, [data])
+
+  useEffect(() => {
+    console.log("Project ID:", project_id);
     updateFormValues({
-      project: project?.id,
+      project: project_id,
       token: authToken,
+      type: "git",
     });
   }, []);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     uploadData({
-      api: `${MIRA_API_URL}/containerize`,
+      api: `${MIRA_API_URL}/images/containerize`,
       params: form,
       isExternal: true,
       type: "multipart/form-data",
     });
   };
+
+
+    function normalizeNewlines(str: string) {
+      // Replace all lone \r with \r\n
+      str = str.replace(/\r(?!\n)/g, '\r\n');
+      // Replace all lone \n with \r\n
+      str = str.replace(/(?<!\r)\n/g, '\r\n');
+      return str;
+    }
+  
+    useEffect(() => {
+      if (webSocketPath) {
+        console.log("WebSocket Path:", webSocketPath);
+        // Initialize xterm terminal
+        const term = new Terminal({});
+  
+        const fitAddon = new FitAddon();
+        term.loadAddon(fitAddon);
+  
+        // Mount terminal to DOM
+        if (terminalRef.current) {
+          term.open(terminalRef.current);
+          fitAddon.fit();
+        }
+  
+        // Establish WebSocket connection
+        const ws = new WebSocket(
+          `wss://${webSocketPath}`
+        );
+  
+        ws.onopen = () => {
+          console.log("WebSocket connection established");
+          term.writeln(`Connected`);
+        };
+  
+        ws.onmessage = (event) => {
+          console.log("Message from server:", event.data);
+          const eventdata = JSON.parse(event.data);
+          term.write(normalizeNewlines(eventdata[1]))
+        };
+  
+        ws.onerror = (error) => {
+          term.writeln(`WebSocket Error: ${error}`);
+        };
+  
+  
+        setTerminal(term);
+        setSocket(ws);
+  
+        // Cleanup
+        return () => {
+          term.dispose();
+          ws.close();
+        };
+      }
+    }, [webSocketPath]);
+  
+
+
+    async function detectFramework() {
+    
+
+    setDetecting(true);
+
+    try {
+      const response = await fetch(MIRA_API_URL + "/images/detect", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ repo_url: form.repo }),
+      });
+      const data = await response.json();
+
+      console.log("Framework Detection Response:", data.detected);
+
+      setDetectedFramework(data.detected);
+    } catch (err) {
+      console.error("Error detecting framework:", err);
+      //setError("Failed to detect framework. Please try again.");
+    }
+    setDetecting(false);
+  }
+  
 
   const Previews = files.map((file, index) => (
     <Flex key={index} gap="xs" align="center">
@@ -361,110 +468,97 @@ const CreateMIRAAppForm = (props: { project: any }) => {
       <Paper p="lg" radius="md">
         <form onSubmit={handleSubmit}>
           <Stack>
-            <Select
-              label="Select Framework"
-              name="framework"
-              placeholder="Select framework"
+            <TextInput
+              label="Application Name"
+              name="name"
+              placeholder="Enter application name"
+              description="Enter the name of the application"
               required
-              data={FRAMEWORKS}
-              value={form?.framework as string}
-              onChange={(value) => updateFormValue("framework", value)}
-              error={error?.framework}
-            />
-            <Select
-              label="Select Registry"
-              name="registry"
-              placeholder="Select registry"
-              description="Select the registry to deploy the application to"
-              required
-              data={REGISTRIES}
-              value={form?.registry as string}
-              onChange={(value) => updateFormValue("registry", value)}
-              error={error?.registry}
+              value={form?.name as string}
+              onChange={onChange}
+              error={error?.name}
+              leftSection={<MdDriveFileRenameOutline />}
             />
             <TextInput
-              label="Image"
-              name="image"
-              placeholder="Enter image"
-              description="Enter the image to deploy the application to"
               required
-              value={form?.image as string}
+              label="Repository URL"
+              name="repo"
+              placeholder="Enter repository URL"
+              description="Enter the URL of your Git repository"
+              value={form?.repo as string}
               onChange={onChange}
-              error={error?.image}
+              error={error?.repo}
+              rightSection={
+                          <Tooltip label="Detect Framework" position="top">
+                            <ActionIcon
+                              variant="default"
+                              size="xs"
+                              onClick={detectFramework}
+                              loading={detecting}
+                            >
+                              <BiCode size={16} />
+                            </ActionIcon>
+                          </Tooltip>
+                        }
             />
+            {Array.isArray(detectedFramework) && (
+            
+            <div style={{
+              display: "flex"
+            }}>
+              {
+                detectedFramework.map((framework: string) => {
+                  return <Chip style={{
+                      marginLeft: "10px"
+                    }}>{framework}</Chip>
+                  })
+                }
+              </div>
+            )}
             <TextInput
-              label="Version"
-              name="tag"
-              placeholder="Enter version"
-              description="This is the preffered tag for the image"
-              value={form?.tag as string}
+              label="Build Command"
+              leftSection="npm run"
+              name="build_command"
+              leftSectionWidth={80}
+              placeholder="Enter build command"
+              description="Command to build your application (e.g., npm run build)"
+              value={form?.build_command as string}
               onChange={onChange}
-              error={error?.tag}
+              error={error?.build_command}
             />
-            <Stack gap={2}>
-              <Text className="subtitle">Zip File</Text>
-              {files.length > 0 && (
-                <Flex gap="xs" align="center">
-                  {Previews}
-                  <Button
-                    variant="subtle"
-                    color="red"
-                    onClick={() => setFiles([])}
-                    size="compact-xs"
-                    leftSection={<TbX size={14} />}
-                  >
-                    Remove
-                  </Button>
-                </Flex>
-              )}
-            </Stack>
-
-            <Dropzone
-              name="file"
-              onDrop={(files) => setFiles(files)}
-              accept={[MIME_TYPES.zip, MIME_TYPES.rar]}
-              maxFiles={1}
-              maxSize={3 * 1024 ** 2}
-            >
-              <Group
-                justify="center"
-                gap="xl"
-                mih={120}
-                style={{ pointerEvents: "none" }}
-              >
-                <Dropzone.Accept>
-                  <TbUpload size={52} color="var(--mantine-color-blue-6)" />
-                </Dropzone.Accept>
-                <Dropzone.Reject>
-                  <TbX size={52} color="var(--mantine-color-red-6)" />
-                </Dropzone.Reject>
-                <Dropzone.Idle>
-                  <TbFileZip size={52} color="var(--mantine-color-dimmed)" />
-                </Dropzone.Idle>
-                <div>
-                  <Text size="xl" inline>
-                    Drag zip/rar here or click to select
-                  </Text>
-                  <Text size="sm" c="dimmed" inline mt={7}>
-                    Single archive file, not exceeding 3MB
-                  </Text>
-                </div>
-              </Group>
-            </Dropzone>
+            
+            <TextInput
+              label="Output Directory"
+              name="output_directory"
+              leftSection="./"
+              placeholder="Enter output directory (optional)"
+              description="Directory where the built application will be located (e.g., dist, build)"
+              value={form?.output_directory as string}
+              onChange={onChange}
+              error={error?.output_directory}
+            />
+            
             <Divider />
             <Group justify="flex-end">
               <Button
                 variant="filled"
                 type="submit"
                 leftSection={<IoRocketSharp />}
-                disabled={submitting || files.length === 0}
+                disabled={submitting}
                 loading={submitting}
               >
                 Deploy App
               </Button>
             </Group>
+            
           </Stack>
         </form>
+        <Divider my="md" />
+        <Box ref={terminalRef} style={{
+          width: "100%",
+          padding: "20px",
+          overflow: "auto",
+        }} />
       </Paper>
     </div>
   );

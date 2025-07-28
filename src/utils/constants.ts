@@ -51,5 +51,4 @@ export const FRAMEWORKS = [
 
 export const REGISTRIES = [
   { id: 1, label: "Dockerhub", value: "Dockerhub" },
-  { id: 2, label: "Harbor", value: "Harbor" },
 ];
