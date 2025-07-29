@@ -2,6 +2,7 @@ import {
   ActionIcon,
   Box,
   Button,
+  Checkbox,
   Chip,
   Divider,
   Fieldset,
@@ -15,6 +16,7 @@ import {
   Text,
   TextInput,
   Tooltip,
+  UnstyledButton,
 } from "@mantine/core";
 import TitleText from "../TitleText";
 import { IoIosArrowDown, IoMdAdd } from "react-icons/io";
@@ -333,6 +335,7 @@ const CreateMIRAAppForm = (props: { project: any }) => {
   const [detectedFramework, setDetectedFramework] = useState([]);
   const [detecting, setDetecting] = useState(false);
   const { project_id } = useParams();
+  const [isSSR, setIsSSR] = useState<string| null>("false")
 
 
   useEffect(() => {
@@ -356,6 +359,7 @@ const CreateMIRAAppForm = (props: { project: any }) => {
       project: project_id,
       token: authToken,
       type: "git",
+      ssr: isSSR
     });
   }, []);
 
@@ -515,6 +519,28 @@ const CreateMIRAAppForm = (props: { project: any }) => {
                 }
               </div>
             )}
+
+            <Select
+              required
+              label="Application Type"
+              placeholder=""
+              data={[
+                {
+                  value: "true",
+                  label: "Server Side Rendered App (SSR)",
+                },
+                {
+                  value: "false",
+                  label: "Static Site or SPA",
+                }
+              ]}
+              description="Does your application use a server sider rendered of static site framework"
+              value={isSSR}
+              onChange={(value)=>{
+                setIsSSR(value)
+              }}
+            />
+
             <TextInput
               label="Build Command"
               leftSection="npm run"
@@ -526,6 +552,8 @@ const CreateMIRAAppForm = (props: { project: any }) => {
               onChange={onChange}
               error={error?.build_command}
             />
+            
+            
             
             <TextInput
               label="Output Directory"
