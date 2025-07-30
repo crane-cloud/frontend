@@ -219,39 +219,50 @@ export function LoginForm(props: PaperProps) {
       gitOAuth({ api: `${API_USERS}/oauth`, params: { code } });
     }
   }, []);
-  
+
   const validatepassword = (value: string) => {
-  form.setFieldValue("password", value);
-  setPassword(value);
+    form.setFieldValue("password", value);
+    setPassword(value);
 
-  const hasUppercase = /[A-Z]/.test(value);
-  const hasLowercase = /[a-z]/.test(value);
-  const hasNumber = /[0-9]/.test(value);
-  const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(value);
+    const hasUppercase = /[A-Z]/.test(value);
+    const hasLowercase = /[a-z]/.test(value);
+    const hasNumber = /[0-9]/.test(value);
+    const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(value);
 
-  if (value.length < 6) {
-    form.setFieldError("password", "Password must be at least 6 characters");
-  } else if (!hasUppercase) {
-    form.setFieldError("password", "Password must include at least one uppercase letter");
-  } else if (!hasLowercase) {
-    form.setFieldError("password", "Password must include at least one lowercase letter");
-  } else if (!hasNumber) {
-    form.setFieldError("password", "Password must include at least one number");
-  } else if (!hasSpecialChar) {
-    form.setFieldError("password", "Password must include at least one special character");
-  } else {
-    form.clearFieldError("password");
-  }
-
-  if (type === "register") {
-    if (value === form.values.confirmPassword) {
-      setConfirmFeedback("match");
+    if (value.length < 6) {
+      form.setFieldError("password", "Password must be at least 6 characters");
+    } else if (!hasUppercase) {
+      form.setFieldError(
+        "password",
+        "Password must include at least one uppercase letter",
+      );
+    } else if (!hasLowercase) {
+      form.setFieldError(
+        "password",
+        "Password must include at least one lowercase letter",
+      );
+    } else if (!hasNumber) {
+      form.setFieldError(
+        "password",
+        "Password must include at least one number",
+      );
+    } else if (!hasSpecialChar) {
+      form.setFieldError(
+        "password",
+        "Password must include at least one special character",
+      );
     } else {
-      setConfirmFeedback("mismatch");
+      form.clearFieldError("password");
     }
-  }
-};
 
+    if (type === "register") {
+      if (value === form.values.confirmPassword) {
+        setConfirmFeedback("match");
+      } else {
+        setConfirmFeedback("mismatch");
+      }
+    }
+  };
 
   return (
     <Stack justify="center" mt="lg">

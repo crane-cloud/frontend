@@ -1,56 +1,123 @@
-import UserProfileCard, { StatsList } from "@/components/Cards/OtherCards";
-import TitleText from "@/components/TitleText";
+import {
+  Anchor,
+  Button,
+  Card,
+  Flex,
+  Group,
+  Stack,
+  Text,
+  Tooltip,
+} from "@mantine/core";
+import { FaGithub, FaLinkedin, FaTwitter, FaEdit } from "react-icons/fa";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/utils/AuthContext";
 import { useSetContainerSize, useSetNoSidebar } from "@/utils/helpers";
 import useGet from "@/utils/useGet";
-import { Card, Flex, Stack } from "@mantine/core";
-import React, { useEffect } from "react";
+import UserProfileCard, { StatsList } from "@/components/Cards/OtherCards";
+import TitleText from "@/components/TitleText";
+
+const socialIconMap: Record<string, React.ReactNode> = {
+  github: <FaGithub />,
+  twitter: <FaTwitter />,
+  linkedin: <FaLinkedin />,
+};
 
 const UserProfilePage = () => {
   const { user } = useAuth();
   const { getData: getUser, data: userData } = useGet();
+  const navigate = useNavigate();
 
   useSetNoSidebar();
   useSetContainerSize("lg");
+
   useEffect(() => {
     if (user) {
-      getUser({ api: `/users/${user?.id}` });
+      getUser({ api: `/users/${user.id}` });
     }
-  }, []);
+  }, [user?.id]);
+
+  const currentUser = userData?.data?.user || {};
 
   const userStats = (user: any) => [
-    { value: user?.projects_count, label: "Projects" },
-    { value: user?.apps_count, label: "Apps" },
+    { value: user?.projects_count || 0, label: "Projects" },
+    { value: user?.apps_count || 0, label: "Apps" },
     {
-      value: user?.followed_projects_count,
+      value: user?.followed_projects_count || 0,
       label: "Projects Followed",
-      tooltip: "The total number of projects you follow",
+      tooltip: "Total number of projects you follow",
     },
     {
-      value: user?.projects_followers_count,
+      value: user?.projects_followers_count || 0,
       label: "Projects Followers",
-      tooltip: "The total number of users who follow your projects",
+      tooltip: "Total users who follow your projects",
     },
   ];
 
   return (
-    <div>
+    <Stack>
       <TitleText>User Profile</TitleText>
-      <Flex gap={20}>
-        <UserProfileCard user={userData?.data?.user || {}} />
-        <Stack style={{ flex: 1 }}>
-          <TitleText>Stats</TitleText>
-          <Card withBorder padding="xl" radius="md">
-            <StatsList
-              justify="space-between"
-              stats={userStats(userData?.data?.user)}
-            />
+
+      <Flex gap="lg" align="flex-start" justify="space-between" wrap="wrap">
+        {/* LEFT: Profile Card */}
+        <Stack>
+          <UserProfileCard user={currentUser} />
+        </Stack>
+
+        {/* RIGHT: Stats + Edit + Social */}
+        <Stack flex={1}>
+          <TitleText
+            rightSection={
+              <Button
+                variant="filled"
+                color="dark"
+                onClick={() => navigate("/users/profile/settings")}
+              >
+                Edit Profile
+              </Button>
+            }
+          >
+            Stats
+          </TitleText>
+
+          <Card withBorder radius="md" padding="xl">
+            <StatsList justify="space-between" stats={userStats(currentUser)} />
           </Card>
+
+          {/* Social Media Section */}
+          {currentUser?.social_links?.length > 0 && (
+            <Stack mt="lg">
+              <TitleText>Social Media</TitleText>
+              <Card withBorder radius="md" padding="md">
+                <Stack>
+                  {currentUser.social_links.map(
+                    (
+                      link: { platform: string; url: string },
+                      index: number,
+                    ) => (
+                      <Group key={index} justify="space-between">
+                        <Group>
+                          {socialIconMap[link.platform.toLowerCase()] ?? null}
+                          <Text fw={500}>{link.platform}</Text>
+                        </Group>
+                        <Anchor href={link.url} target="_blank" color="blue">
+                          {link.url}
+                        </Anchor>
+                      </Group>
+                    ),
+                  )}
+                </Stack>
+              </Card>
+            </Stack>
+          )}
+
+          {!currentUser?.social_links?.length && (
+            <Text color="dimmed" mt="md"></Text>
+          )}
         </Stack>
       </Flex>
-    </div>
+    </Stack>
   );
 };
 
 export default UserProfilePage;
- 

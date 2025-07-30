@@ -1,14 +1,38 @@
-import { Box, Card, Divider, Group, Stack, Text, Tooltip } from "@mantine/core";
+import {
+  Box,
+  Card,
+  Divider,
+  Group,
+  Stack,
+  Text,
+  Tooltip,
+  Anchor,
+} from "@mantine/core";
 import { PiBuildingsBold } from "react-icons/pi";
+import { FaGithub, FaLinkedin, FaTwitter } from "react-icons/fa";
 import { ProfileAvatar } from "../Common";
+import { Link } from "react-router-dom";
 
 function UserProfileCard({ user }: { user: any }) {
+  console.log("user", user);
   const userStats = [
     { value: user?.follower_count, label: "Followers" },
     { value: user?.following_count, label: "Follows" },
     { value: user?.apps_count, label: "Apps" },
   ];
+  const socialLinks = user?.social_links || {};
+  console.log("socialLinks", socialLinks);
+  const links = Object.entries(socialLinks).map(([key, value]) => ({
+    platform: key,
+    url: value,
+  }));
+  console.log("links", links);
 
+  const socialLinksIcons = {
+    github: <FaGithub />,
+    linkedin: <FaLinkedin />,
+    twitter: <FaTwitter />,
+  };
   return (
     <Card withBorder padding="xl" radius="md" w={350}>
       <Card.Section
@@ -23,29 +47,38 @@ function UserProfileCard({ user }: { user: any }) {
         <ProfileAvatar user={user} size={140} />
       </Box>
       <Text ta="center" fz="1.3rem" fw={500} mt="sm">
-        {user?.name}
+        {user?.username}
       </Text>
       <Text ta="center" fz="sm" c="dimmed">
         {user?.email}
       </Text>
       <StatsList stats={userStats} />
       <Divider my="md" />
-      <Stack gap={2}>
-        <Text>
+
+      <Text fz="sm" mb="md" c="dimmed" ta="center">
+        Joined Cranecloud {user?.age}
+      </Text>
+      <Stack gap={4}>
+        {user?.biography && (
+          <Text fz="sm" c="dimmed" ta="center">
+            {user?.biography}
+          </Text>
+        )}
+        {user?.organisation && (
           <Group gap={5} fz="0.9rem">
             <PiBuildingsBold size={17} />
-            {user?.organization || "Makerere University"}
+            {user?.organisation}
           </Group>
-        </Text>
-        <Text fz="sm" c="dimmed">
-          Joined Cranecloud {user?.age}
-        </Text>
+        )}
+        {links.map((link, index) => (
+          <Link key={index} to={link.url as string} target="_blank">
+            <Group gap={5} fz="0.9rem">
+              {socialLinksIcons[link.platform as keyof typeof socialLinksIcons]}
+              {link.url as string}
+            </Group>
+          </Link>
+        ))}
       </Stack>
-      {/* {authUser?.id !== user?.id && (
-        <Button fullWidth radius="md" mt="xl" size="md" variant="default">
-          Follow
-        </Button>
-      )} */}
     </Card>
   );
 }

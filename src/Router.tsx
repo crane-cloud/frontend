@@ -9,11 +9,16 @@ import AppMetrics from "./pages/Apps/AppMetrics";
 import HealthCheck from "./components/HealthCheck";
 import ClustersPage from "./pages/admin/ClustersPage";
 import ClusterSettingsPage from "./pages/admin/cluster/ClusterSettingsPage";
+
 // import { HomePage } from "./pages/Home.page";
 const AppsListPage = React.lazy(() => import("./pages/Apps/AppsListPage"));
 const ProjectSettingsPage = React.lazy(
   () => import("./pages/Projects/ProjectSettingsPage"),
 );
+const UserProfileSettingsPage = React.lazy(
+  () => import("./pages/Users/UserProfileSettingsPage"),
+);
+
 const ProjectUsers = React.lazy(() => import("./pages/Projects/ProjectUsers"));
 const ProjectMetrics = React.lazy(
   () => import("./pages/Projects/ProjectMetrics"),
@@ -65,6 +70,7 @@ export const DashboardRoutes = [
   { path: "/login", element: <LoginPage /> },
   { path: "/", element: <LandingPage /> },
   { path: "/profile/:user_id", element: <UserProfilePage /> },
+  { path: "/users/profile/settings", element: <UserProfileSettingsPage /> },
   // Projects
   { path: "/projects/create", element: <CreateProjectForm /> },
   { path: "/projects/:project_id", element: <ProjectDetailsPage /> },

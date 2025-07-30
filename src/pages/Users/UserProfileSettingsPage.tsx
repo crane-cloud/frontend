@@ -1,0 +1,333 @@
+import {
+  Button,
+  Card,
+  Divider,
+  Flex,
+  Group,
+  Stack,
+  Switch,
+  Text,
+  TextInput,
+} from "@mantine/core";
+import { useEffect, useState, useContext } from "react";
+import { HiPencil, HiPlus } from "react-icons/hi2";
+import { useParams } from "react-router-dom";
+
+import TitleText from "@/components/TitleText";
+import { ModalConfirm } from "@/components/Elements/Modals";
+import { beautify, useGetApp } from "@/utils/helpers";
+import usePost from "@/utils/usePost";
+import { MenuContext } from "@/components/Layouts/DashboardLayout";
+import { useAuth } from "@/utils/AuthContext";
+import useGet from "@/utils/useGet";
+import { BiTransferAlt } from "react-icons/bi";
+import { UpdateProfileForm } from "@/components/Forms/UpdateProfileForm";
+import { publicDecrypt } from "crypto";
+import { FaLock } from "react-icons/fa6";
+import { FaLockOpen } from "react-icons/fa";
+
+const UserProfileSettingsPage = () => {
+  const { user } = useAuth();
+  const [refresh, setRefresh] = useState<number>(0);
+  const { getData: getUser, data: userData } = useGet();
+  const { setContainerSize } = useContext(MenuContext);
+
+  useEffect(() => {
+    setContainerSize("md");
+    return () => setContainerSize("xl");
+  }, [setContainerSize]);
+
+  useEffect(() => {
+    if (user) {
+      getUser({ api: `/users/${user.id}` });
+    }
+  }, []);
+
+  useEffect(() => {
+    if (user?.id) {
+      getUser({ api: `/users/${user.id}` });
+    }
+  }, [user?.id, refresh]);
+
+  return (
+    <div>
+      <SocialLinksTab user={userData?.data?.user} setRefresh={setRefresh} />
+    </div>
+  );
+};
+
+export default UserProfileSettingsPage;
+
+const SocialLinksTab = ({
+  user,
+  setRefresh,
+}: {
+  user: any;
+  setRefresh: React.Dispatch<React.SetStateAction<number>>;
+}) => {
+  console.log("User in SocialLinksTab:", user);
+
+  const [userSocialLinks, setUserSocialLinks] = useState<
+    { platform: string; url: string }[]
+  >([]);
+  const [socialModal, setSocialModal] = useState(false);
+  const [updateModal, setUpdateModal] = useState(false);
+  const [visibilityModal, setVisibilityModal] = useState(false);
+  const [visibility, setVisibility] = useState(true);
+
+  useEffect(() => {
+    if (user?.is_public !== undefined) {
+      setVisibility(user.is_public);
+    }
+  }, [user]);
+
+  const {
+    uploadData: updateProfile,
+    submitting: saving,
+    success: savedSuccess,
+  } = usePost();
+
+  useEffect(() => {
+    if (savedSuccess) {
+      setSocialModal(false);
+      setRefresh((prev) => prev + 1);
+    }
+  }, [savedSuccess]);
+
+  const submitSocialLinks = () => {
+    const socialLinks = userSocialLinks.reduce(
+      (acc, link) => {
+        if (link.platform && link.url) {
+          acc[link.platform] = link.url;
+        }
+        return acc;
+      },
+      {} as Record<string, string>,
+    );
+
+    updateProfile({
+      api: "users",
+      id: user.id,
+      method: "PATCH",
+      params: { social_links: socialLinks },
+    });
+    setSocialModal(false);
+  };
+
+  const handleVisibilitySave = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = event.currentTarget.checked;
+    console.log("New visibility:", visibility);
+    updateProfile({
+      api: "users",
+      id: user.id,
+      method: "PATCH",
+      params: { is_public: value },
+    });
+    setVisibilityModal(false);
+    // Optionally refresh user data here
+  };
+  console.log(visibility);
+
+  const socialLinks = user?.social_links || {};
+  const links =
+    Object.entries(socialLinks).map(([key, value]) => ({
+      platform: key,
+      url: value,
+    })) || [];
+
+  useEffect(() => {
+    setUserSocialLinks(links as { platform: string; url: string }[]);
+  }, [user]);
+
+  return (
+    <Stack gap={30}>
+      {/* Social Links */}
+      <Stack gap={0}>
+        <TitleText>Social Media Links</TitleText>
+        {userSocialLinks.length > 0 ? (
+          <SocialMediaLinksTable links={userSocialLinks} />
+        ) : (
+          <Text className="subtext">Add your social media profiles here.</Text>
+        )}
+        <Flex justify="flex-end" mt="md">
+          <Button
+            variant="outline"
+            onClick={() => setSocialModal(true)}
+            leftSection={userSocialLinks.length > 0 ? <HiPencil /> : <HiPlus />}
+          >
+            {userSocialLinks.length > 0 ? "Update Links" : "Add Links"}
+          </Button>
+        </Flex>
+      </Stack>
+
+      {/* User Profile */}
+      <Stack gap={0}>
+        <TitleText>Manage Profile</TitleText>
+        <Card p="lg" radius="md" withBorder>
+          <Stack gap={10} mt="md">
+            <Group justify="space-between" align="center">
+              <Stack gap={0}>
+                <Text className="title">Toggle Profile Visibility</Text>
+                <Text className="subtext">
+                  Make your profile {user?.is_public ? "private" : "public"}.
+                </Text>
+              </Stack>
+              <Switch
+                checked={visibility}
+                onChange={handleVisibilitySave}
+                color="var(--mantine-color-gray-2)"
+                size="lg"
+                onLabel={
+                  <FaLockOpen size={12} color="var(--mantine-color-teal-6)" />
+                }
+                offLabel={
+                  <FaLock size={12} color="var(--mantine-color-teal-6)" />
+                }
+              />
+            </Group>
+          </Stack>
+          <Divider my="md" />
+          <Stack gap={10}>
+            <Group justify="space-between">
+              <Stack gap={0}>
+                <Text className="title">Update profile</Text>
+                <Text className="subtext">
+                  Modify the profile name and description
+                </Text>
+              </Stack>
+              <Button variant="outline" onClick={() => setUpdateModal(true)}>
+                Update
+              </Button>
+            </Group>
+          </Stack>
+
+          {/* Modals */}
+          <ModalConfirm
+            opened={updateModal}
+            onClose={() => setUpdateModal(false)}
+            title="Update Profile Information"
+            buttonText="Update"
+            size="xl"
+            showFooterActions={false}
+            onConfirm={() => {}}
+          >
+            <UpdateProfileForm
+              user={user}
+              onCancel={() => setUpdateModal(false)}
+              onSuccess={() => {
+                setUpdateModal(false);
+                setRefresh((prev) => prev + 1);
+              }}
+            />
+          </ModalConfirm>
+
+          <ModalConfirm
+            opened={socialModal}
+            onClose={() => setSocialModal(false)}
+            title="Social Media Links"
+            buttonText="Save Links"
+            size="xl"
+            onConfirm={submitSocialLinks}
+          >
+            <SocialMediaLinksForm
+              links={userSocialLinks}
+              setLinks={setUserSocialLinks}
+              loading={saving}
+            />
+          </ModalConfirm>
+        </Card>
+      </Stack>
+    </Stack>
+  );
+};
+
+const SocialMediaLinksForm = ({
+  links = [],
+  setLinks,
+  loading,
+}: {
+  links: { platform: string; url: string }[];
+  setLinks: (val: any) => void;
+  loading: boolean;
+}) => {
+  const handleChange = (index: number, field: string, value: string) => {
+    const newLinks = [...links];
+    if (field === "url") {
+      // Ensure URL starts with http:// or https://
+      if (
+        value &&
+        !value.startsWith("http://") &&
+        !value.startsWith("https://")
+      ) {
+        value = "https://" + value;
+      }
+    }
+    (newLinks[index] as any)[field] = value;
+    setLinks(newLinks);
+  };
+
+  const addLink = () => {
+    setLinks([...links, { platform: "", url: "" }]);
+  };
+
+  const removeLink = (index: number) => {
+    const newLinks = [...links];
+    newLinks.splice(index, 1);
+    setLinks(newLinks);
+  };
+
+  return (
+    <Stack>
+      {links?.map((link, index) => (
+        <Group key={index} grow align="center" gap="md">
+          <TextInput
+            label="Platform"
+            placeholder="e.g. Twitter"
+            value={link.platform}
+            onChange={(e) => handleChange(index, "platform", e.target.value)}
+          />
+          <TextInput
+            label="URL"
+            placeholder="https://twitter.com/yourhandle"
+            value={link.url}
+            onChange={(e) => handleChange(index, "url", e.target.value)}
+          />
+          <Button
+            color="red"
+            variant="light"
+            mt="lg"
+            onClick={() => removeLink(index)}
+          >
+            Remove
+          </Button>
+        </Group>
+      ))}
+      <Button variant="outline" onClick={addLink} loading={loading}>
+        Add Social Media Link
+      </Button>
+    </Stack>
+  );
+};
+
+const SocialMediaLinksTable = ({
+  links,
+}: {
+  links: { platform: string; url: string }[];
+}) => {
+  return (
+    <Card withBorder>
+      <Stack>
+        {links.map((link, index) => (
+          <Flex key={index} justify="space-between">
+            <Text fw={500}>{beautify(link.platform)}</Text>
+            <Text size="sm" color="blue">
+              <a href={link.url} target="_blank" rel="noopener noreferrer">
+                {link.url}
+              </a>
+            </Text>
+          </Flex>
+        ))}
+      </Stack>
+    </Card>
+  );
+};
