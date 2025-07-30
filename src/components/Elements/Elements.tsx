@@ -248,7 +248,7 @@ export const AddServiceButton = ({
         title="Deploy a Trained Model"
         buttonText="Deploy"
         onConfirm={() => {}}
-        size="md"
+        size="xl"
         showFooterActions={false}
       >
         <DeployAppModalForm

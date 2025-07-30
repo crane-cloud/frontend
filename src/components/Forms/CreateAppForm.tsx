@@ -1,11 +1,14 @@
 import {
   ActionIcon,
+  Alert,
   Button,
+  Code,
   Divider,
   Fieldset,
   Flex,
   Group,
   Input,
+  List,
   Paper,
   Select,
   Stack,
@@ -29,7 +32,7 @@ import usePost from "@/utils/usePost";
 import { API_APPS, API_PROJECTS } from "@/utils/apis";
 import { useNavigate, useParams } from "react-router-dom";
 import { IoRocketSharp } from "react-icons/io5";
-import { FaDocker } from "react-icons/fa";
+import { FaCheck, FaDocker } from "react-icons/fa";
 import {
   TbCopy,
   TbUpload,
@@ -43,6 +46,7 @@ import {
   FRAMEWORKS,
   MODAL_API_TYPES,
   MODAL_SERVERS,
+  MODEL_DEPLOYMENT_INSTRUCTIONS,
   REGISTRIES,
 } from "@/utils/constants";
 import { Dropzone, FileWithPath, MIME_TYPES } from "@mantine/dropzone";
@@ -52,6 +56,112 @@ import { Table } from "../Elements/CustomTable";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { RiRobot2Line } from "react-icons/ri";
 import useForm from "@/hooks/generic/useForm";
+import { useHuggingFaceTasks } from "@/hooks/useHuggingFaceTasks";
+
+// Types for deployment instructions
+interface InstructionItem {
+  label?: string;
+  description: string;
+  code?: string;
+  additional?: string;
+}
+
+interface InstructionExample {
+  code: string;
+  description: string;
+}
+
+interface InstructionSection {
+  title: string;
+  colorKey: string;
+  items?: InstructionItem[];
+  examples?: InstructionExample[];
+  frameworks?: string[];
+}
+
+export interface DeploymentInstruction {
+  title: string;
+  icon: React.ComponentType<{ size: number }>;
+  color: string;
+  description: string;
+  sections: InstructionSection[];
+}
+
+// Helper component to render deployment instructions
+const DeploymentInstructions = ({ serverType }: { serverType: string }) => {
+  const instructions = MODEL_DEPLOYMENT_INSTRUCTIONS[serverType];
+
+  if (!instructions) {
+    return null;
+  }
+
+  const IconComponent = instructions.icon;
+
+  return (
+    <Alert
+      icon={<IconComponent size={20} />}
+      color={instructions.color}
+      variant="light"
+      radius="md"
+      title={instructions.title}
+    >
+      <Stack gap="md">
+        <Text size="sm" c="dimmed">
+          {instructions.description}
+        </Text>
+
+        {instructions.sections.map((section, sectionIndex) => (
+          <div key={sectionIndex}>
+            <Text size="sm" fw={600} mb="xs" c={section.colorKey}>
+              {section.title}
+            </Text>
+
+            {section.items && (
+              <List size="sm" spacing="xs">
+                {section.items.map((item, itemIndex) => (
+                  <List.Item key={itemIndex}>
+                    {item.label && <strong>{item.label}</strong>}{" "}
+                    {item.description}
+                    {item.code && (
+                      <>
+                        {item.label ? " " : ""}
+                        <Code ml={item.label ? "xs" : undefined}>
+                          {item.code}
+                        </Code>
+                        {item.additional && ` ${item.additional}`}
+                      </>
+                    )}
+                  </List.Item>
+                ))}
+              </List>
+            )}
+
+            {section.examples && (
+              <Stack gap="xs">
+                {section.examples.map((example, exampleIndex) => (
+                  <Group gap="xs" key={exampleIndex}>
+                    <Code>{example.code}</Code>
+                    <Text size="xs" c="dimmed">
+                      - {example.description}
+                    </Text>
+                  </Group>
+                ))}
+              </Stack>
+            )}
+
+            {section.frameworks && (
+              <Group gap="xs">
+                {section.frameworks.map((framework, frameworkIndex) => (
+                  <Code key={frameworkIndex}>{framework}</Code>
+                ))}
+              </Group>
+            )}
+          </div>
+        ))}
+      </Stack>
+    </Alert>
+  );
+};
 
 const CreateAppForm = () => {
   useSetContainerSize("sm");
@@ -905,6 +1015,11 @@ export const DeployAppModalForm = ({
   onCancel = () => {},
   refresh = () => {},
 }: DeployNotebookFormProps) => {
+  const {
+    tasks: hfTasks,
+    loading: loadingTasks,
+    fetchTasks,
+  } = useHuggingFaceTasks();
   const { uploadData, submitting, error, success } = usePost();
   const { form, onChange, updateFormValue } = useForm();
 
@@ -933,12 +1048,23 @@ export const DeployAppModalForm = ({
     }
   }, [success]);
 
+  // Check if the form is for Hugging Face, MLflow, or Sklearn
+  const isHuggingFace = form.model_server === "HUGGINGFACE_SERVER";
+  const isMLflow = form.model_server === "MLFLOW_SERVER";
+  const isSklearn = form.model_server === "SKLEARN_SERVER";
+
+  useEffect(() => {
+    if (isHuggingFace) {
+      fetchTasks();
+    }
+  }, [isHuggingFace]);
+
   return (
     <div style={{ marginTop: showTitle ? 10 : 0 }}>
       {showTitle && (
         <TitleText>
           <Flex align="center" gap="xs">
-            <IoRocketSharp size={15} />
+            <RiRobot2Line size={15} />
             Deploy a Trained Model
           </Flex>
         </TitleText>
@@ -946,32 +1072,132 @@ export const DeployAppModalForm = ({
       <Paper p="lg" radius="md">
         <form onSubmit={handleSubmit}>
           <Stack>
+            <Select
+              label="Model Server"
+              name="model_server"
+              placeholder="Select the server that hosts your model"
+              description="Choose where your model is hosted"
+              required
+              value={form.model_server as string}
+              onChange={(value) => updateFormValue("model_server", value)}
+              error={error?.model_server}
+              data={MODAL_SERVERS}
+              leftSection={
+                typeof form.model_server === "string" ? (
+                  (() => {
+                    const server = MODAL_SERVERS.find(
+                      (s) => s.value === form.model_server,
+                    );
+                    const IconComponent = server?.icon;
+                    return IconComponent ? (
+                      <IconComponent size={16} />
+                    ) : undefined;
+                  })()
+                ) : (
+                  <LuServer />
+                )
+              }
+              renderOption={({ option, checked }) => {
+                const server = MODAL_SERVERS.find(
+                  (s) => s.value === option.value,
+                );
+                const IconComponent = server?.icon;
+
+                return (
+                  <Group flex="1" gap="xs">
+                    {IconComponent && (
+                      <IconComponent size={16} color={server?.color} />
+                    )}
+                    <span>{option.label}</span>
+                    {checked && <FaCheck size={14} color="#228BE6" />}
+                  </Group>
+                );
+              }}
+            />
+
+            {/* Deployment Guidelines */}
+            {form.model_server && (
+              <DeploymentInstructions
+                serverType={form.model_server as string}
+              />
+            )}
+
             <TextInput
               label="Model Name"
               name="name"
               placeholder="Enter model name"
-              description="Enter the name of the model"
+              description="Enter a descriptive name for your model"
               required
               value={form?.name as string}
               onChange={onChange}
               error={error?.name}
               leftSection={<MdDriveFileRenameOutline />}
             />
+
             <TextInput
-              label="Modal Url"
+              label={
+                isHuggingFace
+                  ? "Model Repository"
+                  : isMLflow
+                    ? "Model URI"
+                    : isSklearn
+                      ? "Model File Path"
+                      : "Model URL"
+              }
               name="model_image_uri"
-              placeholder="Enter modal url"
-              description="Enter the url to where the model is hosted"
+              placeholder={
+                isHuggingFace
+                  ? "e.g., microsoft/DialoGPT-medium"
+                  : isMLflow
+                    ? "e.g., models:/my_model/1 or runs:/abc123/model"
+                    : isSklearn
+                      ? "e.g., /path/to/model.pkl or https://example.com/model.pkl"
+                      : "Enter model URL"
+              }
+              description={
+                isHuggingFace
+                  ? "Enter the Hugging Face model repository path"
+                  : isMLflow
+                    ? "Enter the MLflow model URI (models:/ or runs:/ format)"
+                    : isSklearn
+                      ? "Enter the path to your sklearn model file"
+                      : "Enter the URL where the model is hosted"
+              }
               required
               value={form?.model_image_uri as string}
               onChange={onChange}
               error={error?.model_image_uri}
               leftSection={<LuLink />}
             />
+
+            {isHuggingFace && (
+              <Stack gap="sm">
+                <Select
+                  label="Task Type"
+                  name="task"
+                  placeholder="Select model task"
+                  description="What task is this model designed for?"
+                  value={form.task as string}
+                  onChange={(value) => updateFormValue("task", value)}
+                  data={hfTasks}
+                  leftSection={<TbPlugConnected />}
+                  disabled={loadingTasks}
+                  rightSection={
+                    loadingTasks ? (
+                      <Text size="xs">Loading tasks...</Text>
+                    ) : undefined
+                  }
+                  searchable
+                  clearable
+                />
+              </Stack>
+            )}
+
             <Select
-              label="Modal Api type"
+              label="API Type"
               name="api_type"
-              placeholder="Select framework"
+              placeholder="Select API framework"
+              description="Choose the API framework for your model"
               required
               value={form.api_type as string}
               onChange={(value) => updateFormValue("api_type", value)}
@@ -980,19 +1206,14 @@ export const DeployAppModalForm = ({
               defaultValue={MODAL_API_TYPES[0].value}
               leftSection={<TbPlugConnected />}
             />
-            <Select
-              label="Modal Server"
-              name="model_server"
-              placeholder="Select the server that created the model"
-              required
-              value={form.model_server as string}
-              onChange={(value) => updateFormValue("model_server", value)}
-              error={error?.model_server}
-              data={MODAL_SERVERS}
-              leftSection={<LuServer />}
-            />
+
             <Divider mt="md" />
-            <Group justify="flex-end">
+            <Group justify="space-between">
+              <Text size="xs" c="dimmed">
+                {isHuggingFace
+                  ? "Deploying from Hugging Face Hub"
+                  : "Ready to deploy your model"}
+              </Text>
               <Button
                 type="submit"
                 variant="filled"
