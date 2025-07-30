@@ -328,7 +328,7 @@ const CreateMIRAAppForm = (props: { project: any }) => {
   const [files, setFiles] = useState<FileWithPath[]>([]);
   const { form, onChange, updateFormValue, updateFormValues } = useForm();
   const { uploadData, submitting, error, data } = usePost();
-  const [webSocketPath, setWebSocketPath] = useState(null)
+  const [webSocketPath, setWebSocketPath] = useState<string | null>(null)
   const [terminal, setTerminal] = useState<Terminal | null>(null);
   const [socket, setSocket] = useState<WebSocket | null>(null);
   const terminalRef = useRef(null);
@@ -399,6 +399,9 @@ const CreateMIRAAppForm = (props: { project: any }) => {
   
         // Establish WebSocket connection
         const ws = new WebSocket(
+          webSocketPath.startsWith("localhost")
+            ? `ws://${webSocketPath}`
+            :
           `wss://${webSocketPath}`
         );
   
