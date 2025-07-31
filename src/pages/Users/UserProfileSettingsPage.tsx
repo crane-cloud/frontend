@@ -74,6 +74,9 @@ const SocialLinksTab = ({
   const [updateModal, setUpdateModal] = useState(false);
   const [visibilityModal, setVisibilityModal] = useState(false);
   const [visibility, setVisibility] = useState(true);
+  const [makePrivateConfirmOpened, setMakePrivateConfirmOpened] =
+    useState(false);
+  const [makePublicConfirmOpened, setMakePublicConfirmOpened] = useState(false);
 
   useEffect(() => {
     if (user?.is_public !== undefined) {
@@ -124,9 +127,35 @@ const SocialLinksTab = ({
       params: { is_public: value },
     });
     setVisibilityModal(false);
-    // Optionally refresh user data here
+    refreshProfile();
+  };
+
+  const refreshProfile = () => {
+    setRefresh((prev) => prev + 1);
   };
   console.log(visibility);
+
+  const handleMakePrivate = () => {
+    updateProfile({
+      api: "users",
+      id: user.id,
+      method: "PATCH",
+      params: { is_public: false },
+    });
+    setMakePrivateConfirmOpened(false);
+    refreshProfile();
+  };
+
+  const handleMakePublic = () => {
+    updateProfile({
+      api: "users",
+      id: user.id,
+      method: "PATCH",
+      params: { is_public: true },
+    });
+    setMakePublicConfirmOpened(false);
+    refreshProfile();
+  };
 
   const socialLinks = user?.social_links || {};
   const links =
@@ -172,18 +201,31 @@ const SocialLinksTab = ({
                   Make your profile {user?.is_public ? "private" : "public"}.
                 </Text>
               </Stack>
-              <Switch
-                checked={visibility}
-                onChange={handleVisibilitySave}
-                color="var(--mantine-color-gray-2)"
-                size="lg"
-                onLabel={
-                  <FaLockOpen size={12} color="var(--mantine-color-teal-6)" />
-                }
-                offLabel={
-                  <FaLock size={12} color="var(--mantine-color-teal-6)" />
-                }
-              />
+              {/* Visibility Toggle */}
+              <Stack gap={10} mt="md">
+                <Group justify="space-between" align="center">
+                  <Stack gap={0}></Stack>
+                  {visibility ? (
+                    <Button
+                      variant="outline"
+                      color="black"
+                      onClick={() => setMakePrivateConfirmOpened(true)}
+                      leftSection={<FaLock />}
+                    >
+                      Private
+                    </Button>
+                  ) : (
+                    <Button
+                      variant="outline"
+                      color="green"
+                      onClick={() => setMakePublicConfirmOpened(true)}
+                      leftSection={<FaLockOpen />}
+                    >
+                      Public
+                    </Button>
+                  )}
+                </Group>
+              </Stack>
             </Group>
           </Stack>
           <Divider my="md" />
@@ -195,7 +237,11 @@ const SocialLinksTab = ({
                   Modify the profile name and description
                 </Text>
               </Stack>
-              <Button variant="outline" onClick={() => setUpdateModal(true)}>
+              <Button
+                variant="outline"
+                onClick={() => setUpdateModal(true)}
+                leftSection={<HiPencil />}
+              >
                 Update
               </Button>
             </Group>
@@ -219,6 +265,32 @@ const SocialLinksTab = ({
                 setRefresh((prev) => prev + 1);
               }}
             />
+          </ModalConfirm>
+
+          <ModalConfirm
+            opened={makePrivateConfirmOpened}
+            onClose={() => setMakePrivateConfirmOpened(false)}
+            title="Make Profile Private"
+            buttonText="Confirm"
+            buttonColor="black"
+            onConfirm={handleMakePrivate}
+            leftSection={<FaLock />}
+          >
+            Are you sure you want to make your profile <b>private</b>? It will
+            no longer be publicly visible.
+          </ModalConfirm>
+
+          <ModalConfirm
+            opened={makePublicConfirmOpened}
+            onClose={() => setMakePublicConfirmOpened(false)}
+            title="Make Profile Public"
+            buttonText="Confirm"
+            buttonColor="green"
+            onConfirm={handleMakePublic}
+            leftSection={<FaLockOpen />}
+          >
+            Are you sure you want to make your profile <b>public</b>? It will be
+            visible to everyone.
           </ModalConfirm>
 
           <ModalConfirm

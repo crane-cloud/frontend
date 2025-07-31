@@ -46,10 +46,11 @@ export const UpdateProfileForm = ({
 
   return (
     <form onSubmit={handleSubmit}>
-      <Stack gap={10}>
+      <Stack gap={15}>
         <TextInput
           label="Username"
           placeholder="Enter your username"
+          description="This will be your public username. Do not use spaces or special characters."
           value={username}
           onChange={(e) => setUsername(e.currentTarget.value)}
           required
@@ -61,6 +62,15 @@ export const UpdateProfileForm = ({
           placeholder="Enter your email"
           value={email}
           onChange={(e) => setEmail(e.currentTarget.value)}
+          disabled
+          required
+        />
+
+        <TextInput
+          label="Organisation"
+          placeholder="Your organisation or company"
+          value={organisation}
+          onChange={(e) => setOrganisation(e.currentTarget.value)}
           required
         />
 
@@ -72,18 +82,16 @@ export const UpdateProfileForm = ({
           maxRows={3}
         />
 
-        <TextInput
-          label="Organisation"
-          placeholder="Your organisation or company"
-          value={organisation}
-          onChange={(e) => setOrganisation(e.currentTarget.value)}
-        />
-
         <Group justify="flex-end" mt="md">
           <Button variant="outline" onClick={onCancel} disabled={submitting}>
             Cancel
           </Button>
-          <Button type="submit" loading={submitting}>
+          <Button
+            type="submit"
+            loading={submitting}
+            variant="filled"
+            color="dark"
+          >
             Save
           </Button>
         </Group>

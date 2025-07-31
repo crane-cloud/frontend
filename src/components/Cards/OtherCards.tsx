@@ -60,12 +60,14 @@ function UserProfileCard({ user }: { user: any }) {
       </Text>
       <Stack gap={4}>
         {user?.biography && (
-          <Text fz="sm" c="dimmed" ta="center">
+          <Text fz="sm" c="black" ta="center" lineClamp={3} fw={300}>
             {user?.biography}
           </Text>
         )}
+        <Divider my="md" />
+
         {user?.organisation && (
-          <Group gap={5} fz="0.9rem">
+          <Group gap={5} fz="0.9rem" fw={600} mt="sm">
             <PiBuildingsBold size={17} />
             {user?.organisation}
           </Group>

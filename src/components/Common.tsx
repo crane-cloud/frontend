@@ -86,11 +86,12 @@ export const UserDropDown = () => {
     {
       label: "Account settings",
       icon: <IoSettingsOutline size={16} />,
-      action: () => navigate(`/profile/${user?.id}`),
+      action: () => navigate(`/users/profile/settings`),
     },
     {
       label: "Change account",
       icon: <GoArrowSwitch size={16} />,
+      action: () => navigate(`/users/profile/settings`),
     },
     {
       label: "Logout",

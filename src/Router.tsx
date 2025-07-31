@@ -71,6 +71,7 @@ export const DashboardRoutes = [
   { path: "/", element: <LandingPage /> },
   { path: "/profile/:user_id", element: <UserProfilePage /> },
   { path: "/users/profile/settings", element: <UserProfileSettingsPage /> },
+  { path: "/:username", element: <UserProfilePage /> },
   // Projects
   { path: "/projects/create", element: <CreateProjectForm /> },
   { path: "/projects/:project_id", element: <ProjectDetailsPage /> },
