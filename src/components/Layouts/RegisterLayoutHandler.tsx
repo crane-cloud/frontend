@@ -12,6 +12,7 @@ import { Table } from "../Elements/CustomTable";
 import { Button, Stack } from "@mantine/core";
 import TitleText from "../TitleText";
 import { SimpleDetailsCard } from "../Cards/DetailsCard";
+import { LineLargeMetricChart } from "../Elements/Charts";
 // import DetailsCard from "../common/DetailsCards";
 // import { TableFilter } from "../common/TableFilter";
 // interface TExportData {
@@ -56,12 +57,15 @@ const RegisterLayoutHandler = (props: any) => {
     createTitle,
     metaData,
     tableTotals,
+    graphData,
+    fetchingGraphData,
     // externalFilters,
     initialFilters,
     isExternalRoute,
     showTitle,
     apiRoute,
     dataParent,
+    graphTitle,
   } =
     source && registerHooks[source]
       ? registerHooks[source]({ ...register_params, ...params, status })
@@ -118,6 +122,9 @@ const RegisterLayoutHandler = (props: any) => {
   // };
 
   function getTitle() {
+    if (tableTitle) {
+      return tableTitle;
+    }
     return `${tableTitle || beautify(source)} ${filters?.stringValue || "List"} `;
   }
 
@@ -174,6 +181,21 @@ const RegisterLayoutHandler = (props: any) => {
         />
       )}
 
+      {graphData && (
+        <LineLargeMetricChart
+          title={graphTitle || getTitle()}
+          data={graphData}
+          showAllXValues
+          filters={filters}
+          setFilters={setFilter}
+          // setFilters={(data) => setFilter({ filters, ...data })}
+          height={250}
+          valueFormatter={(value) => `${value}`}
+          // (setFilters={() => {}}
+          // currentChart={bigChart}
+          isLoading={fetchingGraphData || registerData?.loading}
+        />
+      )}
       <Table
         title={title || getTitle()}
         loading={loading}
