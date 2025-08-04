@@ -1,32 +1,21 @@
-import {
-  Box,
-  Card,
-  Divider,
-  Group,
-  Stack,
-  Text,
-  Tooltip,
-  Anchor,
-} from "@mantine/core";
+import { Box, Card, Divider, Group, Stack, Text, Tooltip } from "@mantine/core";
 import { PiBuildingsBold } from "react-icons/pi";
 import { FaGithub, FaLinkedin, FaTwitter } from "react-icons/fa";
 import { ProfileAvatar } from "../Common";
 import { Link } from "react-router-dom";
 
 function UserProfileCard({ user }: { user: any }) {
-  console.log("user", user);
   const userStats = [
     { value: user?.follower_count, label: "Followers" },
     { value: user?.following_count, label: "Follows" },
     { value: user?.apps_count, label: "Apps" },
   ];
   const socialLinks = user?.social_links || {};
-  console.log("socialLinks", socialLinks);
+
   const links = Object.entries(socialLinks).map(([key, value]) => ({
     platform: key,
     url: value,
   }));
-  console.log("links", links);
 
   const socialLinksIcons = {
     github: <FaGithub />,

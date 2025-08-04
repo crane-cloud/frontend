@@ -22,14 +22,18 @@ export const UpdateProfileForm = ({
 
   useEffect(() => {
     if (success) {
-      if (onSuccess) onSuccess();
+      if (onSuccess) {
+        onSuccess();
+      }
     }
   }, [success, onSuccess]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!user?.id) return;
+    if (!user?.id) {
+      return;
+    }
 
     uploadData({
       api: "users",

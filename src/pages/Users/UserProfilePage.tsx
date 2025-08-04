@@ -1,14 +1,5 @@
-import {
-  Anchor,
-  Button,
-  Card,
-  Flex,
-  Group,
-  Stack,
-  Text,
-  Tooltip,
-} from "@mantine/core";
-import { FaGithub, FaLinkedin, FaTwitter, FaEdit } from "react-icons/fa";
+import { Anchor, Button, Card, Flex, Group, Stack, Text } from "@mantine/core";
+import { FaGithub, FaLinkedin, FaTwitter } from "react-icons/fa";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/utils/AuthContext";
@@ -112,7 +103,7 @@ const UserProfilePage = () => {
           )}
 
           {!currentUser?.social_links?.length && (
-            <Text color="dimmed" mt="md"></Text>
+            <Text color="dimmed" mt="md" />
           )}
         </Stack>
       </Flex>

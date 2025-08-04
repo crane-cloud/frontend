@@ -5,24 +5,20 @@ import {
   Flex,
   Group,
   Stack,
-  Switch,
   Text,
   TextInput,
 } from "@mantine/core";
 import { useEffect, useState, useContext } from "react";
 import { HiPencil, HiPlus } from "react-icons/hi2";
-import { useParams } from "react-router-dom";
 
 import TitleText from "@/components/TitleText";
 import { ModalConfirm } from "@/components/Elements/Modals";
-import { beautify, useGetApp } from "@/utils/helpers";
+import { beautify } from "@/utils/helpers";
 import usePost from "@/utils/usePost";
 import { MenuContext } from "@/components/Layouts/DashboardLayout";
 import { useAuth } from "@/utils/AuthContext";
 import useGet from "@/utils/useGet";
-import { BiTransferAlt } from "react-icons/bi";
 import { UpdateProfileForm } from "@/components/Forms/UpdateProfileForm";
-import { publicDecrypt } from "crypto";
 import { FaLock } from "react-icons/fa6";
 import { FaLockOpen } from "react-icons/fa";
 
@@ -65,14 +61,11 @@ const SocialLinksTab = ({
   user: any;
   setRefresh: React.Dispatch<React.SetStateAction<number>>;
 }) => {
-  console.log("User in SocialLinksTab:", user);
-
   const [userSocialLinks, setUserSocialLinks] = useState<
     { platform: string; url: string }[]
   >([]);
   const [socialModal, setSocialModal] = useState(false);
   const [updateModal, setUpdateModal] = useState(false);
-  const [visibilityModal, setVisibilityModal] = useState(false);
   const [visibility, setVisibility] = useState(true);
   const [makePrivateConfirmOpened, setMakePrivateConfirmOpened] =
     useState(false);
@@ -117,23 +110,9 @@ const SocialLinksTab = ({
     setSocialModal(false);
   };
 
-  const handleVisibilitySave = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = event.currentTarget.checked;
-    console.log("New visibility:", visibility);
-    updateProfile({
-      api: "users",
-      id: user.id,
-      method: "PATCH",
-      params: { is_public: value },
-    });
-    setVisibilityModal(false);
-    refreshProfile();
-  };
-
   const refreshProfile = () => {
     setRefresh((prev) => prev + 1);
   };
-  console.log(visibility);
 
   const handleMakePrivate = () => {
     updateProfile({
@@ -204,7 +183,7 @@ const SocialLinksTab = ({
               {/* Visibility Toggle */}
               <Stack gap={10} mt="md">
                 <Group justify="space-between" align="center">
-                  <Stack gap={0}></Stack>
+                  <Stack gap={0} />
                   {visibility ? (
                     <Button
                       variant="outline"
@@ -331,7 +310,8 @@ const SocialMediaLinksForm = ({
         !value.startsWith("http://") &&
         !value.startsWith("https://")
       ) {
-        value = "https://" + value;
+        const newValue = `https://${value}`;
+        (newLinks[index] as any)[field] = newValue;
       }
     }
     (newLinks[index] as any)[field] = value;
