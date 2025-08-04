@@ -7,9 +7,20 @@ import { Link } from "react-router-dom";
 
 export const useDatabases = () => {
   const { getData: getMetaData, data: metaDataData } = useGet();
+  const {
+    getData: getDatabaseGraphData,
+    data: databaseGraphData,
+    loading: fetchingGraphData,
+  } = useGet();
   useEffect(() => {
     getMetaData({
       api: `${DATABASE_API_URL}/databases/stats`,
+      isExternal: true,
+    });
+  }, []);
+  useEffect(() => {
+    getDatabaseGraphData({
+      api: `${DATABASE_API_URL}/databases/graph`,
       isExternal: true,
     });
   }, []);
@@ -81,6 +92,18 @@ export const useDatabases = () => {
 
   const isExternalRoute = true;
   const showTitle = false;
+  const tableTitle = "Database Summary";
+  const graphTitle = "graphTitle";
 
-  return { tableColumns, tableData, isExternalRoute, showTitle, metaData };
+  return {
+    tableColumns,
+    tableData,
+    isExternalRoute,
+    showTitle,
+    metaData,
+    graphData: databaseGraphData?.data?.graph_data,
+    fetchingGraphData,
+    tableTitle,
+    graphTitle,
+  };
 };
