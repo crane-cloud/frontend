@@ -38,11 +38,11 @@ const AppMetrics = () => {
   }, [setContainerSize]);
 
   const [filters, setFilters] = useState<{
-    startDate: Date | null;
-    endDate: Date | null;
+    start: Date | null;
+    end: Date | null;
   }>({
-    startDate: null,
-    endDate: null,
+    start: null,
+    end: null,
   });
 
   useEffect(() => {
@@ -54,11 +54,11 @@ const AppMetrics = () => {
       };
 
       const requestBody =
-        filters.startDate && filters.endDate
+        filters.start && filters.end
           ? {
               ...baseBody,
-              start: filters.startDate.getTime() / 1000,
-              end: filters.endDate.getTime() / 1000,
+              start: filters.start.getTime() / 1000,
+              end: filters.end.getTime() / 1000,
             }
           : baseBody;
 

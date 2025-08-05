@@ -32,11 +32,11 @@ const ProjectMetrics = () => {
   const [bigChart, setBigChart] = useState<"cpu" | "memory" | "network">("cpu");
 
   const [filters, setFilters] = useState<{
-    startDate: Date | null;
-    endDate: Date | null;
+    start: Date | null;
+    end: Date | null;
   }>({
-    startDate: null,
-    endDate: null,
+    start: null,
+    end: null,
   });
 
   useEffect(() => {
@@ -47,13 +47,11 @@ const ProjectMetrics = () => {
       };
 
       const requestBody =
-        filters.startDate && filters.endDate
+        filters.start && filters.end
           ? {
               ...baseBody,
-              start: filters.startDate
-                ? new Date(filters.startDate).getTime()
-                : null,
-              end: filters.endDate ? new Date(filters.endDate).getTime() : null,
+              start: filters.start ? new Date(filters.start).getTime() : null,
+              end: filters.end ? new Date(filters.end).getTime() : null,
             }
           : baseBody;
 
