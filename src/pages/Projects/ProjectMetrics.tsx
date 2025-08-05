@@ -50,8 +50,10 @@ const ProjectMetrics = () => {
         filters.startDate && filters.endDate
           ? {
               ...baseBody,
-              start: filters.startDate.getTime() / 1000,
-              end: filters.endDate.getTime() / 1000,
+              start: filters.startDate
+                ? new Date(filters.startDate).getTime()
+                : null,
+              end: filters.endDate ? new Date(filters.endDate).getTime() : null,
             }
           : baseBody;
 
@@ -102,7 +104,6 @@ const ProjectMetrics = () => {
       numberOfDecimals: 0,
     };
   }, [bigChart, cpuMetricsData, memoryMetricsData, networkMetricsData]);
-
   return (
     <div>
       <TitleText>Project Metrics</TitleText>
@@ -116,7 +117,9 @@ const ProjectMetrics = () => {
             }
             showAllXValues
             filters={filters}
-            setFilters={setFilters}
+            setFilters={(data) => {
+              setFilters({ ...filters, ...data });
+            }}
             height={250}
             currentChart={bigChart}
             isLoading={
