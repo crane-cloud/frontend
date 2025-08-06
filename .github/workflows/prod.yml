@@ -1,6 +1,9 @@
 name: Production Deployment
 
 on:
+  push:
+    branches:
+      - ch-prod-route
   release:
     types:
       - released
