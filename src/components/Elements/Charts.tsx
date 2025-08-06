@@ -23,9 +23,9 @@ type TLineMetricChart = {
   valueFormatter: (value: number) => string;
   showAllXValues?: boolean;
   height?: number;
-  setBigChart?: (chartType: "cpu" | "memory" | "network") => void;
-  chartType?: "cpu" | "memory" | "network";
-  currentChart?: "cpu" | "memory" | "network";
+  setBigChart?: (chartType: "cpu" | "memory" | "network" | "gpu") => void;
+  chartType?: "cpu" | "memory" | "network" | "gpu";
+  currentChart?: "cpu" | "memory" | "network" | "gpu";
   isLoading?: boolean;
 };
 
@@ -132,7 +132,7 @@ type TLineLargeMetricChart = TLineMetricChart & {
     end: Date | null;
   };
   setFilters: (filter: any) => void;
-  currentChart?: "cpu" | "memory" | "network";
+  currentChart?: "cpu" | "memory" | "network" | "gpu";
 };
 
 const DATE_FORMAT = "YYYY-MM-DD";
@@ -309,7 +309,7 @@ type TBarChart = {
     end: Date | null;
   };
   setFilters: (filter: any) => void;
-  currentChart?: "cpu" | "memory" | "network";
+  currentChart?: "cpu" | "memory" | "network" | "gpu";
   isLoading?: boolean;
 };
 
