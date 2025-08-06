@@ -585,7 +585,7 @@ const CICDTab = ({ app }: { app: any }) => {
       ? `https://staging-api.cranecloud.io/apps/${app?.id}/${user?.id}/docker`
       : `https://api.cranecloud.io/apps/${app?.id}/${user?.id}/docker`;
     if (app?.id && user?.id) {
-      setwebhookUrl(`${defaultUrl}/docker/${tag}/webhook`);
+      setwebhookUrl(`${defaultUrl}/${tag}/webhook`);
     }
   };
 
