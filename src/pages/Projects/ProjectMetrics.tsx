@@ -29,7 +29,14 @@ const ProjectMetrics = () => {
     data: networkMetricsData,
     submitting: gettingNetworkMetrics,
   } = usePost();
-  const [bigChart, setBigChart] = useState<"cpu" | "memory" | "network">("cpu");
+  const {
+    uploadData: getGPUMetrics,
+    data: gpuMetricsData,
+    submitting: gettingGPUMetrics,
+  } = usePost();
+  const [bigChart, setBigChart] = useState<
+    "cpu" | "memory" | "network" | "gpu"
+  >("cpu");
 
   const [filters, setFilters] = useState<{
     start: Date | null;
@@ -73,6 +80,12 @@ const ProjectMetrics = () => {
         isExternal: true,
         showNotifications: false,
       });
+      getGPUMetrics({
+        api: `${MONITORING_API_URL}/projects/gpu/metrics`,
+        params: requestBody,
+        isExternal: true,
+        showNotifications: false,
+      });
     };
 
     fetchMetrics();
@@ -95,13 +108,27 @@ const ProjectMetrics = () => {
         numberOfDecimals: 0,
       };
     }
+    if (bigChart === "gpu") {
+      return {
+        data: gpuMetricsData?.data?.values,
+        title: "GPU Usage",
+        unit: "GPU",
+        numberOfDecimals: 0,
+      };
+    }
     return {
       data: networkMetricsData?.data?.values,
       title: "Network Usage",
       unit: "KB/s",
       numberOfDecimals: 0,
     };
-  }, [bigChart, cpuMetricsData, memoryMetricsData, networkMetricsData]);
+  }, [
+    bigChart,
+    cpuMetricsData,
+    memoryMetricsData,
+    networkMetricsData,
+    gpuMetricsData,
+  ]);
   return (
     <div>
       <TitleText>Project Metrics</TitleText>
@@ -121,7 +148,10 @@ const ProjectMetrics = () => {
             height={250}
             currentChart={bigChart}
             isLoading={
-              gettingCPUMetrics || gettingMemoryMetrics || gettingNetworkMetrics
+              gettingCPUMetrics ||
+              gettingMemoryMetrics ||
+              gettingNetworkMetrics ||
+              gettingGPUMetrics
             }
           />
         </Grid.Col>
@@ -160,6 +190,18 @@ const ProjectMetrics = () => {
             chartType="network"
             currentChart={bigChart}
             isLoading={gettingNetworkMetrics}
+          />
+        </Grid.Col>
+        <Grid.Col span={4}>
+          <LineMetricChart
+            title="GPU Usage"
+            data={gpuMetricsData?.data?.values}
+            valueFormatter={(value) => `${value.toFixed(0)} GPU`}
+            height={180}
+            setBigChart={setBigChart}
+            chartType="gpu"
+            currentChart={bigChart}
+            isLoading={gettingGPUMetrics}
           />
         </Grid.Col>
       </Grid>
