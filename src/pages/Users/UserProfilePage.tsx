@@ -1,5 +1,4 @@
-import { Anchor, Button, Card, Flex, Group, Stack, Text } from "@mantine/core";
-import { FaGithub, FaLinkedin, FaTwitter } from "react-icons/fa";
+import { Button, Card, Flex, Stack } from "@mantine/core";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/utils/AuthContext";
@@ -7,12 +6,7 @@ import { useSetContainerSize, useSetNoSidebar } from "@/utils/helpers";
 import useGet from "@/utils/useGet";
 import UserProfileCard, { StatsList } from "@/components/Cards/OtherCards";
 import TitleText from "@/components/TitleText";
-
-const socialIconMap: Record<string, React.ReactNode> = {
-  github: <FaGithub />,
-  twitter: <FaTwitter />,
-  linkedin: <FaLinkedin />,
-};
+import { FaPencil } from "react-icons/fa6";
 
 const UserProfilePage = () => {
   const { user } = useAuth();
@@ -63,6 +57,7 @@ const UserProfilePage = () => {
                 variant="filled"
                 color="dark"
                 onClick={() => navigate("/users/profile/settings")}
+                leftSection={<FaPencil />}
               >
                 Edit Profile
               </Button>
@@ -74,37 +69,6 @@ const UserProfilePage = () => {
           <Card withBorder radius="md" padding="xl">
             <StatsList justify="space-between" stats={userStats(currentUser)} />
           </Card>
-
-          {/* Social Media Section */}
-          {currentUser?.social_links?.length > 0 && (
-            <Stack mt="lg">
-              <TitleText>Social Media</TitleText>
-              <Card withBorder radius="md" padding="md">
-                <Stack>
-                  {currentUser.social_links.map(
-                    (
-                      link: { platform: string; url: string },
-                      index: number,
-                    ) => (
-                      <Group key={index} justify="space-between">
-                        <Group>
-                          {socialIconMap[link.platform.toLowerCase()] ?? null}
-                          <Text fw={500}>{link.platform}</Text>
-                        </Group>
-                        <Anchor href={link.url} target="_blank" color="blue">
-                          {link.url}
-                        </Anchor>
-                      </Group>
-                    ),
-                  )}
-                </Stack>
-              </Card>
-            </Stack>
-          )}
-
-          {!currentUser?.social_links?.length && (
-            <Text color="dimmed" mt="md" />
-          )}
         </Stack>
       </Flex>
     </Stack>

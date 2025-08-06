@@ -1,8 +1,8 @@
 import { Box, Card, Divider, Group, Stack, Text, Tooltip } from "@mantine/core";
 import { PiBuildingsBold } from "react-icons/pi";
-import { FaGithub, FaLinkedin, FaTwitter } from "react-icons/fa";
 import { ProfileAvatar } from "../Common";
 import { Link } from "react-router-dom";
+import { SOCIAL_LINKS_DATA } from "@/utils/constants";
 
 function UserProfileCard({ user }: { user: any }) {
   const userStats = [
@@ -17,11 +17,6 @@ function UserProfileCard({ user }: { user: any }) {
     url: value,
   }));
 
-  const socialLinksIcons = {
-    github: <FaGithub />,
-    linkedin: <FaLinkedin />,
-    twitter: <FaTwitter />,
-  };
   return (
     <Card withBorder padding="xl" radius="md" w={350}>
       <Card.Section
@@ -43,32 +38,44 @@ function UserProfileCard({ user }: { user: any }) {
       </Text>
       <StatsList stats={userStats} />
       <Divider my="md" />
+      <Stack gap={7}>
+        <Text fz="sm" c="dimmed" ta="center">
+          Joined Cranecloud {user?.age}
+        </Text>
 
-      <Text fz="sm" mb="md" c="dimmed" ta="center">
-        Joined Cranecloud {user?.age}
-      </Text>
-      <Stack gap={4}>
         {user?.biography && (
-          <Text fz="sm" c="black" ta="center" lineClamp={3} fw={300}>
+          <Text fz="sm" ta="center" lineClamp={3} fw={500}>
             {user?.biography}
           </Text>
         )}
-        <Divider my="md" />
-
+      </Stack>
+      <Divider my="md" />
+      <Stack gap={7} fz="sm" fw={500}>
         {user?.organisation && (
-          <Group gap={5} fz="0.9rem" fw={600} mt="sm">
-            <PiBuildingsBold size={17} />
+          <Group gap={10}>
+            <PiBuildingsBold size={16} />
             {user?.organisation}
           </Group>
         )}
-        {links.map((link, index) => (
-          <Link key={index} to={link.url as string} target="_blank">
-            <Group gap={5} fz="0.9rem">
-              {socialLinksIcons[link.platform as keyof typeof socialLinksIcons]}
-              {link.url as string}
-            </Group>
-          </Link>
-        ))}
+        {links.map((link, index) => {
+          const platform = SOCIAL_LINKS_DATA.find(
+            (p) => p.value === link.platform,
+          );
+          const IconComponent = platform?.icon;
+
+          return (
+            <Link key={index} to={link.url as string} target="_blank">
+              <Group gap={10} align="center">
+                {IconComponent && (
+                  <IconComponent size={16} color={platform?.color} />
+                )}
+                <Text size="sm" style={{ flex: 1 }}>
+                  {link.url as string}
+                </Text>
+              </Group>
+            </Link>
+          );
+        })}
       </Stack>
     </Card>
   );
