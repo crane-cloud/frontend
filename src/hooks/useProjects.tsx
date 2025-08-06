@@ -81,5 +81,8 @@ export const useProjects = () => {
     };
   };
 
-  return { tableColumns, tableData, metaData };
+  const graphTitle = "Projects Graph";
+  const graphApi = `/projects?series=true`;
+
+  return { tableColumns, tableData, metaData, graphTitle, graphApi };
 };

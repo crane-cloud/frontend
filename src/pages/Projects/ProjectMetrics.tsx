@@ -32,11 +32,11 @@ const ProjectMetrics = () => {
   const [bigChart, setBigChart] = useState<"cpu" | "memory" | "network">("cpu");
 
   const [filters, setFilters] = useState<{
-    startDate: Date | null;
-    endDate: Date | null;
+    start: Date | null;
+    end: Date | null;
   }>({
-    startDate: null,
-    endDate: null,
+    start: null,
+    end: null,
   });
 
   useEffect(() => {
@@ -47,11 +47,11 @@ const ProjectMetrics = () => {
       };
 
       const requestBody =
-        filters.startDate && filters.endDate
+        filters.start && filters.end
           ? {
               ...baseBody,
-              start: filters.startDate.getTime() / 1000,
-              end: filters.endDate.getTime() / 1000,
+              start: filters.start ? new Date(filters.start).getTime() : null,
+              end: filters.end ? new Date(filters.end).getTime() : null,
             }
           : baseBody;
 
@@ -102,7 +102,6 @@ const ProjectMetrics = () => {
       numberOfDecimals: 0,
     };
   }, [bigChart, cpuMetricsData, memoryMetricsData, networkMetricsData]);
-
   return (
     <div>
       <TitleText>Project Metrics</TitleText>
@@ -116,7 +115,9 @@ const ProjectMetrics = () => {
             }
             showAllXValues
             filters={filters}
-            setFilters={setFilters}
+            setFilters={(data) => {
+              setFilters({ ...filters, ...data });
+            }}
             height={250}
             currentChart={bigChart}
             isLoading={

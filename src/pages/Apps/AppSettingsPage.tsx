@@ -45,7 +45,6 @@ import {
   HiLockClosed,
   HiLockOpen,
   HiOutlineXCircle,
-  HiPencil,
   HiPlus,
   HiTrash,
   HiCheck as IconCheck,
@@ -63,6 +62,7 @@ import { FaArrowDown, FaArrowUp } from "react-icons/fa";
 import { CUSTOM_DOMAIN_IP } from "@/config";
 import { GoPlus } from "react-icons/go";
 import { HiRefresh } from "react-icons/hi";
+import { FaPencil } from "react-icons/fa6";
 
 const AppSettingsPage = () => {
   const { app_id } = useParams();
@@ -269,7 +269,7 @@ const GeneralTab = ({
             onClick={() => setEnvVariablesConfirmOpened(true)}
             leftSection={
               Object.keys(app?.env_vars || {}).length > 0 ? (
-                <HiPencil />
+                <FaPencil />
               ) : (
                 <HiPlus />
               )
@@ -295,6 +295,7 @@ const GeneralTab = ({
               <Button
                 variant="outline"
                 onClick={() => setUpdateConfirmOpened(true)}
+                leftSection={<FaPencil />}
               >
                 Update
               </Button>

@@ -1,5 +1,5 @@
-import { formatTimestamp, returnObject } from "@/utils/helpers";
-import { LineChart } from "@mantine/charts";
+import { dateFormat, formatTimestamp, returnObject } from "@/utils/helpers";
+import { LineChart, BarChart } from "@mantine/charts";
 import {
   Card,
   Stack,
@@ -12,7 +12,7 @@ import {
   Center,
 } from "@mantine/core";
 import { DatePickerInput } from "@mantine/dates";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { FaChartLine, FaEye, FaEyeSlash } from "react-icons/fa";
 import ChartTooltip from "./ChartTooltip";
 import { CiCalendarDate } from "react-icons/ci";
@@ -128,12 +128,14 @@ export const LineMetricChart = ({
 
 type TLineLargeMetricChart = TLineMetricChart & {
   filters: {
-    startDate: Date | null;
-    endDate: Date | null;
+    start: Date | null;
+    end: Date | null;
   };
   setFilters: (filter: any) => void;
   currentChart?: "cpu" | "memory" | "network";
 };
+
+const DATE_FORMAT = "YYYY-MM-DD";
 
 export const LineLargeMetricChart = ({
   title,
@@ -146,24 +148,22 @@ export const LineLargeMetricChart = ({
   currentChart,
   isLoading = false,
 }: TLineLargeMetricChart) => {
-  const { startDate, endDate } = filters;
-  const [filteredData, setFilteredData] = useState(data);
   const [activePreset, setActivePreset] = useState<
-    "1D" | "7D" | "30D" | "90D" | "Today" | null
-  >("Today");
+    "1D" | "7D" | "30D" | "90D" | "All" | null
+  >("All");
 
   const xAxisTicks =
     data?.length > 0
       ? [data[0].timestamp, data[data.length - 1].timestamp]
       : [];
 
-  const handlePresetClick = (range: "1D" | "7D" | "30D" | "90D" | "Today") => {
+  const handlePresetClick = (range: "1D" | "7D" | "30D" | "90D" | "All") => {
     const now = new Date();
 
-    if (range === "Today") {
+    if (range === "All") {
       setFilters({
-        startDate: null,
-        endDate: null,
+        start: null,
+        end: null,
       });
     } else {
       const daysMap = {
@@ -179,8 +179,8 @@ export const LineLargeMetricChart = ({
       );
 
       setFilters({
-        startDate,
-        endDate: now,
+        start: startDate,
+        end: now,
       });
     }
 
@@ -196,19 +196,11 @@ export const LineLargeMetricChart = ({
       );
     }
 
-    if (!filteredData || filteredData.length === 0) {
-      return (
-        <Center h={height}>
-          <Text c="dimmed">No data available</Text>
-        </Center>
-      );
-    }
-
     return (
       <LineChart
         h={height}
         w="100%"
-        data={filteredData}
+        data={data}
         series={[{ name: "value", label: "Usage" }]}
         dataKey="timestamp"
         dotProps={{ r: 2 }}
@@ -241,25 +233,6 @@ export const LineLargeMetricChart = ({
     );
   };
 
-  useEffect(() => {
-    if (!data) {
-      return;
-    }
-
-    const filtered = data.filter((item: any) => {
-      if (!startDate && !endDate) {
-        return true;
-      }
-
-      const itemDate = new Date(item.timestamp * 1000);
-      return (
-        (!startDate || itemDate >= startDate) &&
-        (!endDate || itemDate <= endDate)
-      );
-    });
-    setFilteredData(filtered);
-  }, [startDate, endDate, data]);
-
   return (
     <Card withBorder p="md" radius="md" w="100%">
       <Stack gap="lg">
@@ -269,7 +242,7 @@ export const LineLargeMetricChart = ({
           </Group>
           <Flex justify="space-between" gap="xs" wrap="wrap">
             <Group gap="xs">
-              {(["1D", "7D", "30D", "90D", "Today"] as const).map((range) => (
+              {(["1D", "7D", "30D", "90D", "All"] as const).map((range) => (
                 <Button
                   key={range}
                   variant={activePreset === range ? "solid" : "outline"}
@@ -283,9 +256,14 @@ export const LineLargeMetricChart = ({
             <Group>
               <DatePickerInput
                 placeholder="Start date"
-                value={startDate}
+                value={filters.start ? new Date(filters.start) : null}
                 onChange={(date) => {
-                  setFilters({ ...filters, startDate: date });
+                  setFilters({
+                    ...filters,
+                    start: date
+                      ? dateFormat(date.toISOString(), DATE_FORMAT)
+                      : null,
+                  });
                   setActivePreset(null);
                 }}
                 c="light-dark(var(--mantine-color-dark-9), white)"
@@ -296,9 +274,178 @@ export const LineLargeMetricChart = ({
               />
               <DatePickerInput
                 placeholder="End date"
-                value={endDate}
+                value={filters.end ? new Date(filters.end) : null}
                 onChange={(date) => {
-                  setFilters({ ...filters, endDate: date });
+                  setFilters({
+                    ...filters,
+                    end: date
+                      ? dateFormat(date.toISOString(), DATE_FORMAT)
+                      : null,
+                  });
+                  setActivePreset(null);
+                }}
+                mx="auto"
+                size="xs"
+                leftSection={<CiCalendarDate size={13} />}
+                className="dimmed-placeholder"
+              />
+            </Group>
+          </Flex>
+        </Stack>
+        {renderChartContent()}
+      </Stack>
+    </Card>
+  );
+};
+
+type TBarChart = {
+  title: string;
+  data: any;
+  valueFormatter: (value: number) => string;
+  showAllXValues?: boolean;
+  height?: number;
+  filters: {
+    start: Date | null;
+    end: Date | null;
+  };
+  setFilters: (filter: any) => void;
+  currentChart?: "cpu" | "memory" | "network";
+  isLoading?: boolean;
+};
+
+export const BarMetricChart = ({
+  title,
+  data,
+  valueFormatter,
+  showAllXValues = false,
+  height = 250,
+  filters,
+  setFilters,
+  currentChart,
+  isLoading = false,
+}: TBarChart) => {
+  const [activePreset, setActivePreset] = useState<
+    "1D" | "7D" | "30D" | "90D" | "All" | null
+  >("All");
+
+  const xAxisTicks =
+    data?.length > 0
+      ? [data[0].timestamp, data[data.length - 1].timestamp]
+      : [];
+
+  const handlePresetClick = (range: "1D" | "7D" | "30D" | "90D" | "All") => {
+    const now = new Date();
+
+    if (range === "All") {
+      setFilters({
+        start: null,
+        end: null,
+      });
+    } else {
+      const daysMap = {
+        "1D": 1,
+        "7D": 7,
+        "30D": 30,
+        "90D": 90,
+      };
+
+      const daysToGoBack = daysMap[range];
+      const startDate = new Date(
+        now.getTime() - daysToGoBack * 24 * 60 * 60 * 1000,
+      );
+
+      setFilters({
+        start: dateFormat(startDate.toISOString(), DATE_FORMAT),
+        end: dateFormat(now.toISOString(), DATE_FORMAT),
+      });
+    }
+
+    setActivePreset(range);
+  };
+
+  const renderChartContent = () => {
+    if (isLoading) {
+      return (
+        <Center h={height}>
+          <Loader />
+        </Center>
+      );
+    }
+
+    return (
+      <BarChart
+        h={height}
+        w="100%"
+        data={data}
+        series={[{ name: "value", label: "Usage", color: "blue.6" }]}
+        dataKey="timestamp"
+        valueFormatter={valueFormatter}
+        tooltipProps={{
+          content: ({ label, payload }) => (
+            <ChartTooltip
+              label={label}
+              payload={payload}
+              chartType={currentChart!}
+            />
+          ),
+        }}
+        xAxisProps={{
+          tickFormatter: formatTimestamp,
+          ...returnObject(showAllXValues, { ticks: xAxisTicks }),
+        }}
+      />
+    );
+  };
+
+  return (
+    <Card withBorder p="md" radius="md" w="100%">
+      <Stack gap="lg">
+        <Stack>
+          <Group justify="space-between">
+            <Text className="title">{title}</Text>
+          </Group>
+          <Flex justify="space-between" gap="xs" wrap="wrap">
+            <Group gap="xs">
+              {(["1D", "7D", "30D", "90D", "All"] as const).map((range) => (
+                <Button
+                  key={range}
+                  variant={activePreset === range ? "solid" : "outline"}
+                  size="xs"
+                  onClick={() => handlePresetClick(range)}
+                >
+                  {range}
+                </Button>
+              ))}
+            </Group>
+            <Group>
+              <DatePickerInput
+                placeholder="Start date"
+                value={filters.start ? new Date(filters.start) : null}
+                onChange={(date) => {
+                  setFilters({
+                    ...filters,
+                    start: date
+                      ? dateFormat(date.toISOString(), DATE_FORMAT)
+                      : null,
+                  });
+                  setActivePreset(null);
+                }}
+                c="light-dark(var(--mantine-color-dark-9), white)"
+                mx="auto"
+                size="xs"
+                leftSection={<CiCalendarDate size={13} />}
+                className="dimmed-placeholder"
+              />
+              <DatePickerInput
+                placeholder="End date"
+                value={filters.end ? new Date(filters.end) : null}
+                onChange={(date) => {
+                  setFilters({
+                    ...filters,
+                    end: date
+                      ? dateFormat(date.toISOString(), DATE_FORMAT)
+                      : null,
+                  });
                   setActivePreset(null);
                 }}
                 mx="auto"

@@ -1,37 +1,33 @@
-import {
-  Button,
-  Card,
-  Divider,
-  Flex,
-  Group,
-  Stack,
-  Text,
-  TextInput,
-} from "@mantine/core";
-import { useEffect, useState, useContext } from "react";
-import { HiPencil, HiPlus } from "react-icons/hi2";
+import { Button, Card, Divider, Flex, Group, Stack, Text } from "@mantine/core";
+import { useEffect, useState } from "react";
+import { HiPlus } from "react-icons/hi2";
 
 import TitleText from "@/components/TitleText";
 import { ModalConfirm } from "@/components/Elements/Modals";
-import { beautify } from "@/utils/helpers";
+import {
+  beautify,
+  useSetContainerSize,
+  useSetNoSidebar,
+} from "@/utils/helpers";
 import usePost from "@/utils/usePost";
-import { MenuContext } from "@/components/Layouts/DashboardLayout";
 import { useAuth } from "@/utils/AuthContext";
 import useGet from "@/utils/useGet";
-import { UpdateProfileForm } from "@/components/Forms/UpdateProfileForm";
-import { FaLock } from "react-icons/fa6";
+import {
+  SocialMediaLinksForm,
+  UpdateProfileForm,
+} from "@/components/Forms/UpdateProfileForm";
+import { FaLock, FaPencil } from "react-icons/fa6";
 import { FaLockOpen } from "react-icons/fa";
+import { SOCIAL_LINKS_DATA } from "@/utils/constants";
 
 const UserProfileSettingsPage = () => {
   const { user } = useAuth();
+
   const [refresh, setRefresh] = useState<number>(0);
   const { getData: getUser, data: userData } = useGet();
-  const { setContainerSize } = useContext(MenuContext);
 
-  useEffect(() => {
-    setContainerSize("md");
-    return () => setContainerSize("xl");
-  }, [setContainerSize]);
+  useSetNoSidebar();
+  useSetContainerSize("md");
 
   useEffect(() => {
     if (user) {
@@ -61,9 +57,6 @@ const SocialLinksTab = ({
   user: any;
   setRefresh: React.Dispatch<React.SetStateAction<number>>;
 }) => {
-  const [userSocialLinks, setUserSocialLinks] = useState<
-    { platform: string; url: string }[]
-  >([]);
   const [socialModal, setSocialModal] = useState(false);
   const [updateModal, setUpdateModal] = useState(false);
   const [visibility, setVisibility] = useState(true);
@@ -77,38 +70,7 @@ const SocialLinksTab = ({
     }
   }, [user]);
 
-  const {
-    uploadData: updateProfile,
-    submitting: saving,
-    success: savedSuccess,
-  } = usePost();
-
-  useEffect(() => {
-    if (savedSuccess) {
-      setSocialModal(false);
-      setRefresh((prev) => prev + 1);
-    }
-  }, [savedSuccess]);
-
-  const submitSocialLinks = () => {
-    const socialLinks = userSocialLinks.reduce(
-      (acc, link) => {
-        if (link.platform && link.url) {
-          acc[link.platform] = link.url;
-        }
-        return acc;
-      },
-      {} as Record<string, string>,
-    );
-
-    updateProfile({
-      api: "users",
-      id: user.id,
-      method: "PATCH",
-      params: { social_links: socialLinks },
-    });
-    setSocialModal(false);
-  };
+  const { uploadData: updateProfile } = usePost();
 
   const refreshProfile = () => {
     setRefresh((prev) => prev + 1);
@@ -140,20 +102,16 @@ const SocialLinksTab = ({
   const links =
     Object.entries(socialLinks).map(([key, value]) => ({
       platform: key,
-      url: value,
+      url: value as string,
     })) || [];
 
-  useEffect(() => {
-    setUserSocialLinks(links as { platform: string; url: string }[]);
-  }, [user]);
-
   return (
-    <Stack gap={30}>
+    <Stack gap={30} mt="md">
       {/* Social Links */}
       <Stack gap={0}>
         <TitleText>Social Media Links</TitleText>
-        {userSocialLinks.length > 0 ? (
-          <SocialMediaLinksTable links={userSocialLinks} />
+        {links.length > 0 ? (
+          <SocialMediaLinksTable links={links} />
         ) : (
           <Text className="subtext">Add your social media profiles here.</Text>
         )}
@@ -161,9 +119,9 @@ const SocialLinksTab = ({
           <Button
             variant="outline"
             onClick={() => setSocialModal(true)}
-            leftSection={userSocialLinks.length > 0 ? <HiPencil /> : <HiPlus />}
+            leftSection={links.length > 0 ? <FaPencil /> : <HiPlus />}
           >
-            {userSocialLinks.length > 0 ? "Update Links" : "Add Links"}
+            {links.length > 0 ? "Update Links" : "Add Links"}
           </Button>
         </Flex>
       </Stack>
@@ -219,7 +177,7 @@ const SocialLinksTab = ({
               <Button
                 variant="outline"
                 onClick={() => setUpdateModal(true)}
-                leftSection={<HiPencil />}
+                leftSection={<FaPencil />}
               >
                 Update
               </Button>
@@ -239,10 +197,7 @@ const SocialLinksTab = ({
             <UpdateProfileForm
               user={user}
               onCancel={() => setUpdateModal(false)}
-              onSuccess={() => {
-                setUpdateModal(false);
-                setRefresh((prev) => prev + 1);
-              }}
+              refresh={() => setRefresh((prev) => prev + 1)}
             />
           </ModalConfirm>
 
@@ -276,87 +231,18 @@ const SocialLinksTab = ({
             opened={socialModal}
             onClose={() => setSocialModal(false)}
             title="Social Media Links"
-            buttonText="Save Links"
             size="xl"
-            onConfirm={submitSocialLinks}
+            showFooterActions={false}
+            onConfirm={() => {}}
           >
             <SocialMediaLinksForm
-              links={userSocialLinks}
-              setLinks={setUserSocialLinks}
-              loading={saving}
+              user={user}
+              onCancel={() => setSocialModal(false)}
+              refresh={() => setRefresh((prev) => prev + 1)}
             />
           </ModalConfirm>
         </Card>
       </Stack>
-    </Stack>
-  );
-};
-
-const SocialMediaLinksForm = ({
-  links = [],
-  setLinks,
-  loading,
-}: {
-  links: { platform: string; url: string }[];
-  setLinks: (val: any) => void;
-  loading: boolean;
-}) => {
-  const handleChange = (index: number, field: string, value: string) => {
-    const newLinks = [...links];
-    if (field === "url") {
-      // Ensure URL starts with http:// or https://
-      if (
-        value &&
-        !value.startsWith("http://") &&
-        !value.startsWith("https://")
-      ) {
-        const newValue = `https://${value}`;
-        (newLinks[index] as any)[field] = newValue;
-      }
-    }
-    (newLinks[index] as any)[field] = value;
-    setLinks(newLinks);
-  };
-
-  const addLink = () => {
-    setLinks([...links, { platform: "", url: "" }]);
-  };
-
-  const removeLink = (index: number) => {
-    const newLinks = [...links];
-    newLinks.splice(index, 1);
-    setLinks(newLinks);
-  };
-
-  return (
-    <Stack>
-      {links?.map((link, index) => (
-        <Group key={index} grow align="center" gap="md">
-          <TextInput
-            label="Platform"
-            placeholder="e.g. Twitter"
-            value={link.platform}
-            onChange={(e) => handleChange(index, "platform", e.target.value)}
-          />
-          <TextInput
-            label="URL"
-            placeholder="https://twitter.com/yourhandle"
-            value={link.url}
-            onChange={(e) => handleChange(index, "url", e.target.value)}
-          />
-          <Button
-            color="red"
-            variant="light"
-            mt="lg"
-            onClick={() => removeLink(index)}
-          >
-            Remove
-          </Button>
-        </Group>
-      ))}
-      <Button variant="outline" onClick={addLink} loading={loading}>
-        Add Social Media Link
-      </Button>
     </Stack>
   );
 };
@@ -367,18 +253,84 @@ const SocialMediaLinksTable = ({
   links: { platform: string; url: string }[];
 }) => {
   return (
-    <Card withBorder>
-      <Stack>
-        {links.map((link, index) => (
-          <Flex key={index} justify="space-between">
-            <Text fw={500}>{beautify(link.platform)}</Text>
-            <Text size="sm" color="blue">
-              <a href={link.url} target="_blank" rel="noopener noreferrer">
-                {link.url}
-              </a>
-            </Text>
-          </Flex>
-        ))}
+    <Card withBorder radius="md" p="lg">
+      <Stack gap="md">
+        {links.map((link, index) => {
+          const platform = SOCIAL_LINKS_DATA.find(
+            (p) => p.value === link.platform,
+          );
+          const IconComponent = platform?.icon;
+
+          return (
+            <Group
+              key={index}
+              justify="space-between"
+              align="center"
+              p="sm"
+              style={{
+                border: "1px solid #f1f3f5",
+                borderRadius: "8px",
+                backgroundColor: "light-dark(white, gray.300)",
+              }}
+            >
+              <Group gap="md" align="center">
+                {IconComponent && (
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      width: "32px",
+                      height: "32px",
+                      borderRadius: "6px",
+                      backgroundColor: "#ffffff",
+                      border: "1px solid #e9ecef",
+                    }}
+                  >
+                    <IconComponent size={18} color={platform?.color} />
+                  </div>
+                )}
+                <Text fw={600} size="sm" c="light-dark(dark, #e9ecef)">
+                  {beautify(link.platform)}
+                </Text>
+              </Group>
+              <Text
+                size="sm"
+                c="dark.8"
+                style={{
+                  flex: 1,
+                  textAlign: "right",
+                  fontFamily: "monospace",
+                }}
+              >
+                <a
+                  href={link.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    textDecoration: "none",
+                    color: "light-dark(#1a1a1a, #e9ecef)",
+                    transition: "all 0.2s ease",
+                    padding: "4px 8px",
+                    borderRadius: "4px",
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.textDecoration = "underline";
+                    e.currentTarget.style.color =
+                      "light-dark(#0066cc, #e9ecef)";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.textDecoration = "none";
+                    e.currentTarget.style.color =
+                      "light-dark(#1a1a1a, #e9ecef)";
+                  }}
+                >
+                  {link.url}
+                </a>
+              </Text>
+            </Group>
+          );
+        })}
       </Stack>
     </Card>
   );

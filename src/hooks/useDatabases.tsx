@@ -7,23 +7,14 @@ import { Link } from "react-router-dom";
 
 export const useDatabases = () => {
   const { getData: getMetaData, data: metaDataData } = useGet();
-  const {
-    getData: getDatabaseGraphData,
-    data: databaseGraphData,
-    loading: fetchingGraphData,
-  } = useGet();
+
   useEffect(() => {
     getMetaData({
       api: `${DATABASE_API_URL}/databases/stats`,
       isExternal: true,
     });
   }, []);
-  useEffect(() => {
-    getDatabaseGraphData({
-      api: `${DATABASE_API_URL}/databases/graph`,
-      isExternal: true,
-    });
-  }, []);
+
   const tableColumns = () => [
     {
       id: "database_flavour_name",
@@ -93,7 +84,8 @@ export const useDatabases = () => {
   const isExternalRoute = true;
   const showTitle = false;
   const tableTitle = "Database Summary";
-  const graphTitle = "graphTitle";
+  const graphTitle = "Database Graph";
+  const graphApi = `${DATABASE_API_URL}/databases/graph`;
 
   return {
     tableColumns,
@@ -101,9 +93,8 @@ export const useDatabases = () => {
     isExternalRoute,
     showTitle,
     metaData,
-    graphData: databaseGraphData?.data?.graph_data,
-    fetchingGraphData,
     tableTitle,
     graphTitle,
+    graphApi,
   };
 };
