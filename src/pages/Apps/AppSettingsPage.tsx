@@ -844,6 +844,7 @@ const DomainsTab = ({
   });
 
   const [isAddEditOpen, setIsAddEditOpen] = useState(false);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isAdding, setIsAdding] = useState(false);
   const [editingDomain, setEditingDomain] = useState<AppDomain | null>(null);
   const [domainInput, setDomainInput] = useState("");
