@@ -130,5 +130,18 @@ export const useApps = () => {
     };
   };
 
-  return { tableColumns, tableData, metaData };
+  const showTitle = false;
+  const tableTitle = "Apps Summary";
+  const graphTitle = "Apps Graph";
+  const graphApi = `/apps?series=true`;
+
+  return {
+    tableColumns,
+    tableData,
+    metaData,
+    showTitle,
+    tableTitle,
+    graphTitle,
+    graphApi,
+  };
 };

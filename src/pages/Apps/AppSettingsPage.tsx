@@ -27,42 +27,46 @@ import {
   Stack,
   Tabs,
   Text,
+  Table as MantineTable,
   Tooltip,
   TextInput,
-  Table as MantineTable,
   Alert,
-  ActionIcon,
-  CopyButton,
-  Paper,
   Modal,
-  Code,
-  List,
-  Collapse,
   Box,
+  Paper,
+  Anchor,
+  ActionIcon,
+  Collapse,
+  Code,
+  CopyButton,
+  List,
 } from "@mantine/core";
 import { useContext, useEffect, useState } from "react";
 import {
+  HiCheck,
   HiLockClosed,
   HiLockOpen,
   HiOutlineXCircle,
   HiPlus,
   HiTrash,
-  HiCheck as IconCheck,
   HiExclamationTriangle as IconAlertTriangle,
 } from "react-icons/hi2";
-import { FiCalendar, FiExternalLink } from "react-icons/fi";
+import {
+  FiArrowDown,
+  FiArrowUp,
+  FiCalendar,
+  FiExternalLink,
+} from "react-icons/fi";
 import { LiaDocker } from "react-icons/lia";
 
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { TbCheck, TbCopy } from "react-icons/tb";
 import { useClipboard } from "@mantine/hooks";
 import { useAuth } from "@/utils/AuthContext";
 import { MenuContext } from "@/components/Layouts/DashboardLayout";
-import { FaArrowDown, FaArrowUp } from "react-icons/fa";
-import { CUSTOM_DOMAIN_IP } from "@/config";
 import { GoPlus } from "react-icons/go";
-import { HiRefresh } from "react-icons/hi";
 import { FaPencil } from "react-icons/fa6";
+import { CUSTOM_DOMAIN_IP } from "@/config";
 
 const AppSettingsPage = () => {
   const { app_id } = useParams();
@@ -707,6 +711,19 @@ const DomainsTab = ({
   app: any;
   setRefresh: React.Dispatch<React.SetStateAction<number>>;
 }) => {
+  const DOMAIN_REGEX =
+    /^[a-z0-9]+([-.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/;
+
+  type AppDomain = {
+    id: string;
+    app_id?: string;
+    domain: string;
+    is_active?: boolean;
+    is_generated?: boolean;
+    date_created?: string;
+    type?: "custom" | "default" | "internal";
+  };
+
   interface DnsRecord {
     type: string;
     name: string;
@@ -755,460 +772,562 @@ const DomainsTab = ({
     },
   ];
 
-  const [newDomain, setNewDomain] = useState("");
-  const [isAddingDomain, setIsAddingDomain] = useState(false);
-  const [isDnsInstructionsOpen, setIsDnsInstructionsOpen] = useState(false);
-  const [editOpen, setEditOpen] = useState(false);
-  const [domainValue, setDomainValue] = useState(app?.url || "");
-  const [editingType, setEditingType] = useState<
-    "custom" | "default" | "internal" | null
-  >(null);
-  const [domains, setDomains] = useState([
-    {
-      type: "default",
-      value: app?.url,
-      status: app?.status || "active",
-    },
-    {
-      type: "internal",
-      value: app?.internal_url,
-      status: app?.status || "active",
-    },
-  ]);
+  const sortDomainsByPriority = (domainList: AppDomain[]) => {
+    return [...domainList].sort((a, b) => {
+      // First, sort by active status (active domains first)
+      if (a.is_active && !b.is_active) {
+        return -1;
+      }
+      if (!a.is_active && b.is_active) {
+        return 1;
+      }
+
+      // Among active or inactive domains, prioritize by type
+      const typeOrder = { default: 0, custom: 1, internal: 2 };
+      const aTypeOrder = typeOrder[a.type || "custom"];
+      const bTypeOrder = typeOrder[b.type || "custom"];
+
+      if (aTypeOrder !== bTypeOrder) {
+        return aTypeOrder - bTypeOrder;
+      }
+
+      // For same type, sort by date (newer first)
+      if (a.date_created && b.date_created) {
+        return (
+          new Date(b.date_created).getTime() -
+          new Date(a.date_created).getTime()
+        );
+      }
+
+      return 0;
+    });
+  };
+
+  const [domains, setDomains] = useState<AppDomain[]>(() => {
+    const now = new Date().toISOString();
+    const base: AppDomain[] = [];
+
+    if (app?.url) {
+      base.push({
+        id: `default-${app?.id || "local"}`,
+        app_id: app?.id,
+        domain: (app?.url || "").replace(/^https?:\/\//, ""),
+        is_active: !app?.has_custom_domain,
+        is_generated: false,
+        date_created: now,
+        type: "default",
+      });
+    }
+
+    base.push(
+      {
+        id: `custom-1-${Date.now()}`,
+        app_id: app?.id,
+        domain: "rhodin.xyz",
+        is_active: false,
+        is_generated: false,
+        date_created: now,
+        type: "custom",
+      },
+      {
+        id: `custom-2-${Date.now() + 1}`,
+        app_id: app?.id,
+        domain: "www.rhodin.xyz",
+        is_active: false,
+        is_generated: false,
+        date_created: now,
+        type: "custom",
+      },
+    );
+
+    return sortDomainsByPriority(base);
+  });
+
+  const [isAddEditOpen, setIsAddEditOpen] = useState(false);
+  const [isAdding, setIsAdding] = useState(false);
+  const [editingDomain, setEditingDomain] = useState<AppDomain | null>(null);
+  const [domainInput, setDomainInput] = useState("");
+  const [openDnsInstructions, setOpenDnsInstructions] = useState<Set<string>>(
+    new Set(),
+  );
+  // const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
 
   const {
     uploadData: addCustomDomain,
     submitting: addingCustomDomain,
     success: addedCustomDomainSuccess,
-    error: addCustomDomainError,
-  } = usePost();
-  const {
-    uploadData: revertCustomDomain,
-    submitting: revertingCustomDomain,
-    success: revertedCustomDomainSuccess,
-    error: revertCustomDomainError,
+    // error: addCustomDomainError,
   } = usePost();
 
   useEffect(() => {
     if (addedCustomDomainSuccess) {
       setRefresh((prev) => prev + 1);
-      setNewDomain("");
-      setIsAddingDomain(false);
-      setEditOpen(false);
-      setEditingType(null);
+      setIsAddEditOpen(false);
+      setEditingDomain(null);
+      setDomainInput("");
     }
   }, [addedCustomDomainSuccess]);
 
   useEffect(() => {
-    if (revertedCustomDomainSuccess) {
-      setEditOpen(false);
-      setEditingType(null);
-      setRefresh((prev) => prev + 1);
-    }
-  }, [revertedCustomDomainSuccess]);
+    setDomains((prev) => {
+      const custom = prev.filter((d) => d.type === "custom");
+      const now = new Date().toISOString();
+      const res: AppDomain[] = [];
 
-  const handleEdit = (type: "custom" | "default", value: string) => {
-    const cleanValue = value?.replace(/^https?:\/\//, "");
-    setEditingType(type);
-    setDomainValue(cleanValue);
-    setEditOpen(true);
-  };
+      if (app?.url) {
+        res.push({
+          id: `default-${app?.id || "local"}`,
+          app_id: app?.id,
+          domain: (app?.url || "").replace(/^https?:\/\//, ""),
+          is_active: !app?.has_custom_domain, // Keep default active only if no custom domain
+          is_generated: false,
+          date_created: now,
+          type: "default",
+        });
+      }
 
-  const handleCancel = () => {
-    setEditOpen(false);
-    setEditingType(null);
-    setDomainValue("");
-  };
-
-  const handleSave = () => {
-    if (!app?.id || !domainValue.trim()) {
-      return;
-    }
-
-    const cleanUrl = domainValue.trim().replace(/^https?:\/\//, "");
-    addCustomDomain({
-      api: "apps",
-      id: app?.id,
-      method: "PATCH",
-      params: {
-        custom_domain: cleanUrl,
-      },
+      const combined = [...res, ...custom];
+      return sortDomainsByPriority(combined);
     });
+  }, [app?.url, app?.has_custom_domain, app?.id]);
+
+  const validateDomain = (value: string) => DOMAIN_REGEX.test(value.trim());
+
+  const openAddModal = () => {
+    setEditingDomain(null);
+    setDomainInput("");
+    setIsAdding(true);
+    setIsAddEditOpen(true);
   };
 
-  const handleAddDomain = async () => {
-    if (!app?.id || !newDomain.trim()) {
+  const openEditModal = (d: AppDomain) => {
+    setEditingDomain(d);
+    setDomainInput(d.domain);
+    setIsAdding(false);
+    setIsAddEditOpen(true);
+  };
+
+  const handleAddOrSave = () => {
+    const clean = domainInput.trim().replace(/^https?:\/\//, "");
+    if (!validateDomain(clean)) {
       return;
     }
 
-    setDomains((prev) => [
-      {
+    if (editingDomain) {
+      // Update existing domain
+      setDomains((prev) => {
+        const updated = prev.map((p) =>
+          p.id === editingDomain.id ? { ...p, domain: clean } : p,
+        );
+        return sortDomainsByPriority(updated);
+      });
+
+      addCustomDomain({
+        api: "apps",
+        id: app?.id,
+        method: "PATCH",
+        params: {
+          custom_domain: clean,
+          domain_id: editingDomain.id,
+        },
+      });
+    } else {
+      // Add new domain
+      const newDomain: AppDomain = {
+        id: `custom-${Date.now()}`,
+        app_id: app?.id,
+        domain: clean,
+        is_active: false,
+        is_generated: false,
+        date_created: new Date().toISOString(),
         type: "custom",
-        value: newDomain,
-        status: "pending",
-      },
-      ...prev,
-    ]);
+      };
 
-    addCustomDomain({
-      api: "apps",
-      id: app?.id,
-      method: "PATCH",
-      params: {
-        custom_domain: newDomain.trim(),
-      },
-    });
-  };
+      setDomains((prev) => sortDomainsByPriority([newDomain, ...prev]));
 
-  const handleRevertDomain = async () => {
-    if (!app?.id) {
-      return;
+      addCustomDomain({
+        api: "apps",
+        id: app?.id,
+        method: "PATCH",
+        params: {
+          custom_domain: clean,
+        },
+      });
     }
 
-    revertCustomDomain({
-      api: `apps/${app?.id}/revert_url`,
-      method: "PATCH",
+    setIsAddEditOpen(false);
+    setEditingDomain(null);
+    setDomainInput("");
+  };
+
+  const handleDelete = (id: string) => {
+    setDomains((prev) => {
+      const filtered = prev.filter((d) => d.id !== id);
+
+      // If we deleted the active custom domain, make default active
+      const deletedDomain = prev.find((d) => d.id === id);
+      if (deletedDomain?.is_active) {
+        const updated = filtered.map((d) => ({
+          ...d,
+          is_active: d.type === "default",
+        }));
+        return sortDomainsByPriority(updated);
+      }
+
+      return sortDomainsByPriority(filtered);
+    });
+
+    // TODO: call backend delete endpoint when available
+  };
+
+  const toggleDnsInstructions = (domainId: string) => {
+    setOpenDnsInstructions((prev) => {
+      const newSet = new Set(prev);
+      if (newSet.has(domainId)) {
+        newSet.delete(domainId);
+      } else {
+        newSet.add(domainId);
+      }
+      return newSet;
     });
   };
 
-  const renderDnsInstructions = () => (
-    <Stack gap="md" mt="md">
-      <Group justify="flex-start">
-        <Button
-          variant="subtle"
-          color="blue"
-          size="sm"
-          leftSection={
-            isDnsInstructionsOpen ? (
-              <FaArrowUp size={16} />
-            ) : (
-              <FaArrowDown size={16} />
-            )
-          }
-          onClick={() => setIsDnsInstructionsOpen(!isDnsInstructionsOpen)}
-        >
-          {isDnsInstructionsOpen
-            ? "Hide DNS Setup Instructions"
-            : "View DNS Setup Instructions"}
-        </Button>
-      </Group>
+  const renderDomainRow = (d: AppDomain) => {
+    const activeBadge = d.is_active ? (
+      <Badge color="green" size="sm" leftSection={<TbCheck size={12} />}>
+        Current
+      </Badge>
+    ) : null;
 
-      <Collapse in={isDnsInstructionsOpen}>
-        <Paper p="md" withBorder radius="md">
+    const generatedBadge = d.is_generated ? (
+      <Badge color="gray" size="sm" variant="light">
+        Generated
+      </Badge>
+    ) : null;
+
+    const typeBadge = (() => {
+      switch (d.type) {
+        case "default":
+          return (
+            <Badge size="xs" variant="dot" color="blue">
+              Default
+            </Badge>
+          );
+        case "custom":
+          return (
+            <Badge size="xs" variant="dot" color="blue">
+              Custom
+            </Badge>
+          );
+        case "internal":
+          return (
+            <Badge size="xs" variant="dot" color="blue">
+              Internal
+            </Badge>
+          );
+        default:
+          return null;
+      }
+    })();
+
+    const isDnsOpen = openDnsInstructions.has(d.id);
+
+    return (
+      <Box>
+        <Group justify="space-between" align="flex-start" wrap="nowrap">
+          {/* Left side */}
+          <Box style={{ minWidth: 0, flex: 1 }}>
+            <Group gap="xs" mb="xs" align="center">
+              <Anchor
+                href={
+                  d.domain.startsWith("http") ? d.domain : `https://${d.domain}`
+                }
+                target="_blank"
+                rel="noreferrer"
+                size="sm"
+                fw={600}
+                c="blue"
+                style={{
+                  maxWidth: "400px",
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                  whiteSpace: "nowrap",
+                  display: "block",
+                }}
+              >
+                {d.domain}
+              </Anchor>
+
+              {d.is_active && d.type !== "internal" && (
+                <ActionIcon size="xs" variant="transparent" color="blue">
+                  <FiExternalLink size={12} />
+                </ActionIcon>
+              )}
+            </Group>
+
+            <Group gap="xs" align="center">
+              {activeBadge}
+              {generatedBadge}
+              {typeBadge}
+              {d.type !== "default" && (
+                <Button
+                  variant="subtle"
+                  size="xs"
+                  color="gray"
+                  onClick={() => toggleDnsInstructions(d.id)}
+                  rightSection={
+                    <ActionIcon size="xs" variant="transparent">
+                      {isDnsOpen ? (
+                        <FiArrowUp size={12} />
+                      ) : (
+                        <FiArrowDown size={12} />
+                      )}
+                    </ActionIcon>
+                  }
+                  style={{ padding: "2px 8px", height: "auto" }}
+                >
+                  <Text size="xs" c="dimmed">
+                    Learn More
+                  </Text>
+                </Button>
+              )}
+            </Group>
+          </Box>
+
+          {/* Right side */}
+          <Group gap="xs" align="center" wrap="nowrap">
+            {d.type !== "default" && (
+              <ActionIcon
+                size="sm"
+                variant="subtle"
+                color="gray"
+                onClick={() => openEditModal(d)}
+                title="Edit domain"
+              >
+                <FaPencil size={12} />
+              </ActionIcon>
+            )}
+
+            {d.type === "custom" && (
+              <ActionIcon
+                size="sm"
+                variant="subtle"
+                color="red"
+                onClick={() => handleDelete(d.id)}
+                title="Delete domain"
+              >
+                <HiTrash size={12} />
+              </ActionIcon>
+            )}
+          </Group>
+        </Group>
+
+        {d.type !== "default" && (
+          <Collapse in={isDnsOpen}>
+            <Paper p="md" withBorder radius="md" mt="md">
+              <Alert
+                icon={<IconAlertTriangle size={16} />}
+                color="blue"
+                variant="light"
+                radius="md"
+                mb="md"
+              >
+                <Text size="sm" fw={500}>
+                  DNS Configuration Required
+                </Text>
+                <Text size="sm" c="dimmed" mt={4}>
+                  Configure your DNS provider with the following settings to
+                  connect your custom domain
+                </Text>
+              </Alert>
+
+              <Tabs defaultValue="dns-records" variant="outline">
+                <Tabs.List>
+                  <Tabs.Tab value="dns-records">Required DNS Records</Tabs.Tab>
+                  <Tabs.Tab value="instructions">Step-by-Step Guide</Tabs.Tab>
+                </Tabs.List>
+
+                <Tabs.Panel value="dns-records" pt="md">
+                  <Text size="sm" c="dimmed" mb="md">
+                    Add these DNS records to your domain provider to connect
+                    your custom domain.
+                  </Text>
+
+                  <MantineTable>
+                    <MantineTable.Thead>
+                      <MantineTable.Tr>
+                        <MantineTable.Th>Type</MantineTable.Th>
+                        <MantineTable.Th>Name</MantineTable.Th>
+                        <MantineTable.Th>Value</MantineTable.Th>
+                        <MantineTable.Th>TTL</MantineTable.Th>
+                        <MantineTable.Th>Action</MantineTable.Th>
+                      </MantineTable.Tr>
+                    </MantineTable.Thead>
+                    <MantineTable.Tbody>
+                      {dnsRecords.map((record, index) => (
+                        <MantineTable.Tr key={index}>
+                          <MantineTable.Td>
+                            <Badge variant="light" color="blue">
+                              {record.type}
+                            </Badge>
+                          </MantineTable.Td>
+                          <MantineTable.Td>
+                            <Code>{record.name}</Code>
+                          </MantineTable.Td>
+                          <MantineTable.Td>
+                            <Code>{record.value}</Code>
+                          </MantineTable.Td>
+                          <MantineTable.Td>
+                            <Text size="sm">{record.ttl}</Text>
+                          </MantineTable.Td>
+                          <MantineTable.Td>
+                            <CopyButton value={record.value}>
+                              {({ copied, copy }) => (
+                                <Tooltip
+                                  label={copied ? "Copied" : "Copy Value"}
+                                >
+                                  <ActionIcon
+                                    variant="subtle"
+                                    color={copied ? "green" : "gray"}
+                                    onClick={copy}
+                                    size="sm"
+                                  >
+                                    {copied ? (
+                                      <HiCheck size={14} />
+                                    ) : (
+                                      <TbCopy size={14} />
+                                    )}
+                                  </ActionIcon>
+                                </Tooltip>
+                              )}
+                            </CopyButton>
+                          </MantineTable.Td>
+                        </MantineTable.Tr>
+                      ))}
+                    </MantineTable.Tbody>
+                  </MantineTable>
+                </Tabs.Panel>
+
+                <Tabs.Panel value="instructions" pt="md">
+                  <Text size="sm" fw={500} mb="md">
+                    Follow these steps in your DNS provider dashboard:
+                  </Text>
+
+                  <List spacing="xs" size="sm">
+                    {dnsInstructions.map((instruction, index) => (
+                      <List.Item key={index}>
+                        <Group gap="xs">
+                          <Text fw={500}>{instruction.title}:</Text>
+                          <Code>{instruction.value}</Code>
+                          <Text c="dimmed" size="xs">
+                            {instruction.description}
+                          </Text>
+                        </Group>
+                      </List.Item>
+                    ))}
+                  </List>
+
+                  <Alert color="blue" variant="light" mt="md">
+                    <Text size="sm">
+                      After configuring your DNS records, it may take up to 24
+                      hours for changes to propagate. You can verify your domain
+                      configuration once the DNS changes are active.
+                    </Text>
+                  </Alert>
+                </Tabs.Panel>
+              </Tabs>
+            </Paper>
+          </Collapse>
+        )}
+      </Box>
+    );
+  };
+
+  return (
+    <div>
+      <TitleText
+        rightSection={
+          <Group>
+            <Button leftSection={<GoPlus />} onClick={openAddModal}>
+              Add Domain
+            </Button>
+          </Group>
+        }
+      >
+        Domains
+      </TitleText>
+
+      <Card withBorder radius="md" mb="md" p="md">
+        <Stack>
+          {domains.length === 0 ? (
+            <Text c="dimmed">No domains configured yet.</Text>
+          ) : (
+            domains.map((d, i) => (
+              <Box key={d.id}>
+                {renderDomainRow(d)}
+
+                {i < domains.length - 1 && <Divider my="xs" />}
+              </Box>
+            ))
+          )}
+        </Stack>
+      </Card>
+
+      <Modal
+        opened={isAddEditOpen}
+        onClose={() => setIsAddEditOpen(false)}
+        title={editingDomain ? "Edit Domain" : "Add Custom Domain"}
+        size="lg"
+      >
+        <Stack gap="md">
           <Alert
             icon={<IconAlertTriangle size={16} />}
             color="blue"
             variant="light"
             radius="md"
-            mb="md"
           >
             <Text size="sm" fw={500}>
-              DNS Configuration Required
+              Accepted Domain Formats
             </Text>
-            <Text size="sm" c="dimmed" mt={4}>
-              Configure your DNS provider with the following settings to connect
-              your custom domain
+            <Text size="xs" c="dimmed">
+              Do not include http:// or https:// in your domain name
             </Text>
           </Alert>
 
-          <Tabs defaultValue="dns-records" variant="outline">
-            <Tabs.List>
-              <Tabs.Tab value="dns-records">Required DNS Records</Tabs.Tab>
-              <Tabs.Tab value="instructions">Step-by-Step Guide</Tabs.Tab>
-            </Tabs.List>
-
-            <Tabs.Panel value="dns-records" pt="md">
-              <Text size="sm" c="dimmed" mb="md">
-                Add these DNS records to your domain provider to connect your
-                custom domain.
-              </Text>
-
-              <MantineTable>
-                <MantineTable.Thead>
-                  <MantineTable.Tr>
-                    <MantineTable.Th>Type</MantineTable.Th>
-                    <MantineTable.Th>Name</MantineTable.Th>
-                    <MantineTable.Th>Value</MantineTable.Th>
-                    <MantineTable.Th>TTL</MantineTable.Th>
-                    <MantineTable.Th>Action</MantineTable.Th>
-                  </MantineTable.Tr>
-                </MantineTable.Thead>
-                <MantineTable.Tbody>
-                  {dnsRecords.map((record, index) => (
-                    <MantineTable.Tr key={index}>
-                      <MantineTable.Td>
-                        <Badge variant="light" color="blue">
-                          {record.type}
-                        </Badge>
-                      </MantineTable.Td>
-                      <MantineTable.Td>
-                        <Code>{record.name}</Code>
-                      </MantineTable.Td>
-                      <MantineTable.Td>
-                        <Code>{record.value}</Code>
-                      </MantineTable.Td>
-                      <MantineTable.Td>
-                        <Text size="sm">{record.ttl}</Text>
-                      </MantineTable.Td>
-                      <MantineTable.Td>
-                        <CopyButton value={record.value}>
-                          {({ copied, copy }) => (
-                            <Tooltip label={copied ? "Copied" : "Copy Value"}>
-                              <ActionIcon
-                                variant="subtle"
-                                color={copied ? "green" : "gray"}
-                                onClick={copy}
-                                size="sm"
-                              >
-                                {copied ? (
-                                  <IconCheck size={14} />
-                                ) : (
-                                  <TbCopy size={14} />
-                                )}
-                              </ActionIcon>
-                            </Tooltip>
-                          )}
-                        </CopyButton>
-                      </MantineTable.Td>
-                    </MantineTable.Tr>
-                  ))}
-                </MantineTable.Tbody>
-              </MantineTable>
-            </Tabs.Panel>
-
-            <Tabs.Panel value="instructions" pt="md">
-              <Text size="sm" fw={500} mb="md">
-                Follow these steps in your DNS provider dashboard:
-              </Text>
-
-              <List spacing="xs" size="sm">
-                {dnsInstructions.map((instruction, index) => (
-                  <List.Item key={index}>
-                    <Group gap="xs">
-                      <Text fw={500}>{instruction.title}:</Text>
-                      <Code>{instruction.value}</Code>
-                      <Text c="dimmed" size="xs">
-                        {instruction.description}
-                      </Text>
-                    </Group>
-                  </List.Item>
-                ))}
-              </List>
-
-              <Alert color="blue" variant="light" mt="md">
-                <Text size="sm">
-                  After configuring your DNS records, it may take up to 24 hours
-                  for changes to propagate. You can verify your domain
-                  configuration once the DNS changes are active.
-                </Text>
-              </Alert>
-            </Tabs.Panel>
-          </Tabs>
-        </Paper>
-      </Collapse>
-    </Stack>
-  );
-
-  const renderDomainRow = (
-    value: string,
-    badge?: string,
-    type?: "custom" | "default" | "internal",
-  ) => (
-    <Box py="sm">
-      <Group justify="space-between" align="flex-start">
-        <Group align="center">
-          <Stack gap={6} align="flex-start">
-            {type !== "internal" ? (
-              <Text
-                component={Link}
-                size="md"
-                to={app?.url}
-                target="_blank"
-                className="link"
-              >
-                {value}
-                {badge === "Current" && <FiExternalLink />}
-              </Text>
-            ) : (
-              <Text size="md">{value}</Text>
-            )}
-            {badge === "Current" && (
-              <Badge color="green" size="xs" leftSection={<TbCheck />}>
-                {badge}
-              </Badge>
-            )}
-          </Stack>
-        </Group>
-        <Group>
-          <Group>
-            {type !== "internal" &&
-              !(type === "default" && value?.includes("cranecloud.io")) && (
-                <Button
-                  variant="outline"
-                  size="xs"
-                  onClick={() => type && handleEdit(type, value)}
-                >
-                  Edit
-                </Button>
-              )}
-          </Group>
-        </Group>
-      </Group>
-      <Collapse in={editOpen && editingType === type}>
-        <Stack gap="md" mt="md">
           <TextInput
             label="Domain"
-            value={domainValue}
-            onChange={(e) => setDomainValue(e.currentTarget.value)}
-            autoFocus
+            placeholder="example.com or app.example.com"
+            value={domainInput}
+            onChange={(e) => setDomainInput(e.currentTarget.value)}
             error={
-              revertCustomDomainError?.data?.message ||
-              addCustomDomainError?.data?.message
+              !domainInput
+                ? undefined
+                : !validateDomain(domainInput)
+                  ? "Invalid domain format"
+                  : undefined
             }
+            autoFocus
           />
-          <Group justify="space-between" mt="sm">
-            <Group>
-              {badge === "Current" && (
-                <Button
-                  variant="outline"
-                  leftSection={<HiRefresh size={16} />}
-                  onClick={handleRevertDomain}
-                  loading={revertingCustomDomain}
-                  disabled={revertingCustomDomain}
-                >
-                  Revert to Default
-                </Button>
-              )}
-            </Group>
-            <Group>
-              <Button variant="default" onClick={handleCancel}>
-                Cancel
-              </Button>
-              <Button
-                variant="filled"
-                onClick={handleSave}
-                loading={addingCustomDomain}
-                disabled={!domainValue.trim() || addingCustomDomain}
-              >
-                Save
-              </Button>
-            </Group>
+
+          <Group justify="flex-end" mt="md">
+            <Button
+              variant="default"
+              onClick={() => {
+                setIsAddEditOpen(false);
+                setEditingDomain(null);
+                setDomainInput("");
+              }}
+            >
+              Cancel
+            </Button>
+            <Button onClick={handleAddOrSave} loading={addingCustomDomain}>
+              {editingDomain ? "Save" : "Add Domain"}
+            </Button>
           </Group>
         </Stack>
-      </Collapse>
-    </Box>
-  );
+      </Modal>
 
-  useEffect(() => {
-    if (app?.url || app?.internal_url) {
-      setDomains([
-        {
-          type: "default",
-          value: app?.url,
-          status: app?.status || "active",
-        },
-        {
-          type: "internal",
-          value: app?.internal_url,
-          status: app?.status || "active",
-        },
-      ]);
-    }
-  }, [app?.url, app?.internal_url, app?.status]);
-
-  return (
-    <div>
-      <div>
-        <TitleText
-          rightSection={
-            <>
-              <Group gap="sm" justify="flex-end">
-                <Button
-                  leftSection={<GoPlus />}
-                  onClick={() => setIsAddingDomain(true)}
-                >
-                  Add Domain
-                </Button>
-              </Group>
-            </>
-          }
-        >
-          Domains
-        </TitleText>
-
-        <Modal
-          opened={isAddingDomain}
-          onClose={() => setIsAddingDomain(false)}
-          title="Add Custom Domain"
-          size="lg"
-        >
-          <Stack gap="md">
-            <Alert
-              icon={<IconAlertTriangle size={16} />}
-              color="blue"
-              variant="light"
-              radius="md"
-            >
-              <Text size="sm" fw={500} mb="xs">
-                Accepted Domain Formats
-              </Text>
-              <List size="sm" spacing="xs">
-                <List.Item>
-                  <Code>example.com</Code> - Root domain
-                </List.Item>
-                <List.Item>
-                  <Code>www.example.com</Code> - Subdomain with www
-                </List.Item>
-                <List.Item>
-                  <Code>app.example.com</Code> - Custom subdomain
-                </List.Item>
-                <List.Item>
-                  <Code>my-app.example.com</Code> - Subdomain with hyphens
-                </List.Item>
-              </List>
-              <Text size="xs" c="dimmed" mt="xs">
-                Note: Do not include http:// or https:// in your domain name
-              </Text>
-            </Alert>
-
-            <TextInput
-              label="Domain Name"
-              placeholder="Enter your domain here"
-              value={newDomain}
-              onChange={(e) => setNewDomain(e.currentTarget.value)}
-              error={addCustomDomainError?.data?.message}
-            />
-
-            <Group justify="flex-end">
-              <Button variant="subtle" onClick={() => setIsAddingDomain(false)}>
-                Cancel
-              </Button>
-              <Button
-                onClick={handleAddDomain}
-                loading={addingCustomDomain}
-                disabled={!newDomain.trim()}
-              >
-                {addingCustomDomain ? "Adding..." : "Add Domain"}
-              </Button>
-            </Group>
-          </Stack>
-        </Modal>
-      </div>
-
-      <Card withBorder radius="md" mb="md" p="md">
-        {domains.map((domain, idx) => (
-          <Box key={domain.type + domain.value}>
-            {renderDomainRow(
-              domain.value,
-              domain.type === "default" ? "Current" : "",
-              domain.type as "custom" | "default" | "internal",
-            )}
-            {idx < domains.length - 1 && <Divider my="sm" />}
-          </Box>
-        ))}
-      </Card>
-
-      {renderDnsInstructions()}
+      {/* {renderDnsInstructions()} */}
     </div>
   );
 };
