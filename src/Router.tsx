@@ -48,6 +48,8 @@ const ProjectDetailsPage = React.lazy(
   () => import("./pages/Projects/ProjectDetailsPage"),
 );
 const AdminDashboard = React.lazy(() => import("./pages/admin/DashboardPage"));
+const ExplorePage = React.lazy(() => import("./pages/ExplorePage"));
+const TagDetailsPage = React.lazy(() => import("./pages/TagDetailsPage"));
 const GenericRegister = React.lazy(
   () => import("./components/Layouts/GenericRegister"),
 );
@@ -71,6 +73,8 @@ export const DashboardRoutes = [
   { path: "/health", element: <HealthCheck /> },
   { path: "/login", element: <LoginPage /> },
   { path: "/", element: <LandingPage /> },
+  { path: "/explore", element: <ExplorePage /> },
+  { path: "/tags/:tagName", element: <TagDetailsPage /> },
   { path: "/profile/:user_id", element: <UserProfilePage /> },
   { path: "/users/profile/settings", element: <UserProfileSettingsPage /> },
   { path: "/:username", element: <UserProfilePage /> },

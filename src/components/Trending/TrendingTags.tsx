@@ -1,6 +1,7 @@
 import React from "react";
 import { Card, Group, Title, Stack, Badge, Text } from "@mantine/core";
 import { FiTrendingUp } from "react-icons/fi";
+import { Link } from "react-router-dom";
 
 interface TrendingTag {
   name: string;
@@ -36,7 +37,12 @@ export default function TrendingTags({
       <Stack gap="xs">
         {tags.map((tag) => (
           <Group key={tag.name} justify="space-between">
-            <Badge variant="light" style={{ cursor: "pointer" }}>
+            <Badge
+              variant="light"
+              component={Link}
+              to={`/tags/${tag.name}`}
+              style={{ cursor: "pointer", textDecoration: "none" }}
+            >
               #{tag.name}
             </Badge>
             <Group gap={4}>
