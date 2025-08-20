@@ -35,6 +35,7 @@ import { Logo, UserDropDown } from "./Common";
 import { Link, useNavigate } from "react-router-dom";
 import Search from "./Elements/Search";
 import { useAuth } from "@/utils/AuthContext";
+import { IoAirplaneOutline } from "react-icons/io5";
 
 interface HeaderProps {
   opened: boolean;
@@ -63,6 +64,19 @@ export const DashboardHeader = ({ opened, toggle }: HeaderProps) => {
               Admin
             </Pill>
           )}
+
+          <Link
+            to="/explore"
+            style={{ textDecoration: "none", paddingLeft: "10px" }}
+          >
+            <Group gap={5}>
+              <Text fw={700}>Explore</Text>
+              <IoAirplaneOutline
+                size={18}
+                style={{ transform: "rotate(315deg)" }}
+              />
+            </Group>
+          </Link>
         </Group>
         <Group>
           <Search />

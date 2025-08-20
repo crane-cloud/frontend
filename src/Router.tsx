@@ -18,7 +18,9 @@ const ProjectSettingsPage = React.lazy(
 const UserProfileSettingsPage = React.lazy(
   () => import("./pages/Users/UserProfileSettingsPage"),
 );
-
+const ProjectListPage = React.lazy(
+  () => import("./pages/Projects/ProjectListPage"),
+);
 const ProjectUsers = React.lazy(() => import("./pages/Projects/ProjectUsers"));
 const ProjectMetrics = React.lazy(
   () => import("./pages/Projects/ProjectMetrics"),
@@ -73,12 +75,14 @@ export const DashboardRoutes = [
   { path: "/users/profile/settings", element: <UserProfileSettingsPage /> },
   { path: "/:username", element: <UserProfilePage /> },
   // Projects
+  { path: "/projects", element: <ProjectListPage /> },
   { path: "/projects/create", element: <CreateProjectForm /> },
   { path: "/projects/:project_id", element: <ProjectDetailsPage /> },
   { path: "/projects/:project_id/apps", element: <AppsListPage /> },
   { path: "/projects/:project_id/settings", element: <ProjectSettingsPage /> },
   { path: "/projects/:project_id/users", element: <ProjectUsers /> },
   { path: "/projects/:project_id/metrics", element: <ProjectMetrics /> },
+
   // Applications
   { path: "/projects/:project_id/apps/create", element: <CreateAppForm /> },
   { path: "/projects/:project_id/apps/:app_id", element: <AppDetailPage /> },
