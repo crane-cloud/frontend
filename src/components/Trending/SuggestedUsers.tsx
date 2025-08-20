@@ -74,8 +74,6 @@ export default function SuggestedUsers({
     if (onFollow) {
       onFollow(username);
     }
-    // Default behavior - could integrate with API
-    console.log(`Following user: ${username}`);
   };
 
   return (
@@ -126,11 +124,11 @@ export default function SuggestedUsers({
                       Follow
                     </Button>
                   </Group>
-                  
+
                   <Text size="xs" c="dimmed" mb={4} style={{ lineHeight: 1.3 }}>
                     {user.bio}
                   </Text>
-                  
+
                   {showTags && (
                     <Group gap="xs" mb={4}>
                       {user.tags.map((tag) => (
@@ -140,7 +138,7 @@ export default function SuggestedUsers({
                       ))}
                     </Group>
                   )}
-                  
+
                   <Group gap="sm">
                     <Text size="xs" c="dimmed">
                       {user.followers} followers
