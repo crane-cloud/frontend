@@ -274,7 +274,7 @@ const ExplorePage = () => {
                   leftSection={<FiSearch size={16} />}
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.currentTarget.value)}
-                  size="md"
+                  size="sm"
                 />
               </Grid.Col>
               <Grid.Col span={3}>
@@ -287,7 +287,7 @@ const ExplorePage = () => {
                   value={selectedCategory}
                   onChange={(value) => setSelectedCategory(value || "all")}
                   leftSection={<FiFilter size={16} />}
-                  size="md"
+                  size="sm"
                 />
               </Grid.Col>
               <Grid.Col span={3}>
@@ -302,7 +302,7 @@ const ExplorePage = () => {
                   value={sortBy}
                   onChange={(value) => setSortBy(value || "trending")}
                   leftSection={<FiTrendingUp size={16} />}
-                  size="md"
+                  size="sm"
                 />
               </Grid.Col>
             </Grid>

@@ -31,8 +31,10 @@ export default function TrendingTags({
   return (
     <Card p="lg" withBorder radius="lg">
       <Group mb="md">
-        <FiTrendingUp size={20} />
-        <Title order={4}>{title}</Title>
+        <FiTrendingUp size={18} />
+        <Title order={4} size="md">
+          {title}
+        </Title>
       </Group>
       <Stack gap="xs">
         {tags.map((tag) => (
