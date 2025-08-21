@@ -17,11 +17,12 @@ import { HiLockClosed } from "react-icons/hi2";
 import { RiBookLine } from "react-icons/ri";
 import { GoClock } from "react-icons/go";
 import { LiaUserSolid } from "react-icons/lia";
-import { IoPersonAddOutline, IoRocketOutline } from "react-icons/io5";
+import { IoPersonAddOutline } from "react-icons/io5";
 import usePost from "@/utils/usePost";
 import { API_PROJECTS } from "@/utils/apis";
 import { useNavigate } from "react-router-dom";
 import { formatAgo, formatPlural } from "@/utils/helpers";
+import { FiLayers } from "react-icons/fi";
 
 export type ProjectUserRecord = {
   user: {
@@ -220,11 +221,8 @@ const ProjectsCard = (props: any) => {
               color="theme.dark"
               w="fit-content"
             >
-              <Flex gap={2} align="center" justify="center" wrap="nowrap">
-                <IoRocketOutline
-                  size={14}
-                  color="var(--mantine-color-dimmed)"
-                />
+              <Flex gap={3} align="center" justify="center" wrap="nowrap">
+                <FiLayers size={12} color="var(--mantine-color-dimmed)" />
                 <Text size="sm" c="dimmed" className="no-wrap">
                   {formatPlural(project.apps_count, "app")}
                 </Text>

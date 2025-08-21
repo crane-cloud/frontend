@@ -20,7 +20,7 @@ import {
 } from "@mantine/core";
 import { TbCopy } from "react-icons/tb";
 import { ReactNode, useContext, useEffect, useState } from "react";
-import { PiCubeLight, PiFlask } from "react-icons/pi";
+import { PiFlask } from "react-icons/pi";
 import { GoDatabase } from "react-icons/go";
 import { RiRobot2Line } from "react-icons/ri";
 import { ModalConfirm } from "@/components/Elements/Modals";
@@ -32,6 +32,7 @@ import { IoIosArrowDown } from "react-icons/io";
 import { returnObject } from "@/utils/helpers";
 import useGet from "@/utils/useGet";
 import { MenuContext } from "../Layouts/DashboardLayout";
+import { FiLayers } from "react-icons/fi";
 
 export const LinkWithText = styled(Link)`
   display: flex;
@@ -181,7 +182,7 @@ export const AddServiceButton = ({
   const menuItems = [
     {
       label: "Deploy Application",
-      icon: <PiCubeLight />,
+      icon: <FiLayers />,
       onClick: () => navigate(`/projects/${project_id}/apps/create`),
     },
     ...returnObject(!dontShowDatabase, [

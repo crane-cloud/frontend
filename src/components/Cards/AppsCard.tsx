@@ -1,9 +1,10 @@
 import { beautify } from "@/utils/helpers";
 import { MODAL_SERVERS } from "@/utils/constants";
 import { Anchor, Card, Flex, Group, Pill, Stack, Text } from "@mantine/core";
+import { FiLayers } from "react-icons/fi";
 import { GoClock } from "react-icons/go";
 import { HiMiniCubeTransparent } from "react-icons/hi2";
-import { PiCubeLight, PiShareFatThin } from "react-icons/pi";
+import { PiShareFatThin } from "react-icons/pi";
 import { SiJupyter } from "react-icons/si";
 import React from "react";
 
@@ -28,7 +29,7 @@ const AppsCard = (props: any) => {
             color: modalServerColor,
           })
         ) : (
-          <PiCubeLight size={35} color="gray" />
+          <FiLayers size={20} color="gray" />
         )}
         <Stack gap={3} flex={1}>
           <Anchor
