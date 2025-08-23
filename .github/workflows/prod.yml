@@ -34,65 +34,65 @@ jobs:
             echo "version=dev-$(date +'%Y%m%d')-$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
           fi
 
-      - name: Update CHANGELOG.md
-        if: github.event_name == 'release'
-        run: |
-          # Get the release version and date
-          VERSION=${GITHUB_REF#refs/tags/}
-          DATE=$(date +'%Y-%m-%d')
+      # - name: Update CHANGELOG.md
+      # if: github.event_name == 'release'
+      #   run: |
+      #     # Get the release version and date
+      #     VERSION=${GITHUB_REF#refs/tags/}
+      #     DATE=$(date +'%Y-%m-%d')
 
-          # Get the release notes from the GitHub release
-          RELEASE_NOTES=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-            "https://api.github.com/repos/${{ github.repository }}/releases/tags/$VERSION" | \
-            jq -r '.body')
+      #     # Get the release notes from the GitHub release
+      #     RELEASE_NOTES=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+      #       "https://api.github.com/repos/${{ github.repository }}/releases/tags/$VERSION" | \
+      #       jq -r '.body')
 
-          # Create the new version section
-          NEW_SECTION="## [$VERSION] - $DATE\n\n"
+      #     # Create the new version section
+      #     NEW_SECTION="## [$VERSION] - $DATE\n\n"
 
-          # Parse the release notes and categorize them
-          if echo "$RELEASE_NOTES" | grep -q "### Added"; then
-            NEW_SECTION+="### Added\n"
-            NEW_SECTION+=$(echo "$RELEASE_NOTES" | sed -n '/### Added/,/^$/p' | sed '1d')
-            NEW_SECTION+="\n"
-          fi
+      #     # Parse the release notes and categorize them
+      #     if echo "$RELEASE_NOTES" | grep -q "### Added"; then
+      #       NEW_SECTION+="### Added\n"
+      #       NEW_SECTION+=$(echo "$RELEASE_NOTES" | sed -n '/### Added/,/^$/p' | sed '1d')
+      #       NEW_SECTION+="\n"
+      #     fi
 
-          if echo "$RELEASE_NOTES" | grep -q "### Changed"; then
-            NEW_SECTION+="### Changed\n"
-            NEW_SECTION+=$(echo "$RELEASE_NOTES" | sed -n '/### Changed/,/^$/p' | sed '1d')
-            NEW_SECTION+="\n"
-          fi
+      #     if echo "$RELEASE_NOTES" | grep -q "### Changed"; then
+      #       NEW_SECTION+="### Changed\n"
+      #       NEW_SECTION+=$(echo "$RELEASE_NOTES" | sed -n '/### Changed/,/^$/p' | sed '1d')
+      #       NEW_SECTION+="\n"
+      #     fi
 
-          if echo "$RELEASE_NOTES" | grep -q "### Fixed"; then
-            NEW_SECTION+="### Fixed\n"
-            NEW_SECTION+=$(echo "$RELEASE_NOTES" | sed -n '/### Fixed/,/^$/p' | sed '1d')
-            NEW_SECTION+="\n"
-          fi
+      #     if echo "$RELEASE_NOTES" | grep -q "### Fixed"; then
+      #       NEW_SECTION+="### Fixed\n"
+      #       NEW_SECTION+=$(echo "$RELEASE_NOTES" | sed -n '/### Fixed/,/^$/p' | sed '1d')
+      #       NEW_SECTION+="\n"
+      #     fi
 
-          if echo "$RELEASE_NOTES" | grep -q "### Security"; then
-            NEW_SECTION+="### Security\n"
-            NEW_SECTION+=$(echo "$RELEASE_NOTES" | sed -n '/### Security/,/^$/p' | sed '1d')
-            NEW_SECTION+="\n"
-          fi
+      #     if echo "$RELEASE_NOTES" | grep -q "### Security"; then
+      #       NEW_SECTION+="### Security\n"
+      #       NEW_SECTION+=$(echo "$RELEASE_NOTES" | sed -n '/### Security/,/^$/p' | sed '1d')
+      #       NEW_SECTION+="\n"
+      #     fi
 
-          # Update the CHANGELOG.md
-          awk -v new="$NEW_SECTION" '
-            /^## \[Unreleased\]/ {
-              print;
-              print "";
-              print new;
-              next;
-            }
-            { print }
-          ' CHANGELOG.md > CHANGELOG.md.new
+      #     # Update the CHANGELOG.md
+      #     awk -v new="$NEW_SECTION" '
+      #       /^## \[Unreleased\]/ {
+      #         print;
+      #         print "";
+      #         print new;
+      #         next;
+      #       }
+      #       { print }
+      #     ' CHANGELOG.md > CHANGELOG.md.new
 
-          mv CHANGELOG.md.new CHANGELOG.md
+      #     mv CHANGELOG.md.new CHANGELOG.md
 
-          # Commit and push the changes
-          git config --global user.name "GitHub Actions"
-          git config --global user.email "actions@github.com"
-          git add CHANGELOG.md
-          git commit -m "docs: update CHANGELOG.md for $VERSION"
-          git push
+      #     # Commit and push the changes
+      #     git config --global user.name "GitHub Actions"
+      #     git config --global user.email "actions@github.com"
+      #     git add CHANGELOG.md
+      #     git commit -m "docs: update CHANGELOG.md for $VERSION"
+      #     git push
 
       - name: Install (Buildx)
         uses: docker/setup-buildx-action@v3

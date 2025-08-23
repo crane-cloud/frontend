@@ -12,6 +12,7 @@ import { Table } from "../Elements/CustomTable";
 import { Button, Stack } from "@mantine/core";
 import TitleText from "../TitleText";
 import { SimpleDetailsCard } from "../Cards/DetailsCard";
+import { BarMetricChart } from "../Elements/Charts";
 // import DetailsCard from "../common/DetailsCards";
 // import { TableFilter } from "../common/TableFilter";
 // interface TExportData {
@@ -62,6 +63,8 @@ const RegisterLayoutHandler = (props: any) => {
     showTitle,
     apiRoute,
     dataParent,
+    graphTitle,
+    graphApi,
   } =
     source && registerHooks[source]
       ? registerHooks[source]({ ...register_params, ...params, status })
@@ -76,12 +79,30 @@ const RegisterLayoutHandler = (props: any) => {
 
   // load hooks data
   const { getData: getRegisterData, data: registerData, loading } = useGet();
+  const {
+    getData: getGraphData,
+    data: graphData,
+    loading: fetchingGraphData,
+  } = useGet();
+  const [graphDataResults, setGraphDataResults] = useState([]);
 
   function getData(filters: any) {
     const apiToUse = api || apiRoute || (source && sourceApis[source]);
     if (apiToUse) {
       getRegisterData({
         api: apiToUse,
+        params: filters,
+        ...returnObject(isExternalRoute === true, {
+          isExternal: true,
+        }),
+      });
+    }
+  }
+
+  function getSeriesData(filters: any) {
+    if (graphApi) {
+      getGraphData({
+        api: graphApi,
         params: filters,
         ...returnObject(isExternalRoute === true, {
           isExternal: true,
@@ -97,6 +118,7 @@ const RegisterLayoutHandler = (props: any) => {
       status = filters.status;
     }
     getData({ ...filters, ...searchFilters, status });
+    getSeriesData({ ...filters, ...searchFilters, status });
   }, [status, filters, source]);
 
   useEffect(() => {
@@ -106,6 +128,14 @@ const RegisterLayoutHandler = (props: any) => {
   useEffect(() => {
     setFilter({ ...filters, ...initialFilters, status });
   }, []);
+
+  useEffect(() => {
+    setGraphDataResults(
+      graphData?.data?.[dataParent || source] ||
+        graphData?.data?.graph_data ||
+        [],
+    );
+  }, [graphData]);
 
   // const onFilterChange = (key: string, value: string | number) => {
   //   const updatedFilters = { ...filters, page: 1 };
@@ -118,11 +148,15 @@ const RegisterLayoutHandler = (props: any) => {
   // };
 
   function getTitle() {
+    if (tableTitle) {
+      return tableTitle;
+    }
     return `${tableTitle || beautify(source)} ${filters?.stringValue || "List"} `;
   }
 
   let tableDataResults =
     registerData?.data?.[dataParent || source || ""] || registerData || [];
+
   const pagination = registerData?.data?.pagination || {};
   if (rootData) {
     tableDataResults = registerData || [];
@@ -174,6 +208,20 @@ const RegisterLayoutHandler = (props: any) => {
         />
       )}
 
+      {graphData && (
+        <BarMetricChart
+          title={graphTitle || getTitle()}
+          data={graphDataResults}
+          showAllXValues
+          filters={filters}
+          setFilters={(data) => {
+            setFilter({ ...filters, ...data });
+          }}
+          height={250}
+          valueFormatter={(value) => `${value}`}
+          isLoading={fetchingGraphData}
+        />
+      )}
       <Table
         title={title || getTitle()}
         loading={loading}

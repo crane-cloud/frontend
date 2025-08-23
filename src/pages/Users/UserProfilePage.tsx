@@ -1,5 +1,28 @@
-import { Accordion, Anchor, Button, Card, Flex, Group, Stack, Text, Loader, Badge, Select } from "@mantine/core";
-import { FaCheckCircle, FaCircle, FaCogs, FaDatabase, FaGithub, FaLinkedin, FaProjectDiagram, FaTimesCircle, FaTwitter } from "react-icons/fa";
+import {
+  Accordion,
+  Anchor,
+  Badge,
+  Button,
+  Card,
+  Flex,
+  Group,
+  Loader,
+  Select,
+  Stack,
+  Text,
+} from "@mantine/core";
+import {
+  FaCheckCircle,
+  FaCircle,
+  FaCogs,
+  FaDatabase,
+  FaGithub,
+  FaLinkedin,
+  FaProjectDiagram,
+  FaTimesCircle,
+  FaTwitter,
+  FaPen,
+} from "react-icons/fa";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/utils/AuthContext";
@@ -9,12 +32,14 @@ import UserProfileCard, { StatsList } from "@/components/Cards/OtherCards";
 import TitleText from "@/components/TitleText";
 import { formatDistanceToNow } from "date-fns";
 
+// Map for social media icons
 const socialIconMap: Record<string, React.ReactNode> = {
   github: <FaGithub />,
   twitter: <FaTwitter />,
   linkedin: <FaLinkedin />,
 };
 
+// Activity log type
 interface ActivityLog {
   _id: { $oid: string };
   user_id: string;
@@ -42,13 +67,14 @@ const UserProfilePage = () => {
   const [logs, setLogs] = useState<ActivityLog[]>([]);
   const [loadingLogs, setLoadingLogs] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [filter, setFilter] = useState<string | null>("All");
 
   useSetNoSidebar();
   useSetContainerSize("lg");
 
-  // Fetch user profile data
+  // Fetch user profile
   useEffect(() => {
-    if (user?.id) {
+    if (user) {
       try {
         getUser({ api: `/users/${user.id}` });
       } catch (err: any) {
@@ -97,19 +123,11 @@ const UserProfilePage = () => {
           }
         );
 
-        if (!res.ok) {
-          throw new Error(`API returned status ${res.status}`);
-        }
+        if (!res.ok) throw new Error(`API returned status ${res.status}`);
 
         const data = await res.json();
-        console.log("Fetched logs API response:", data);
-
         const activities: ActivityLog[] =
-          data.data?.activity ||
-          data.data ||
-          data.activity ||
-          data ||
-          [];
+          data.data?.activity || data.data || data.activity || data || [];
 
         setLogs(Array.isArray(activities) ? activities : []);
       } catch (err: any) {
@@ -124,8 +142,6 @@ const UserProfilePage = () => {
     fetchLogs();
   }, [token, user?.id]);
 
-  const [filter, setFilter] = useState<string | null>("All");
-
   const filteredLogs =
     filter === "All"
       ? logs
@@ -134,8 +150,10 @@ const UserProfilePage = () => {
         );
 
   const getStatusIcon = (status: string) => {
-    if (status.toLowerCase() === "success") return <FaCheckCircle color="green" />;
-    if (status.toLowerCase() === "failed") return <FaTimesCircle color="red" />;
+    if (status.toLowerCase() === "success")
+      return <FaCheckCircle color="green" />;
+    if (status.toLowerCase() === "failed")
+      return <FaTimesCircle color="red" />;
     return <FaCircle color="gray" />;
   };
 
@@ -151,42 +169,30 @@ const UserProfilePage = () => {
   };
 
   function formatDescription(raw: string): string {
-    if (!raw) return '';
+    if (!raw) return "";
 
-    // Detect if it's a Kubernetes Status object string (Python-like dict style)
     const looksLikeK8sStatus =
       raw.startsWith("{'kind': 'Status'") || raw.includes("'apiVersion': 'v1'");
-    console.log("looksLikeK8sStatus", looksLikeK8sStatus);
 
     if (!looksLikeK8sStatus) {
-      // Simplify non-K8s descriptions
       return raw.length > 50 ? raw.substring(0, 50).trim() + "..." : raw.trim();
     }
 
     try {
       const jsonString = raw
-        .replace(/'/g, '"') // single → double quotes
-        .replace(/\bNone\b/g, 'null')
-        .replace(/\bTrue\b/g, 'true')
-        .replace(/\bFalse\b/g, 'false');
-      console.log("jsonString", jsonString);
+        .replace(/'/g, '"')
+        .replace(/\bNone\b/g, "null")
+        .replace(/\bTrue\b/g, "true")
+        .replace(/\bFalse\b/g, "false");
 
       const obj = JSON.parse(jsonString);
-      console.log("Parsed object:", obj);
 
-      if (obj?.kind === 'Status' && obj.message) {
-        // Rephrase K8s message into user-friendly summary
-        if (obj.message.includes("unable to create")) {
-          return "Failed to create content due to an issue.";
-        } else if (obj.message.includes("forbidden")) {
-          return "Access denied to perform this action.";
-        } else if (obj.message.includes("terminated")) {
-          return "Operation failed because namespace is being deleted.";
-        }
-        return obj.message.length > 50 ? obj.message.substring(0, 50).trim() + "..." : obj.message.trim();
+      if (obj?.kind === "Status" && obj.message) {
+        return obj.message.length > 50
+          ? obj.message.substring(0, 50).trim() + "..."
+          : obj.message.trim();
       }
     } catch {
-      // Fallback to simplified raw text if parsing fails
       return raw.length > 50 ? raw.substring(0, 50).trim() + "..." : raw.trim();
     }
 
@@ -206,18 +212,18 @@ const UserProfilePage = () => {
       <Flex gap="lg" align="flex-start" justify="space-between" wrap="wrap">
         {/* LEFT: Profile Card */}
         <Stack>
-          <UserProfileCard user={currentUser || {}} />
+          <UserProfileCard user={currentUser} />
         </Stack>
 
-        {/* RIGHT: Stats + Activity Logs + Social Media */}
+        {/* RIGHT: Stats + Activity Logs */}
         <Stack flex={1}>
-          {/* Stats */}
           <TitleText
             rightSection={
               <Button
                 variant="filled"
                 color="dark"
                 onClick={() => navigate("/users/profile/settings")}
+                leftSection={<FaPen />}
               >
                 Edit Profile
               </Button>
@@ -227,12 +233,12 @@ const UserProfilePage = () => {
           </TitleText>
 
           <Card withBorder radius="md" padding="xl">
-            <StatsList justify="space-between" stats={userStats(currentUser || {})} />
+            <StatsList justify="space-between" stats={userStats(currentUser)} />
           </Card>
 
-          {/* Activity Log Section */}
+          {/* Activity Logs */}
           <Stack mt="lg">
-            <Flex justify="space-between" align="center" mb="sm" >
+            <Flex justify="space-between" align="center" mb="sm">
               <Text fw={700} size="lg">
                 Activity Log
               </Text>
@@ -253,22 +259,17 @@ const UserProfilePage = () => {
                 </Text>
               ) : (
                 <Stack gap="md">
-                  {/* Latest Log (Always Visible) */}
+                  {/* Latest Log */}
                   {filteredLogs[0] && (
                     <Flex gap="md">
                       <Flex direction="column" align="center" style={{ width: 40 }}>
-                        <div
-                          style={{
-                            width: 2,
-                            background: "transparent",
-                            flex: 1,
-                          }}
-                        />
+                        <div style={{ width: 2, background: "transparent", flex: 1 }} />
                         {getModelIcon(filteredLogs[0].model)}
                         <div
                           style={{
                             width: 2,
-                            background: filteredLogs.length > 1 ? "#e1e4e8" : "transparent",
+                            background:
+                              filteredLogs.length > 1 ? "#e1e4e8" : "transparent",
                             flex: 1,
                           }}
                         />
@@ -281,7 +282,9 @@ const UserProfilePage = () => {
                       >
                         <Group justify="space-between" mb="xs">
                           <Text size="sm" fw={500}>
-                            {filteredLogs[0].user_name} {filteredLogs[0].operation.toLowerCase()} {filteredLogs[0].model.toLowerCase()}
+                            {filteredLogs[0].user_name}{" "}
+                            {filteredLogs[0].operation.toLowerCase()}{" "}
+                            {filteredLogs[0].model.toLowerCase()}
                           </Text>
                           <Badge
                             color={
@@ -301,15 +304,16 @@ const UserProfilePage = () => {
                           {formatDescription(filteredLogs[0].description)}
                         </Text>
                         <Text size="xs" color="dimmed" mt={4}>
-                          {formatDistanceToNow(new Date(filteredLogs[0].creation_date), {
-                            addSuffix: true,
-                          })}
+                          {formatDistanceToNow(
+                            new Date(filteredLogs[0].creation_date),
+                            { addSuffix: true }
+                          )}
                         </Text>
                       </Card>
                     </Flex>
                   )}
 
-                  {/* Accordion for Older Logs */}
+                  {/* Older Logs Accordion */}
                   {filteredLogs.length > 1 && (
                     <Accordion variant="contained" radius="md">
                       <Accordion.Item value="older-logs">
@@ -322,11 +326,15 @@ const UserProfilePage = () => {
                           <Stack gap="md">
                             {filteredLogs.slice(1).map((log, idx) => (
                               <Flex key={log._id.$oid} gap="md">
-                                <Flex direction="column" align="center" style={{ width: 40 }}>
+                                <Flex
+                                  direction="column"
+                                  align="center"
+                                  style={{ width: 40 }}
+                                >
                                   <div
                                     style={{
                                       width: 2,
-                                      background: idx === 0 ? "#e1e4e8" : "#e1e4e8",
+                                      background: "#e1e4e8",
                                       flex: 1,
                                     }}
                                   />
@@ -334,7 +342,10 @@ const UserProfilePage = () => {
                                   <div
                                     style={{
                                       width: 2,
-                                      background: idx === filteredLogs.slice(1).length - 1 ? "transparent" : "#e1e4e8",
+                                      background:
+                                        idx === filteredLogs.slice(1).length - 1
+                                          ? "transparent"
+                                          : "#e1e4e8",
                                       flex: 1,
                                     }}
                                   />
@@ -347,7 +358,8 @@ const UserProfilePage = () => {
                                 >
                                   <Group justify="space-between" mb="xs">
                                     <Text size="sm" fw={500}>
-                                      {log.user_name} {log.operation.toLowerCase()} {log.model.toLowerCase()}
+                                      {log.user_name} {log.operation.toLowerCase()}{" "}
+                                      {log.model.toLowerCase()}
                                     </Text>
                                     <Badge
                                       color={
@@ -367,9 +379,10 @@ const UserProfilePage = () => {
                                     {formatDescription(log.description)}
                                   </Text>
                                   <Text size="xs" color="dimmed" mt={4}>
-                                    {formatDistanceToNow(new Date(log.creation_date), {
-                                      addSuffix: true,
-                                    })}
+                                    {formatDistanceToNow(
+                                      new Date(log.creation_date),
+                                      { addSuffix: true }
+                                    )}
                                   </Text>
                                 </Card>
                               </Flex>
@@ -384,7 +397,7 @@ const UserProfilePage = () => {
             </Card>
           </Stack>
 
-          {/* Social Media Section */}
+          {/* Social Media */}
           {currentUser?.social_links?.length > 0 && (
             <Stack mt="lg">
               <TitleText>Social Media</TitleText>

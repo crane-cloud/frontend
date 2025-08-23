@@ -35,9 +35,10 @@ import {
 } from "react-icons/io5";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { LuLogs } from "react-icons/lu";
-import { PiCubeLight, PiFlask } from "react-icons/pi";
+import { PiFlask } from "react-icons/pi";
 import { SelectProject } from "../Elements/Elements";
 import { HiOutlineDatabase } from "react-icons/hi";
+import { FiLayers } from "react-icons/fi";
 
 export type TLeftMenuType =
   | "home"
@@ -123,7 +124,7 @@ const LeftMenu = React.memo(
         },
         {
           label: "Applications",
-          icon: PiCubeLight,
+          icon: FiLayers,
           key: "applications",
           link: "/admin/apps/list",
         },
@@ -264,7 +265,7 @@ const LeftMenu = React.memo(
         },
         {
           label: "Applications",
-          icon: PiCubeLight,
+          icon: FiLayers,
           key: "applications",
           link: `/projects/${project_id}/apps`,
         },

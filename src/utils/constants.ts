@@ -1,4 +1,6 @@
 import { DeploymentInstruction } from "@/components/Forms/CreateAppForm";
+import { FaLinkedin, FaTwitter } from "react-icons/fa";
+import { FaGithub } from "react-icons/fa6";
 import { SiHuggingface, SiMlflow, SiScikitlearn } from "react-icons/si";
 
 // Boolean values
@@ -25,6 +27,27 @@ export const PROJECT_TYPES = [
 export const MODAL_API_TYPES = [
   { label: "REST", id: 1, value: "REST" },
   { label: "GRPC", id: 2, value: "GRPC" },
+];
+
+export const SOCIAL_LINKS_DATA = [
+  {
+    value: "twitter",
+    label: "Twitter",
+    icon: FaTwitter,
+    color: "#1DA1F2",
+  },
+  {
+    value: "github",
+    label: "GitHub",
+    icon: FaGithub,
+    color: "#000000",
+  },
+  {
+    value: "linkedin",
+    label: "LinkedIn",
+    icon: FaLinkedin,
+    color: "#0077B5",
+  },
 ];
 
 export const MODAL_SERVERS = [

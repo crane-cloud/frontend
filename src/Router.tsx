@@ -18,7 +18,9 @@ const ProjectSettingsPage = React.lazy(
 const UserProfileSettingsPage = React.lazy(
   () => import("./pages/Users/UserProfileSettingsPage"),
 );
-
+const ProjectListPage = React.lazy(
+  () => import("./pages/Projects/ProjectListPage"),
+);
 const ProjectUsers = React.lazy(() => import("./pages/Projects/ProjectUsers"));
 const ProjectMetrics = React.lazy(
   () => import("./pages/Projects/ProjectMetrics"),
@@ -46,6 +48,8 @@ const ProjectDetailsPage = React.lazy(
   () => import("./pages/Projects/ProjectDetailsPage"),
 );
 const AdminDashboard = React.lazy(() => import("./pages/admin/DashboardPage"));
+const ExplorePage = React.lazy(() => import("./pages/ExplorePage"));
+const TagDetailsPage = React.lazy(() => import("./pages/TagDetailsPage"));
 const GenericRegister = React.lazy(
   () => import("./components/Layouts/GenericRegister"),
 );
@@ -69,16 +73,20 @@ export const DashboardRoutes = [
   { path: "/health", element: <HealthCheck /> },
   { path: "/login", element: <LoginPage /> },
   { path: "/", element: <LandingPage /> },
+  { path: "/explore", element: <ExplorePage /> },
+  { path: "/tags/:tagName", element: <TagDetailsPage /> },
   { path: "/profile/:user_id", element: <UserProfilePage /> },
   { path: "/users/profile/settings", element: <UserProfileSettingsPage /> },
   { path: "/:username", element: <UserProfilePage /> },
   // Projects
+  { path: "/projects", element: <ProjectListPage /> },
   { path: "/projects/create", element: <CreateProjectForm /> },
   { path: "/projects/:project_id", element: <ProjectDetailsPage /> },
   { path: "/projects/:project_id/apps", element: <AppsListPage /> },
   { path: "/projects/:project_id/settings", element: <ProjectSettingsPage /> },
   { path: "/projects/:project_id/users", element: <ProjectUsers /> },
   { path: "/projects/:project_id/metrics", element: <ProjectMetrics /> },
+
   // Applications
   { path: "/projects/:project_id/apps/create", element: <CreateAppForm /> },
   { path: "/projects/:project_id/apps/:app_id", element: <AppDetailPage /> },

@@ -59,6 +59,8 @@ export const useUsers = () => {
       beta_users: data?.beta_users || 0,
     };
   };
+  const graphTitle = "Users Graph";
+  const graphApi = `/users?series=true`;
 
-  return { tableColumns, tableData, metaData };
+  return { tableColumns, tableData, metaData, graphTitle, graphApi };
 };

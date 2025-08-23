@@ -304,14 +304,13 @@ export const bytesToMB = (bytesPerSecond: number) => bytesPerSecond / 1_000_000;
 
 export const formatMetricValue = (chartType: string, value: number) => {
   if (chartType === "cpu") {
-    return `${value.toFixed(4)} cores`;
+    return `Usage: ${value.toFixed(4)} cores`;
   } else if (chartType === "memory") {
-    return `${bytesToMB(value).toFixed(2)} MB/s`;
+    return `Usage: ${bytesToMB(value).toFixed(2)} MB/s`;
   } else if (chartType === "network") {
-    return `${Math.round(value).toLocaleString()} KB/s`;
+    return `Usage: ${Math.round(value).toLocaleString()} KB/s`;
   }
-
-  return null;
+  return `Count: ${value.toLocaleString()}`;
 };
 
 export function formatPlural(count: number, singular: string, plural?: string) {
