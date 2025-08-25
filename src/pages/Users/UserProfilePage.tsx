@@ -32,7 +32,7 @@ import UserProfileCard, { StatsList } from "@/components/Cards/OtherCards";
 import TitleText from "@/components/TitleText";
 import { formatDistanceToNow } from "date-fns";
 
-// Map for social media icons
+// social media icons for map
 const socialIconMap: Record<string, React.ReactNode> = {
   github: <FaGithub />,
   twitter: <FaTwitter />,
@@ -78,7 +78,6 @@ const UserProfilePage = () => {
       try {
         getUser({ api: `/users/${user.id}` });
       } catch (err: any) {
-        console.error("Error fetching profile:", err);
         setError("Failed to load profile data.");
       }
     }
@@ -120,10 +119,12 @@ const UserProfilePage = () => {
               Accept: "application/json",
               Authorization: `Bearer ${token}`,
             },
-          }
+          },
         );
 
-        if (!res.ok) throw new Error(`API returned status ${res.status}`);
+        if (!res.ok) {
+          throw new Error(`API returned status ${res.status}`);
+        }
 
         const data = await res.json();
         const activities: ActivityLog[] =
@@ -131,7 +132,6 @@ const UserProfilePage = () => {
 
         setLogs(Array.isArray(activities) ? activities : []);
       } catch (err: any) {
-        console.error("Error fetching logs:", err);
         setError("Failed to load activity logs.");
         setLogs([]);
       } finally {
@@ -146,14 +146,16 @@ const UserProfilePage = () => {
     filter === "All"
       ? logs
       : logs.filter(
-          (log) => log.status.toLowerCase() === filter?.toLowerCase()
+          (log) => log.status.toLowerCase() === filter?.toLowerCase(),
         );
 
   const getStatusIcon = (status: string) => {
-    if (status.toLowerCase() === "success")
+    if (status.toLowerCase() === "success") {
       return <FaCheckCircle color="green" />;
-    if (status.toLowerCase() === "failed")
+    }
+    if (status.toLowerCase() === "failed") {
       return <FaTimesCircle color="red" />;
+    }
     return <FaCircle color="gray" />;
   };
 
@@ -169,13 +171,15 @@ const UserProfilePage = () => {
   };
 
   function formatDescription(raw: string): string {
-    if (!raw) return "";
+    if (!raw) {
+      return "";
+    }
 
     const looksLikeK8sStatus =
       raw.startsWith("{'kind': 'Status'") || raw.includes("'apiVersion': 'v1'");
 
     if (!looksLikeK8sStatus) {
-      return raw.length > 50 ? raw.substring(0, 50).trim() + "..." : raw.trim();
+      return raw.length > 50 ? `${raw.substring(0, 50).trim()}...` : raw.trim();
     }
 
     try {
@@ -189,14 +193,14 @@ const UserProfilePage = () => {
 
       if (obj?.kind === "Status" && obj.message) {
         return obj.message.length > 50
-          ? obj.message.substring(0, 50).trim() + "..."
+          ? `${obj.message.substring(0, 50).trim()}...`
           : obj.message.trim();
       }
     } catch {
-      return raw.length > 50 ? raw.substring(0, 50).trim() + "..." : raw.trim();
+      return raw.length > 50 ? `${raw.substring(0, 50).trim()}...` : raw.trim();
     }
 
-    return raw.length > 50 ? raw.substring(0, 50).trim() + "..." : raw.trim();
+    return raw.length > 50 ? `${raw.substring(0, 50).trim()}...` : raw.trim();
   }
 
   return (
@@ -204,7 +208,12 @@ const UserProfilePage = () => {
       <TitleText>User Profile</TitleText>
 
       {error && (
-        <Card withBorder padding="md" radius="md" style={{ background: "#ffe6e6" }}>
+        <Card
+          withBorder
+          padding="md"
+          radius="md"
+          style={{ background: "#ffe6e6" }}
+        >
           <Text color="red">{error}</Text>
         </Card>
       )}
@@ -262,14 +271,26 @@ const UserProfilePage = () => {
                   {/* Latest Log */}
                   {filteredLogs[0] && (
                     <Flex gap="md">
-                      <Flex direction="column" align="center" style={{ width: 40 }}>
-                        <div style={{ width: 2, background: "transparent", flex: 1 }} />
+                      <Flex
+                        direction="column"
+                        align="center"
+                        style={{ width: 40 }}
+                      >
+                        <div
+                          style={{
+                            width: 2,
+                            background: "transparent",
+                            flex: 1,
+                          }}
+                        />
                         {getModelIcon(filteredLogs[0].model)}
                         <div
                           style={{
                             width: 2,
                             background:
-                              filteredLogs.length > 1 ? "#e1e4e8" : "transparent",
+                              filteredLogs.length > 1
+                                ? "#e1e4e8"
+                                : "transparent",
                             flex: 1,
                           }}
                         />
@@ -290,9 +311,10 @@ const UserProfilePage = () => {
                             color={
                               filteredLogs[0].status.toLowerCase() === "success"
                                 ? "green"
-                                : filteredLogs[0].status.toLowerCase() === "failed"
-                                ? "red"
-                                : "gray"
+                                : filteredLogs[0].status.toLowerCase() ===
+                                    "failed"
+                                  ? "red"
+                                  : "gray"
                             }
                             variant="light"
                             leftSection={getStatusIcon(filteredLogs[0].status)}
@@ -306,7 +328,7 @@ const UserProfilePage = () => {
                         <Text size="xs" color="dimmed" mt={4}>
                           {formatDistanceToNow(
                             new Date(filteredLogs[0].creation_date),
-                            { addSuffix: true }
+                            { addSuffix: true },
                           )}
                         </Text>
                       </Card>
@@ -358,16 +380,18 @@ const UserProfilePage = () => {
                                 >
                                   <Group justify="space-between" mb="xs">
                                     <Text size="sm" fw={500}>
-                                      {log.user_name} {log.operation.toLowerCase()}{" "}
+                                      {log.user_name}{" "}
+                                      {log.operation.toLowerCase()}{" "}
                                       {log.model.toLowerCase()}
                                     </Text>
                                     <Badge
                                       color={
                                         log.status.toLowerCase() === "success"
                                           ? "green"
-                                          : log.status.toLowerCase() === "failed"
-                                          ? "red"
-                                          : "gray"
+                                          : log.status.toLowerCase() ===
+                                              "failed"
+                                            ? "red"
+                                            : "gray"
                                       }
                                       variant="light"
                                       leftSection={getStatusIcon(log.status)}
@@ -381,7 +405,7 @@ const UserProfilePage = () => {
                                   <Text size="xs" color="dimmed" mt={4}>
                                     {formatDistanceToNow(
                                       new Date(log.creation_date),
-                                      { addSuffix: true }
+                                      { addSuffix: true },
                                     )}
                                   </Text>
                                 </Card>
@@ -404,7 +428,10 @@ const UserProfilePage = () => {
               <Card withBorder radius="md" padding="md">
                 <Stack>
                   {currentUser.social_links.map(
-                    (link: { platform: string; url: string }, index: number) => (
+                    (
+                      link: { platform: string; url: string },
+                      index: number,
+                    ) => (
                       <Group key={index} justify="space-between">
                         <Group>
                           {socialIconMap[link.platform?.toLowerCase()] ?? null}
@@ -414,7 +441,7 @@ const UserProfilePage = () => {
                           {link.url}
                         </Anchor>
                       </Group>
-                    )
+                    ),
                   )}
                 </Stack>
               </Card>
