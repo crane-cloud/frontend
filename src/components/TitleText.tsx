@@ -18,9 +18,7 @@ const TitleText: React.FC<TitleTextProps> = ({
         {loading ? (
           <Skeleton height={30} width={300} radius="xs" />
         ) : (
-          <Text fw={600} fz="1.2rem">
-            {children}
-          </Text>
+          <div style={{ fontWeight: 600, fontSize: "1.2rem" }}>{children}</div>
         )}
         {rightSection}
       </Flex>

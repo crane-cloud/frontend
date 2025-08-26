@@ -1,7 +1,28 @@
 import { DeploymentInstruction } from "@/components/Forms/CreateAppForm";
 import { FaLinkedin, FaTwitter } from "react-icons/fa";
 import { FaGithub } from "react-icons/fa6";
-import { SiHuggingface, SiMlflow, SiScikitlearn } from "react-icons/si";
+import {
+  SiHuggingface,
+  SiMlflow,
+  SiReact,
+  SiScikitlearn,
+  SiNextdotjs,
+  SiVuedotjs,
+  SiAngular,
+  SiNuxtdotjs,
+  SiSvelte,
+  SiGatsby,
+  SiRemix,
+  SiSolid,
+  SiPreact,
+  SiVite,
+  SiWebpack,
+  SiSnowpack,
+  SiNodedotjs,
+  SiFlask,
+  SiDjango,
+  SiLaravel,
+} from "react-icons/si";
 
 // Boolean values
 export const YES = "Yes";
@@ -86,12 +107,33 @@ export const DATABASE_FLAVOURS = [
 ];
 
 export const FRAMEWORKS = [
-  { id: 1, label: "HTML-CSS-JS", value: "Html-CSS-JS" },
-  { id: 2, label: "ReactJs", value: "React" },
-  { id: 3, label: "NodeJs", value: "NodeJS" },
-  { id: 4, label: "Flask", value: "Flask" },
-  { id: 5, label: "Django", value: "Django" },
-  { id: 7, label: "Laravel-custom", value: "Laravel-custom" },
+  { id: 1, label: "React", value: "react", icon: SiReact },
+  {
+    id: 2,
+    label: "Create React App",
+    value: "create-react-app",
+    icon: SiReact,
+  },
+  { id: 3, label: "Next.js", value: "next.js", icon: SiNextdotjs },
+  { id: 4, label: "Vue.js", value: "vue.js", icon: SiVuedotjs },
+  { id: 5, label: "Angular", value: "angular", icon: SiAngular },
+  { id: 6, label: "Nuxt.js", value: "nuxt.js", icon: SiNuxtdotjs },
+  { id: 7, label: "Svelte", value: "svelte", icon: SiSvelte },
+  { id: 8, label: "SvelteKit", value: "sveltekit", icon: SiSvelte },
+  { id: 9, label: "Gatsby", value: "gatsby", icon: SiGatsby },
+  { id: 10, label: "Remix", value: "remix", icon: SiRemix },
+  { id: 11, label: "SolidJS", value: "solidjs", icon: SiSolid },
+  { id: 12, label: "Preact", value: "preact", icon: SiPreact },
+  { id: 13, label: "Vite", value: "vite", icon: SiVite },
+  { id: 14, label: "Webpack", value: "webpack", icon: SiWebpack },
+  // { id: 15, label: "Rollup", value: "rollup", icon: SiRollup },
+  // { id: 16, label: "Parcel", value: "parcel", icon: SiParcel },
+  { id: 17, label: "Snowpack", value: "snowpack", icon: SiSnowpack },
+  { id: 18, label: "HTML-CSS-JS", value: "Html-CSS-JS" },
+  { id: 19, label: "Node.js", value: "nodejs", icon: SiNodedotjs },
+  { id: 20, label: "Flask", value: "flask", icon: SiFlask },
+  { id: 21, label: "Django", value: "django", icon: SiDjango },
+  { id: 22, label: "Laravel", value: "Laravel-custom", icon: SiLaravel },
 ];
 
 export const REGISTRIES = [
