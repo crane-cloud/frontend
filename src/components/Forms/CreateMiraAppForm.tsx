@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import useForm from "@/hooks/generic/useForm";
 import usePost from "@/utils/usePost";
 import { MIRA_API_URL } from "@/config";
+import { useNavigate } from "react-router-dom";
 import {
   Button,
   Divider,
@@ -22,14 +23,23 @@ import { HiTrash } from "react-icons/hi2";
 import TitleText from "../TitleText";
 import { FRAMEWORKS } from "@/utils/constants";
 import { IoRocketSharp } from "react-icons/io5";
+import BuildLogsTerminal from "../BuildLogsTerminal";
 
 const CreateMiraAppForm = (props: { project: any }) => {
   const { project } = props;
   const { authToken } = useAuth();
+  const navigate = useNavigate();
   const [envVariables, setEnvVariables] = useState([{ key: "", value: "" }]);
+  const [_deploymentComplete, setDeploymentComplete] = useState(false);
   const { form: gitRepoForm, onChange: gitRepoOnChange } = useForm();
   const { form, onChange, updateFormValue, updateFormValues } = useForm();
-  const { uploadData, submitting, error } = usePost();
+  const {
+    uploadData,
+    submitting,
+    error,
+    success: deploymentSuccess,
+    data: deploymentResponse,
+  } = usePost();
   const {
     uploadData: gitRepoDetect,
     submitting: gitRepoDetectSubmitting,
@@ -58,6 +68,16 @@ const CreateMiraAppForm = (props: { project: any }) => {
   useEffect(() => {
     updateFormValue("repo", gitRepoForm?.repo as string);
   }, [gitRepoForm?.repo]);
+
+  // Handle deployment completion and redirect
+  const handleDeploymentComplete = (appId?: string) => {
+    setDeploymentComplete(true);
+    // Use the app_id from the response if available, otherwise use the app name
+    const appIdentifier = appId || deploymentResponse?.data?.name || form?.name;
+    if (appIdentifier && project?.id) {
+      navigate(`/projects/${project.id}/apps`);
+    }
+  };
 
   // Environment variables management
   const addEnvVariable = () => {
@@ -323,6 +343,20 @@ const CreateMiraAppForm = (props: { project: any }) => {
           </form>
         )}
       </Paper>
+
+      {/* Build Logs Terminal */}
+      {deploymentSuccess && deploymentResponse && (
+        <>
+          <TitleText>Deployment Started</TitleText>
+          <Paper radius="md" mt="md">
+            <BuildLogsTerminal
+              logsSocketUrl={deploymentResponse.data.logs_socket_url}
+              buildId={deploymentResponse.data.build_id}
+              onDeploymentComplete={handleDeploymentComplete}
+            />
+          </Paper>
+        </>
+      )}
     </div>
   );
 };
