@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Card,
   Group,
@@ -12,6 +12,7 @@ import {
   Anchor,
 } from "@mantine/core";
 import { FiUserPlus } from "react-icons/fi";
+import { Link } from "react-router-dom";
 
 interface SuggestedUser {
   name: string;
@@ -19,69 +20,60 @@ interface SuggestedUser {
   bio: string;
   followers: number;
   projects: number;
-  avatar: string;
+  profile_picture: string;
   tags: string[];
   link?: string;
 }
 
-interface SuggestedUsersProps {
-  users?: SuggestedUser[];
-  title?: string;
-  showTags?: boolean;
-  onFollow?: (username: string) => void;
-}
-
-const defaultUsers: SuggestedUser[] = [
+const dummyUsers: SuggestedUser[] = [
   {
-    name: "Emily Rodriguez",
-    username: "emily-dev",
-    bio: "Frontend architect specializing in React and TypeScript",
-    followers: 892,
-    projects: 24,
-    avatar: "https://github.com/identicons/emily-dev.png",
-    tags: ["React", "TypeScript"],
-    link: "/users/emily-dev",
+    name: "Jane Doe",
+    username: "janedoe",
+    bio: "AI researcher and open source enthusiast.",
+    followers: 1200,
+    projects: 8,
+    profile_picture: "https://randomuser.me/api/portraits/women/44.jpg",
+    tags: ["AI", "ML", "Open Source"],
+    link: "/users/janedoe",
   },
   {
-    name: "David Kim",
-    username: "david-k8s",
+    name: "John Smith",
+    username: "johnsmith",
     bio: "Kubernetes expert and cloud infrastructure engineer",
-    followers: 567,
-    projects: 18,
-    avatar: "https://github.com/identicons/david-k8s.png",
-    tags: ["Kubernetes", "DevOps"],
-    link: "/users/david-k8s",
+    followers: 980,
+    projects: 5,
+    profile_picture: "https://randomuser.me/api/portraits/men/32.jpg",
+    tags: ["React", "Node.js", "DevOps"],
+    link: "/users/johnsmith",
   },
   {
-    name: "Maria Santos",
-    username: "maria-ai",
-    bio: "Machine learning engineer building scalable AI solutions",
-    followers: 1240,
-    projects: 31,
-    avatar: "https://github.com/identicons/maria-ai.png",
-    tags: ["ML", "Python"],
-    link: "/users/maria-ai",
+    name: "Alice Lee",
+    username: "alicelee",
+    bio: "Cloud architect and mentor.",
+    followers: 1500,
+    projects: 12,
+    profile_picture: "https://randomuser.me/api/portraits/women/65.jpg",
+    tags: ["Cloud", "Mentorship", "Kubernetes"],
+    link: "/users/alicelee",
   },
 ];
 
-export default function SuggestedUsers({
-  users = defaultUsers,
-  title = "Suggested for You",
-  showTags = true,
-  onFollow,
-}: SuggestedUsersProps) {
-  const handleFollow = (username: string) => {
-    if (onFollow) {
-      onFollow(username);
-    }
-  };
+export default function SuggestedUsers() {
+  const [users, setUsers] = useState<SuggestedUser[]>([]);
+
+  useEffect(() => {
+    // Simulate API call
+    setTimeout(() => {
+      setUsers(dummyUsers);
+    }, 500);
+  }, []);
 
   return (
     <Card p="md" withBorder radius="lg">
       <Group mb="sm">
         <FiUserPlus size={18} />
         <Title order={4} size="md">
-          {title}
+          Suggested For You
         </Title>
       </Group>
       <Stack gap={0}>
@@ -89,7 +81,7 @@ export default function SuggestedUsers({
           <React.Fragment key={user.username}>
             <div style={{ padding: "8px 0" }}>
               <Group mb={4} align="flex-start">
-                <Avatar src={user.avatar} size="xs" />
+                <Avatar src={user.profile_picture} size="xs" />
                 <div style={{ flex: 1 }}>
                   <Group justify="space-between" align="flex-start" mb={2}>
                     <div style={{ flex: 1 }}>
@@ -116,36 +108,27 @@ export default function SuggestedUsers({
                         @{user.username}
                       </Text>
                     </div>
-                    <Button
-                      variant="outline"
-                      size="xs"
-                      onClick={() => handleFollow(user.username)}
-                    >
+                    <Button variant="outline" size="xs">
                       Follow
                     </Button>
                   </Group>
-
                   <Text size="xs" c="dimmed" mb={4} style={{ lineHeight: 1.3 }}>
                     {user.bio}
                   </Text>
-
-                  {showTags && (
-                    <Group gap="xs" mb={4}>
-                      {user.tags.map((tag) => (
-                        <Badge key={tag} size="xs" variant="light">
-                          {tag}
-                        </Badge>
-                      ))}
+                  <Group gap={4} mt={4}>
+                    {user.tags.map((tag) => (
+                      <Badge key={tag} size="xs" color="blue" variant="light">
+                        {tag}
+                      </Badge>
+                    ))}
+                    <Group gap="sm">
+                      <Text size="xs" c="dimmed">
+                        {user.followers} followers
+                      </Text>
+                      <Text size="xs" c="dimmed">
+                        {user.projects} projects
+                      </Text>
                     </Group>
-                  )}
-
-                  <Group gap="sm">
-                    <Text size="xs" c="dimmed">
-                      {user.followers} followers
-                    </Text>
-                    <Text size="xs" c="dimmed">
-                      {user.projects} projects
-                    </Text>
                   </Group>
                 </div>
               </Group>
@@ -153,6 +136,17 @@ export default function SuggestedUsers({
             {index < users.length - 1 && <Divider color="gray.3" />}
           </React.Fragment>
         ))}
+
+        <Button
+          component={Link}
+          to="/explore"
+          variant="subtle"
+          size="xs"
+          fullWidth
+          mt="sm"
+        >
+          +100 more
+        </Button>
       </Stack>
     </Card>
   );

@@ -68,8 +68,6 @@ const CompactProjectsList = ({
         color: "inherit",
         cursor: "pointer",
         transition: "all 0.2s ease",
-        background: "linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%)",
-        border: "1px solid #dee2e6",
         position: "relative",
         overflow: "hidden",
         minHeight: "75px",
