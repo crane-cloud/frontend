@@ -202,7 +202,7 @@ const CompactProjectsList = ({
   );
 
   return (
-    <Card p="md" withBorder radius="lg">
+    <Card p="md" withBorder radius="lg" h="100%">
       <Group mb="sm" justify="space-between">
         <Group gap="xs">
           <FiCode size={18} />
@@ -264,7 +264,7 @@ const CompactProjectsList = ({
           {showCreateButton && (
             <Button
               component={Link}
-              to="/projects/new"
+              to="/projects/create"
               variant="light"
               size="xs"
               leftSection={<FiPlus size={14} />}
