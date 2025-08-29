@@ -50,3 +50,13 @@ export type TGeneralHookParams = {
   id?: string;
   source_id?: string;
 };
+
+export type TBuild = {
+  build_id: string;
+  project_id: string;
+  app_name: string;
+  status: "failed" | "success" | "building" | "pending";
+  started_at: string;
+  completed_at: string;
+  error?: string;
+};
