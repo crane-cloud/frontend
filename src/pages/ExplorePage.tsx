@@ -385,7 +385,7 @@ const ExplorePage = () => {
               </Grid.Col>
 
               <Grid.Col span={4}>
-                <SuggestedUsers users={topDevelopers} title="Top Developers" />
+                <SuggestedUsers title="Top Developers" />
               </Grid.Col>
 
               <Grid.Col span={4}>

@@ -293,7 +293,7 @@ const LandingPage = () => {
           <Stack gap="lg" h="100%">
             <TrendingProjects compact />
             <TrendingTags />
-            <SuggestedUsers />
+            <SuggestedUsers title="Suggested For You" />
           </Stack>
         </Grid.Col>
       </Grid>

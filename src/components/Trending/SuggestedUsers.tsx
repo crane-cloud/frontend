@@ -6,7 +6,7 @@ import { API_USERS } from "@/utils/apis";
 import { User } from "@/types/user";
 import UserCard from "../Cards/UserCard";
 
-export default function SuggestedUsers() {
+export default function SuggestedUsers({ title }: { title: string }) {
   const { data: response, getData } = useGet();
 
   useEffect(() => {
@@ -18,7 +18,7 @@ export default function SuggestedUsers() {
       <Group mb="sm">
         <FiUserPlus size={18} />
         <Title order={4} size="md">
-          Suggested For You
+          {title}
         </Title>
       </Group>
       <Stack gap={0}>
