@@ -385,7 +385,7 @@ const ExplorePage = () => {
               </Grid.Col>
 
               <Grid.Col span={4}>
-                <SuggestedUsers users={topDevelopers} title="Top Developers" />
+                <SuggestedUsers title="Top Developers" />
               </Grid.Col>
 
               <Grid.Col span={4}>
@@ -619,7 +619,7 @@ const ExplorePage = () => {
                         <FiTag size={24} />
                       </ThemeIcon>
                       <Title order={4} mb="xs">
-                        #{tag.name}
+                        {tag.name}
                       </Title>
                       <Text size="sm" c="dimmed" mb="xs">
                         {tag.count} projects

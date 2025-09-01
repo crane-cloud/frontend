@@ -29,6 +29,7 @@ type TCreateProjectForm = {
   isUpdatingProject?: boolean;
   onCancel?: () => void;
   refresh?: () => void;
+  setContainerSize?: boolean;
 };
 
 const CreateProjectForm = (props: TCreateProjectForm) => {
@@ -38,8 +39,11 @@ const CreateProjectForm = (props: TCreateProjectForm) => {
     showTitle = true,
     onCancel = false,
     refresh = () => {},
+    setContainerSize = true,
   } = props;
-  useSetContainerSize("sm");
+  if (setContainerSize) {
+    useSetContainerSize("sm");
+  }
   const { form, onChange, updateFormValue, updateFormValues, editedForm } =
     useForm();
   const { user } = useAuth();

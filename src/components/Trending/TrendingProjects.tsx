@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   Card,
   Group,
@@ -6,63 +6,85 @@ import {
   Stack,
   Badge,
   Text,
-  Avatar,
   Divider,
   Anchor,
+  Avatar,
+  Skeleton,
+  Box,
 } from "@mantine/core";
-import { FiCode, FiStar } from "react-icons/fi";
-
-interface TrendingProject {
-  name: string;
-  author: string;
-  stars: number;
-  language: string;
-  description: string;
-  avatar: string;
-  link?: string;
-}
+import { FiCode, FiUsers } from "react-icons/fi";
+import useGet from "@/utils/useGet";
+import { API_PROJECTS } from "@/utils/apis";
+import { Link } from "react-router-dom";
+import { Project } from "@/types/project";
 
 interface TrendingProjectsProps {
-  projects?: TrendingProject[];
   title?: string;
   compact?: boolean;
 }
 
-const defaultProjects: TrendingProject[] = [
-  {
-    name: "ai-chatbot",
-    author: "ai-team",
-    stars: 892,
-    language: "Python",
-    description: "Advanced AI chatbot with natural language processing",
-    avatar: "https://github.com/identicons/ai-team.png",
-    link: "/projects/ai-chatbot",
-  },
-  {
-    name: "k8s-dashboard",
-    author: "devops-pro",
-    stars: 654,
-    language: "React",
-    description: "Beautiful Kubernetes cluster management dashboard",
-    avatar: "https://github.com/identicons/devops-pro.png",
-    link: "/projects/k8s-dashboard",
-  },
-  {
-    name: "auth-service",
-    author: "security-team",
-    stars: 423,
-    language: "Go",
-    description: "Microservice for authentication and authorization",
-    avatar: "https://github.com/identicons/security-team.png",
-    link: "/projects/auth-service",
-  },
-];
-
 export default function TrendingProjects({
-  projects = defaultProjects,
   title = "Trending Projects",
   compact = false,
 }: TrendingProjectsProps) {
+  const { data: response, getData, loading } = useGet();
+  const { data: userResponse, getData: getUserDetails } = useGet();
+
+  const [userDetailsCache, setUserDetailsCache] = useState<Record<string, any>>(
+    {},
+  );
+  const [fetchingUsers, setFetchingUsers] = useState<Set<string>>(new Set());
+
+  useEffect(() => {
+    getData({
+      api: `${API_PROJECTS}`,
+      params: { page: 1, per_page: 3 },
+    });
+  }, []);
+
+  // Effect to update cache when userResponse changes
+  useEffect(() => {
+    if (userResponse?.data?.user) {
+      setUserDetailsCache((prev) => ({
+        ...prev,
+        [userResponse.data?.user?.id]: userResponse.data.user,
+      }));
+
+      // Remove from fetching set
+      setFetchingUsers((prev) => {
+        const newSet = new Set(prev);
+        newSet.delete(userResponse.data.user.id);
+        return newSet;
+      });
+    }
+  }, [userResponse]);
+
+  // Function to get user name and trigger fetch if needed
+  const getUserName = useCallback(
+    (userId: string) => {
+      if (!userId) {
+        return "";
+      }
+
+      // Return cached name if available
+      const userDetails = userDetailsCache[userId];
+      if (userDetails) {
+        return userDetails.name || userDetails.username || userId;
+      }
+
+      // Fetch if not already fetching and not in cache
+      if (!fetchingUsers.has(userId)) {
+        setFetchingUsers((prev) => new Set([...prev, userId]));
+        getUserDetails({ api: `/users/${userId}` });
+      }
+
+      return userId; // Return ID while loading
+    },
+    [userDetailsCache, fetchingUsers, getUserDetails],
+  );
+
+  const trendingProjects = response?.data?.projects || [];
+
   return (
     <Card p="md" withBorder radius="lg">
       <Group mb="sm">
@@ -71,25 +93,35 @@ export default function TrendingProjects({
           {title}
         </Title>
       </Group>
+
       <Stack gap={0}>
-        {projects.map((project, index) => (
-          <React.Fragment key={project.name}>
-            <div style={{ padding: "8px 0" }}>
-              <Group mb={4} align="flex-start">
-                <Avatar src={project.avatar} size="xs" />
-                <div style={{ flex: 1 }}>
-                  <Group justify="space-between" align="flex-start" mb={2}>
+        {loading ? (
+          <ProjectsSkeleton compact={compact} />
+        ) : trendingProjects?.length > 0 ? (
+          trendingProjects?.map((project: Project, index: number) => (
+            <React.Fragment key={project.id}>
+              <div style={{ padding: "8px 0" }}>
+                <Group align="flex-start" gap={12} mt={2}>
+                  <Avatar
+                    size="sm"
+                    radius="sm"
+                    color="blue"
+                    variant="gradient"
+                    gradient={{ from: "blue", to: "cyan" }}
+                  >
+                    <FiCode size={14} />
+                  </Avatar>
+
+                  <div style={{ flex: 1 }}>
                     <Anchor
-                      href={project.link || "#"}
+                      href={`/projects/${project.id}`}
                       size="sm"
                       fw={500}
-                      c="dark"
                       style={{
                         lineHeight: 1.2,
                         textDecoration: "none",
-                        "&:hover": {
-                          textDecoration: "underline",
-                        },
+                        display: "block",
+                        marginBottom: "2px",
                       }}
                       onMouseEnter={(e) => {
                         e.currentTarget.style.textDecoration = "underline";
@@ -98,38 +130,143 @@ export default function TrendingProjects({
                         e.currentTarget.style.textDecoration = "none";
                       }}
                     >
-                      {project.name}
+                      {project?.name}
                     </Anchor>
-                    <Badge size="xs" variant="light">
-                      {project.language}
-                    </Badge>
-                  </Group>
-                  <Text size="xs" c="dimmed" mb={4}>
-                    by {project.author}
+
+                    <Text size="xs" c="dimmed" mb={4}>
+                      by {getUserName(project?.owner_id)}
+                    </Text>
+
+                    {!compact && (
+                      <Text
+                        size="xs"
+                        c="dimmed"
+                        mb={4}
+                        style={{ lineHeight: 1.3 }}
+                      >
+                        {project.description}
+                      </Text>
+                    )}
+                  </div>
+                </Group>
+
+                <Group gap={4} mt={8}>
+                  {project?.tags &&
+                    project?.tags.map((tag) => (
+                      <Badge
+                        key={tag.id}
+                        size="xs"
+                        color="blue"
+                        variant="light"
+                        component={Link}
+                        to={`/tags/${tag.name}`}
+                        style={{ cursor: "pointer" }}
+                      >
+                        {tag.name.toLowerCase()}
+                      </Badge>
+                    ))}
+                </Group>
+
+                <Group gap={2} mt={6}>
+                  <FiUsers size={10} color="#6c757d" />
+                  <Text size="xs" c="dimmed" fw={500} ml={2}>
+                    {project.followers_count || 0} followers
                   </Text>
-                  {!compact && (
-                    <Text
-                      size="xs"
-                      c="dimmed"
-                      mb={4}
-                      style={{ lineHeight: 1.3 }}
-                    >
-                      {project.description}
-                    </Text>
-                  )}
-                  <Group gap={4}>
-                    <FiStar size={10} color="#6c757d" />
-                    <Text size="xs" c="dimmed">
-                      {project.stars}
-                    </Text>
-                  </Group>
-                </div>
-              </Group>
-            </div>
-            {index < projects.length - 1 && <Divider color="gray.3" />}
-          </React.Fragment>
-        ))}
+                </Group>
+              </div>
+              {index < trendingProjects.length - 1 && <Divider />}
+            </React.Fragment>
+          ))
+        ) : (
+          <Stack gap="md" ta="center" py="lg">
+            <Box>
+              <Avatar
+                size="lg"
+                radius="md"
+                color="gray"
+                variant="light"
+                mx="auto"
+                mb="sm"
+              >
+                <FiCode size={20} />
+              </Avatar>
+              <Text size="sm" c="dimmed" fw={500}>
+                No trending projects yet
+              </Text>
+            </Box>
+          </Stack>
+        )}
       </Stack>
     </Card>
   );
 }
+
+// Skeleton component for loading state
+const ProjectsSkeleton = ({ compact }: { compact?: boolean }) => {
+  const projectNames = [120, 95, 140]; // Different widths for project names
+  const ownerNames = [80, 65, 90]; // Different widths for owner names
+  const descriptions = [200, 180, 220]; // Different widths for descriptions
+  const tagCounts = [2, 3, 1]; // Number of tags per project
+  const followerCounts = [65, 72, 58]; // Follower count widths
+
+  return (
+    <>
+      {Array.from({ length: 3 }).map((_, index) => (
+        <React.Fragment key={index}>
+          <div style={{ padding: "8px 0" }}>
+            <Group align="flex-start" gap={12} mt={2}>
+              {/* Avatar skeleton */}
+              <Skeleton height={32} width={32} radius="sm" />
+
+              <div style={{ flex: 1 }}>
+                {/* Project name skeleton */}
+                <Skeleton
+                  height={16}
+                  width={projectNames[index]}
+                  mb={2}
+                  style={{ display: "block" }}
+                />
+
+                {/* Owner name skeleton */}
+                <Skeleton height={12} width={ownerNames[index]} mb={4} />
+
+                {/* Description skeleton (only if not compact) */}
+                {!compact && (
+                  <>
+                    <Skeleton height={12} width={descriptions[index]} mb={2} />
+                    <Skeleton
+                      height={12}
+                      width={descriptions[index] - 40}
+                      mb={4}
+                    />
+                  </>
+                )}
+              </div>
+            </Group>
+
+            {/* Tags skeleton */}
+            <Group gap={4} mt={8}>
+              {Array.from({ length: tagCounts[index] }).map((_, tagIndex) => (
+                <Skeleton
+                  key={tagIndex}
+                  height={18}
+                  width={Math.random() * 30 + 40}
+                  radius="xl"
+                />
+              ))}
+            </Group>
+
+            {/* Followers skeleton */}
+            <Group gap={2} mt={6}>
+              <Skeleton height={10} width={10} circle />
+              <Skeleton height={12} width={followerCounts[index]} ml={2} />
+            </Group>
+          </div>
+
+          {/* Divider (except for last item) */}
+          {index < 2 && <Divider />}
+        </React.Fragment>
+      ))}
+    </>
+  );
+};
