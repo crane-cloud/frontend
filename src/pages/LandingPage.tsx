@@ -106,6 +106,7 @@ const LandingPage = () => {
       api: `${ACTIVITY_LOGS_API_URL}/api/activities`,
       params: {
         user_id: user?.id,
+        status: "Success",
         per_page: 20,
         page: 1,
       },
