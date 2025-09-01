@@ -1,6 +1,9 @@
 name: Production Deployment
 
 on:
+  push:
+    branches:
+      - ft-temp-prod
   release:
     types:
       - released
@@ -23,7 +26,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
-          ref: develop
+          ref: ft-temp-prod
 
       - name: Get version
         id: version
