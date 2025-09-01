@@ -11,6 +11,7 @@ import {
   ActionIcon,
   Tooltip,
   Code,
+  Skeleton,
 } from "@mantine/core";
 import {
   TbAlertCircle,
@@ -32,15 +33,15 @@ import { MdOutlineAccessTime } from "react-icons/md";
 const AppDeploymentPage = () => {
   useSetContainerSize("md");
   const { app_id } = useParams();
-  const { app } = useGetApp(app_id || "");
+  const { app, loading: appLoading } = useGetApp(app_id || "");
   const [builds, setBuilds] = useState<TBuild[]>([]);
-  const { getData, data, loading, success } = useGet();
+  const { getData: getBuilds, data, loading, success } = useGet();
 
   useSetContainerSize("lg");
 
   useEffect(() => {
     if (app?.name) {
-      getData({
+      getBuilds({
         api: `${MIRA_API_URL}/api/builds`,
         isExternal: true,
         params: {
@@ -225,20 +226,50 @@ const AppDeploymentPage = () => {
     ),
   }));
 
+  // Show loading skeleton while app data is loading
+  if (appLoading) {
+    return (
+      <Stack gap="lg">
+        {/* Header Loading */}
+        <Flex justify="space-between" align="center">
+          <Skeleton height={32} width={150} />
+          <Group gap="sm">
+            <Skeleton height={28} width={120} />
+            <Skeleton height={28} width={28} radius="md" />
+          </Group>
+        </Flex>
+
+        {/* Table Loading */}
+        <Stack gap="md">
+          <Skeleton height={50} />
+          <Skeleton height={40} />
+          <Skeleton height={40} />
+          <Skeleton height={40} />
+        </Stack>
+      </Stack>
+    );
+  }
+
   return (
     <Stack gap="lg">
       {/* Header */}
       <Flex justify="space-between" align="center">
         <TitleText>Deployments</TitleText>
         <Group gap="sm">
-          <Badge variant="light" color="gray" size="lg">
-            {builds.length} deployment{builds.length !== 1 ? "s" : ""}
-          </Badge>
+          {loading ? (
+            <Skeleton height={28} width={120} />
+          ) : (
+            <Badge variant="light" color="gray" size="lg">
+              {builds.length} deployment{builds.length !== 1 ? "s" : ""}
+            </Badge>
+          )}
           <ActionIcon
             variant="filled"
             size="md"
             onClick={() => window.location.reload()}
             color="blue"
+            loading={loading}
+            disabled={loading}
           >
             <TbRefresh size={16} />
           </ActionIcon>
@@ -249,7 +280,7 @@ const AppDeploymentPage = () => {
       <Table
         columns={columns}
         data={tableData}
-        loading={loading}
+        loading={loading || appLoading}
         showIndex={false}
         hideFilters
         verticalSpacing="md"
@@ -258,7 +289,7 @@ const AppDeploymentPage = () => {
       />
 
       {/* Empty State */}
-      {builds.length === 0 && !loading && (
+      {builds.length === 0 && !loading && !appLoading && (
         <Alert
           icon={<TbPlayerPlay size={20} />}
           title="No deployments yet"
