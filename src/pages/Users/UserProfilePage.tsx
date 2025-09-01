@@ -96,7 +96,6 @@ const UserProfilePage = () => {
     });
   }, []);
 
-  console.log(userActivityData)
 
   const currentUser = userData?.data?.user || {};
 
