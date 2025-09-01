@@ -12,7 +12,17 @@ export const useProjects = () => {
     },
     { id: "apps_count", header: "Apps" },
     { id: "is_public", header: "Public" },
-    { id: "supports_ml", header: "ML" },
+    {
+      id: "supports_ml",
+      header: <div style={{ minWidth: "4rem" }}>ML</div>,
+      filter: {
+        type: "select",
+        options: [
+          { label: "Yes", value: "true" },
+          { label: "No", value: "false" },
+        ],
+      },
+    },
     { id: "organisation", header: "Organisation" },
     {
       id: "project_type",
