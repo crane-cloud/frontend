@@ -23,7 +23,7 @@ import {
   FaTwitter,
   FaPen,
 } from "react-icons/fa";
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/utils/AuthContext";
 import { useSetContainerSize, useSetNoSidebar } from "@/utils/helpers";
@@ -31,6 +31,10 @@ import useGet from "@/utils/useGet";
 import UserProfileCard, { StatsList } from "@/components/Cards/OtherCards";
 import TitleText from "@/components/TitleText";
 import { formatDistanceToNow } from "date-fns";
+import { ACTIVITY_LOGS_API_URL } from "@/config";
+
+// Define the API URL for activity logs
+
 
 // social media icons for map
 const socialIconMap: Record<string, React.ReactNode> = {
@@ -63,6 +67,7 @@ const UserProfilePage = () => {
   const token = localStorage.getItem("token");
   const { getData: getUser, data: userData } = useGet();
   const navigate = useNavigate();
+  const { getData: getUserActivity, data: userActivityData } = useGet();
 
   const [logs, setLogs] = useState<ActivityLog[]>([]);
   const [loadingLogs, setLoadingLogs] = useState(true);
@@ -83,6 +88,16 @@ const UserProfilePage = () => {
     }
   }, [user?.id]);
 
+  useEffect(() => {
+    getUserActivity({
+      api: `${ACTIVITY_LOGS_API_URL}/api/activities`,
+      params: user.id,
+      isExternal: true,
+    });
+  }, []);
+
+  console.log(userActivityData)
+
   const currentUser = userData?.data?.user || {};
 
   const userStats = (user: any) => [
@@ -100,47 +115,30 @@ const UserProfilePage = () => {
     },
   ];
 
-  // Fetch activity logs
-  useEffect(() => {
-    if (!token || !user?.id) {
-      setLoadingLogs(false);
-      return;
-    }
-
-    async function fetchLogs() {
-      setLoadingLogs(true);
-      setError(null);
-
-      try {
-        const res = await fetch(
-          `https://staging-logger.cranecloud.io/api/activities?user_id=${user.id}&page=1&per_page=10&general=false`,
-          {
-            headers: {
-              Accept: "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-          },
-        );
-
-        if (!res.ok) {
-          throw new Error(`API returned status ${res.status}`);
-        }
-
-        const data = await res.json();
-        const activities: ActivityLog[] =
-          data.data?.activity || data.data || data.activity || data || [];
-
-        setLogs(Array.isArray(activities) ? activities : []);
-      } catch (err: any) {
-        setError("Failed to load activity logs.");
-        setLogs([]);
-      } finally {
-        setLoadingLogs(false);
+  fetch(`${ACTIVITY_LOGS_API_URL}/api/activities?user_id=${user.id}&page=1&per_page=10&general=false`, {
+    headers: {
+      Accept: "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  })
+    .then((res) => {
+      if (!res.ok) {
+        throw new Error(`API returned status ${res.status}`);
       }
-    }
-
-    fetchLogs();
-  }, [token, user?.id]);
+      return res.json();
+    })
+    .then((data) => {
+      const activities: ActivityLog[] =
+        data.data?.activity || data.data || data.activity || data || [];
+      setLogs(Array.isArray(activities) ? activities : []);
+    })
+    .catch((err) => {
+      setError("Failed to load activity logs.");
+      setLogs([]);
+    })
+    .finally(() => {
+      setLoadingLogs(false);
+    });
 
   const filteredLogs =
     filter === "All"
@@ -203,6 +201,8 @@ const UserProfilePage = () => {
     return raw.length > 50 ? `${raw.substring(0, 50).trim()}...` : raw.trim();
   }
 
+
+  
   return (
     <Stack>
       <TitleText>User Profile</TitleText>
