@@ -35,7 +35,6 @@ import { ACTIVITY_LOGS_API_URL } from "@/config";
 
 // Define the API URL for activity logs
 
-
 // social media icons for map
 const socialIconMap: Record<string, React.ReactNode> = {
   github: <FaGithub />,
@@ -96,7 +95,6 @@ const UserProfilePage = () => {
     });
   }, []);
 
-
   const currentUser = userData?.data?.user || {};
 
   const userStats = (user: any) => [
@@ -114,12 +112,15 @@ const UserProfilePage = () => {
     },
   ];
 
-  fetch(`${ACTIVITY_LOGS_API_URL}/api/activities?user_id=${user.id}&page=1&per_page=10&general=false`, {
-    headers: {
-      Accept: "application/json",
-      Authorization: `Bearer ${token}`,
+  fetch(
+    `${ACTIVITY_LOGS_API_URL}/api/activities?user_id=${user.id}&page=1&per_page=10&general=false`,
+    {
+      headers: {
+        Accept: "application/json",
+        Authorization: `Bearer ${token}`,
+      },
     },
-  })
+  )
     .then((res) => {
       if (!res.ok) {
         throw new Error(`API returned status ${res.status}`);
@@ -200,8 +201,6 @@ const UserProfilePage = () => {
     return raw.length > 50 ? `${raw.substring(0, 50).trim()}...` : raw.trim();
   }
 
-
-  
   return (
     <Stack>
       <TitleText>User Profile</TitleText>
