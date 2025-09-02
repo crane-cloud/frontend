@@ -163,7 +163,9 @@ const UserProfilePage = () => {
   };
 
   function formatDescription(raw: string): string {
-    if (!raw) return "";
+    if (!raw) {
+      return "";
+    }
 
     const looksLikeK8sStatus =
       raw.startsWith("{'kind': 'Status'") || raw.includes("'apiVersion': 'v1'");
