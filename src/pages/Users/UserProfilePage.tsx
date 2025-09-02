@@ -33,8 +33,6 @@ import TitleText from "@/components/TitleText";
 import { formatDistanceToNow } from "date-fns";
 import { ACTIVITY_LOGS_API_URL } from "@/config";
 
-// Define the API URL for activity logs
-
 // social media icons for map
 const socialIconMap: Record<string, React.ReactNode> = {
   github: <FaGithub />,
@@ -63,13 +61,11 @@ interface ActivityLog {
 
 const UserProfilePage = () => {
   const { user } = useAuth();
-  const token = localStorage.getItem("token");
   const { getData: getUser, data: userData } = useGet();
+  const { getData: getUserActivities, data: activitiesData, loading: loadingLogs } = useGet();
   const navigate = useNavigate();
-  const { getData: getUserActivity } = useGet();
 
   const [logs, setLogs] = useState<ActivityLog[]>([]);
-  const [loadingLogs, setLoadingLogs] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [filter, setFilter] = useState<string | null>("All");
 
@@ -81,19 +77,41 @@ const UserProfilePage = () => {
     if (user) {
       try {
         getUser({ api: `/users/${user.id}` });
-      } catch (err: any) {
+      } catch {
         setError("Failed to load profile data.");
       }
     }
   }, [user?.id]);
 
+  // Fetch user activities
   useEffect(() => {
-    getUserActivity({
-      api: `${ACTIVITY_LOGS_API_URL}/api/activities`,
-      params: user.id,
-      isExternal: true,
-    });
-  }, []);
+    if (user?.id) {
+      getUserActivities({
+        api: `${ACTIVITY_LOGS_API_URL}/api/activities`,
+        params: {
+          user_id: user.id,
+          page: 1,
+          per_page: 10,
+          general: false,
+        },
+        isExternal: true,
+      });
+    }
+  }, [user?.id]);
+
+  // Sync activities data into state
+  useEffect(() => {
+    if (activitiesData) {
+      const activities: ActivityLog[] =
+        activitiesData.data?.activity ||
+        activitiesData.data ||
+        activitiesData.activity ||
+        activitiesData ||
+        [];
+
+      setLogs(Array.isArray(activities) ? activities : []);
+    }
+  }, [activitiesData]);
 
   const currentUser = userData?.data?.user || {};
 
@@ -111,34 +129,6 @@ const UserProfilePage = () => {
       tooltip: "Total users who follow your projects",
     },
   ];
-
-  fetch(
-    `${ACTIVITY_LOGS_API_URL}/api/activities?user_id=${user.id}&page=1&per_page=10&general=false`,
-    {
-      headers: {
-        Accept: "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    },
-  )
-    .then((res) => {
-      if (!res.ok) {
-        throw new Error(`API returned status ${res.status}`);
-      }
-      return res.json();
-    })
-    .then((data) => {
-      const activities: ActivityLog[] =
-        data.data?.activity || data.data || data.activity || data || [];
-      setLogs(Array.isArray(activities) ? activities : []);
-    })
-    .catch((_err) => {
-      setError("Failed to load activity logs.");
-      setLogs([]);
-    })
-    .finally(() => {
-      setLoadingLogs(false);
-    });
 
   const filteredLogs =
     filter === "All"
@@ -169,9 +159,7 @@ const UserProfilePage = () => {
   };
 
   function formatDescription(raw: string): string {
-    if (!raw) {
-      return "";
-    }
+    if (!raw) return "";
 
     const looksLikeK8sStatus =
       raw.startsWith("{'kind': 'Status'") || raw.includes("'apiVersion': 'v1'");
