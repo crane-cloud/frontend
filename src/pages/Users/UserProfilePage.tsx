@@ -62,7 +62,11 @@ interface ActivityLog {
 const UserProfilePage = () => {
   const { user } = useAuth();
   const { getData: getUser, data: userData } = useGet();
-  const { getData: getUserActivities, data: activitiesData, loading: loadingLogs } = useGet();
+  const {
+    getData: getUserActivities,
+    data: activitiesData,
+    loading: loadingLogs,
+  } = useGet();
   const navigate = useNavigate();
 
   const [logs, setLogs] = useState<ActivityLog[]>([]);
