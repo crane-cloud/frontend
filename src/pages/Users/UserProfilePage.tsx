@@ -23,7 +23,7 @@ import {
   FaTwitter,
   FaPen,
 } from "react-icons/fa";
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/utils/AuthContext";
 import { useSetContainerSize, useSetNoSidebar } from "@/utils/helpers";
@@ -66,7 +66,7 @@ const UserProfilePage = () => {
   const token = localStorage.getItem("token");
   const { getData: getUser, data: userData } = useGet();
   const navigate = useNavigate();
-  const { getData: getUserActivity, data: userActivityData } = useGet();
+  const { getData: getUserActivity } = useGet();
 
   const [logs, setLogs] = useState<ActivityLog[]>([]);
   const [loadingLogs, setLoadingLogs] = useState(true);
@@ -132,7 +132,7 @@ const UserProfilePage = () => {
         data.data?.activity || data.data || data.activity || data || [];
       setLogs(Array.isArray(activities) ? activities : []);
     })
-    .catch((err) => {
+    .catch((_err) => {
       setError("Failed to load activity logs.");
       setLogs([]);
     })
