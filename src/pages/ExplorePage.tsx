@@ -1,9 +1,7 @@
 import React, { useState } from "react";
 import { IoMdMore } from "react-icons/io";
-import { ActionIcon } from "@mantine/core";
-import { Menu } from "@mantine/core";
-import { FaRegEyeSlash } from "react-icons/fa";
-import { FaEye } from "react-icons/fa";
+import { ActionIcon, Menu } from "@mantine/core";
+import { FaRegEyeSlash, FaEye } from "react-icons/fa";
 import {
   Container,
   Title,
@@ -43,8 +41,6 @@ import { useSetContainerSize, useSetNoSidebar } from "@/utils/helpers";
 import TrendingProjects from "@/components/Trending/TrendingProjects";
 import SuggestedUsers from "@/components/Trending/SuggestedUsers";
 import TrendingTags from "@/components/Trending/TrendingTags";
-import { MdMore } from "react-icons/md";
-
 const ExplorePage = () => {
   useSetNoSidebar();
   useSetContainerSize("full");
