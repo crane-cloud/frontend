@@ -87,7 +87,7 @@ const UserCard = ({ user }: { user: User }) => {
           <Group justify="space-between" align="flex-start" mb={2}>
             <div style={{ flex: 1 }}>
               <Anchor
-                href={`/profile/${user.username}`}
+                href={`/${user.username}`}
                 size="sm"
                 fw={500}
                 style={{

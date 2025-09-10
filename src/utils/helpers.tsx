@@ -11,7 +11,8 @@ import {
   FiDatabase,
   FiPlus,
   FiTrash2,
-  FiUser,
+  FiUserPlus,
+  FiUserX,
   FiX,
 } from "react-icons/fi";
 import { format, formatDistanceToNowStrict, parseISO } from "date-fns";
@@ -623,7 +624,10 @@ export const getActivityOperationIcon = (activity: UserActivity) => {
     return <FiPlus size={16} color="gray" />;
   }
   if (operation === "Follow") {
-    return <FiUser size={16} color="gray" />;
+    return <FiUserPlus size={16} color="gray" />;
+  }
+  if (operation === "Unfollow") {
+    return <FiUserX size={16} color="gray" />;
   }
   if (operation.includes("Enable")) {
     return <FiCheck size={16} color="gray" />;
