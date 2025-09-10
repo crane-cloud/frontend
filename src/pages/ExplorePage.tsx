@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { IoMdMore } from "react-icons/io";
-import { ActionIcon } from '@mantine/core';
+import { ActionIcon } from "@mantine/core";
 import { Menu } from "@mantine/core";
 import { FaRegEyeSlash } from "react-icons/fa";
 import { FaEye } from "react-icons/fa";
@@ -222,7 +222,7 @@ const ExplorePage = () => {
               by {project.author}
             </Text>
           </Stack>
-          
+
           <Menu shadow="md" width={200}>
             <Menu.Target>
               <ActionIcon size={42} variant="default">
@@ -235,9 +235,7 @@ const ExplorePage = () => {
               <Menu.Item leftSection={<FaRegEyeSlash size={14} />}>
                 Private
               </Menu.Item>
-              <Menu.Item leftSection={<FaEye size={14} />}>
-                Public
-              </Menu.Item>
+              <Menu.Item leftSection={<FaEye size={14} />}>Public</Menu.Item>
             </Menu.Dropdown>
           </Menu>
         </Group>
