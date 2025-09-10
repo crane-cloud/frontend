@@ -1,4 +1,9 @@
 import React, { useState } from "react";
+import { IoMdMore } from "react-icons/io";
+import { ActionIcon } from '@mantine/core';
+import { Menu } from "@mantine/core";
+import { FaRegEyeSlash } from "react-icons/fa";
+import { FaEye } from "react-icons/fa";
 import {
   Container,
   Title,
@@ -38,6 +43,7 @@ import { useSetContainerSize, useSetNoSidebar } from "@/utils/helpers";
 import TrendingProjects from "@/components/Trending/TrendingProjects";
 import SuggestedUsers from "@/components/Trending/SuggestedUsers";
 import TrendingTags from "@/components/Trending/TrendingTags";
+import { MdMore } from "react-icons/md";
 
 const ExplorePage = () => {
   useSetNoSidebar();
@@ -216,6 +222,24 @@ const ExplorePage = () => {
               by {project.author}
             </Text>
           </Stack>
+          
+          <Menu shadow="md" width={200}>
+            <Menu.Target>
+              <ActionIcon size={42} variant="default">
+                <IoMdMore size={24} />
+              </ActionIcon>
+            </Menu.Target>
+
+            <Menu.Dropdown>
+              <Menu.Label>Toggle visibility</Menu.Label>
+              <Menu.Item leftSection={<FaRegEyeSlash size={14} />}>
+                Private
+              </Menu.Item>
+              <Menu.Item leftSection={<FaEye size={14} />}>
+                Public
+              </Menu.Item>
+            </Menu.Dropdown>
+          </Menu>
         </Group>
 
         <Text size="sm" c="dimmed" style={{ lineHeight: 1.4 }}>
