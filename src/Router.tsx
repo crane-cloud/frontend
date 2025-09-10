@@ -41,6 +41,12 @@ const DatabaseDetails = React.lazy(
 const AppSettingsPage = React.lazy(
   () => import("./pages/Apps/AppSettingsPage"),
 );
+const AppDeploymentPage = React.lazy(
+  () => import("./pages/Apps/AppDeploymentPage"),
+);
+const AppDeploymentDetailPage = React.lazy(
+  () => import("./pages/Apps/AppDeploymentDetailPage"),
+);
 const ExperimentsListPage = React.lazy(
   () => import("./pages/Experiments/ExperimentsListPage"),
 );
@@ -91,6 +97,14 @@ export const DashboardRoutes = [
   { path: "/projects/:project_id/apps/create", element: <CreateAppForm /> },
   { path: "/projects/:project_id/apps/:app_id", element: <AppDetailPage /> },
   { path: "/projects/:project_id/apps/:app_id/logs", element: <AppLogsPage /> },
+  {
+    path: "/projects/:project_id/apps/:app_id/build_logs",
+    element: <AppDeploymentPage />,
+  },
+  {
+    path: "/projects/:project_id/apps/:app_id/deployments/:build_id",
+    element: <AppDeploymentDetailPage />,
+  },
   {
     path: "/projects/:project_id/apps/:app_id/metrics",
     element: <AppMetrics />,
