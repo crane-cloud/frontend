@@ -103,7 +103,7 @@ const LandingPage = () => {
   ];
   const fetchActivities = () => {
     getData({
-      api: `${ACTIVITY_LOGS_API_URL}/api/activities`,
+      api: `${ACTIVITY_LOGS_API_URL}/activities`,
       params: {
         user_id: user?.id,
         status: "Success",

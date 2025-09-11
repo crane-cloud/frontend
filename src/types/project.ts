@@ -27,4 +27,5 @@ export interface Project {
   name: string;
   project_type: string;
   cluster_id: string;
+  is_pinned: boolean;
 }
