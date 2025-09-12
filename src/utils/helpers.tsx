@@ -597,3 +597,17 @@ export const getPasswordValidationState = (
 
   return validatePasswordRequirements(password);
 };
+
+const tagColors = [
+  "blue",
+  "cyan",
+  "green",
+  "indigo",
+  "purple",
+  "orange",
+  "gray",
+  "red",
+];
+export function getTagColor(index: number): string {
+  return tagColors[index % tagColors.length];
+}
