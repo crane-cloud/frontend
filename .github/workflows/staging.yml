@@ -3,7 +3,7 @@ name: Develop deployment
 on:
   push:
     branches:
-      - develop
+      - ch-update-env
 
   workflow_dispatch:
 
@@ -23,7 +23,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
-          ref: develop
+          ref: ch-update-env
 
       - name: Install (Buildx)
         uses: docker/setup-buildx-action@v3
@@ -92,6 +92,22 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           push: true
           tags: ${{ steps.meta.outputs.tags }}
+          build-args: |
+            VITE_APP_API_BASE_URL=${{ secrets.REACT_APP_API_BASE_URL_STAGING }}
+            VITE_APP_MIRA_API_URL=${{ secrets.REACT_APP_MIRA_API_URL }}
+            VITE_APP_FLUTTERWAVE_PUBLIC_KEY_TESTING=${{ secrets.REACT_APP_FLUTTERWAVE_PUBLIC_KEY_TESTING }}
+            VITE_APP_GITHUB_CLEINT_ID=${{ secrets.REACT_APP_GITHUB_CLEINT_ID_STAGING }}
+            VITE_APP_EXCHANGE_RATE_KEY=${{ secrets.REACT_APP_EXCHANGE_RATE_KEY }}
+            VITE_APP_DOCS_URL=${{ secrets.REACT_APP_DOCS_URL_STAGING }}
+            VITE_APP_DOCKER_EMAIL=${{ secrets.REACT_APP_DOCKER_EMAIL }}
+            VITE_APP_DOCKER_PASSWORD=${{ secrets.REACT_APP_DOCKER_PASSWORD }}
+            VITE_APP_MONITORING_APP=${{ secrets.REACT_APP_MONITORING_APP_STAGING }}
+            VITE_APP_ACTIVITY_LOGS_API_URL=${{ secrets.REACT_APP_ACTIVITY_LOGS_API_URL_STAGING }}
+            VITE_APP_MONITORING_API_URL=${{ secrets.REACT_APP_MONITORING_API_URL_STAGING }}
+            VITE_APP_DATABASE_API_URL=${{ secrets.REACT_APP_DATABASE_API_URL_STAGING }}
+            VITE_APP_MLOPS_API_URL=${{ secrets.REACT_APP_MLOPS_API_URL_STAGING }}
+            VITE_GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}
+            VITE_REDIRECT_URI=${{ secrets.VITE_REDIRECT_URI_STAGING }}
 
       - id: export
         name: Export
