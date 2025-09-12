@@ -78,6 +78,7 @@ jobs:
           VITE_APP_MLOPS_API_URL: ${{ secrets.REACT_APP_MLOPS_API_URL_STAGING }}
           VITE_GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
           VITE_REDIRECT_URI: ${{ secrets.VITE_REDIRECT_URI_STAGING }}
+
         run: |
           chmod +x ./.github/workflows/bin/create_envs.sh
           ./.github/workflows/bin/create_envs.sh
