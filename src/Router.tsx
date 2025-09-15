@@ -9,6 +9,7 @@ import AppMetrics from "./pages/Apps/AppMetrics";
 import HealthCheck from "./components/HealthCheck";
 import ClustersPage from "./pages/admin/ClustersPage";
 import ClusterSettingsPage from "./pages/admin/cluster/ClusterSettingsPage";
+import ProfileViewPage from "./pages/Users/ProfileViewPage";
 
 // import { HomePage } from "./pages/Home.page";
 const AppsListPage = React.lazy(() => import("./pages/Apps/AppsListPage"));
@@ -40,6 +41,12 @@ const DatabaseDetails = React.lazy(
 );
 const AppSettingsPage = React.lazy(
   () => import("./pages/Apps/AppSettingsPage"),
+);
+const AppDeploymentPage = React.lazy(
+  () => import("./pages/Apps/AppDeploymentPage"),
+);
+const AppDeploymentDetailPage = React.lazy(
+  () => import("./pages/Apps/AppDeploymentDetailPage"),
 );
 const ExperimentsListPage = React.lazy(
   () => import("./pages/Experiments/ExperimentsListPage"),
@@ -77,7 +84,7 @@ export const DashboardRoutes = [
   { path: "/tags/:tagName", element: <TagDetailsPage /> },
   { path: "/profile/:user_id", element: <UserProfilePage /> },
   { path: "/users/profile/settings", element: <UserProfileSettingsPage /> },
-  { path: "/:username", element: <UserProfilePage /> },
+  { path: "/:username", element: <ProfileViewPage /> },
   // Projects
   { path: "/projects", element: <ProjectListPage /> },
   { path: "/projects/create", element: <CreateProjectForm /> },
@@ -91,6 +98,14 @@ export const DashboardRoutes = [
   { path: "/projects/:project_id/apps/create", element: <CreateAppForm /> },
   { path: "/projects/:project_id/apps/:app_id", element: <AppDetailPage /> },
   { path: "/projects/:project_id/apps/:app_id/logs", element: <AppLogsPage /> },
+  {
+    path: "/projects/:project_id/apps/:app_id/build_logs",
+    element: <AppDeploymentPage />,
+  },
+  {
+    path: "/projects/:project_id/apps/:app_id/deployments/:build_id",
+    element: <AppDeploymentDetailPage />,
+  },
   {
     path: "/projects/:project_id/apps/:app_id/metrics",
     element: <AppMetrics />,

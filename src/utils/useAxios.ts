@@ -22,6 +22,7 @@ interface RequestParams {
 interface ErrorResponse {
   message?: string;
   data?: any;
+  details?: string;
 }
 
 function useAxios() {
@@ -46,7 +47,9 @@ function useAxios() {
         error.response.data?.message || getStatusMessage(error.response.status);
     } else if (error.response) {
       message =
-        error.response.data?.message || getStatusMessage(error.response.status);
+        error.response.data?.message ||
+        error.response?.data?.details ||
+        getStatusMessage(error.response.status);
     }
 
     options.errorHandler?.(message);

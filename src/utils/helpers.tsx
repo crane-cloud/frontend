@@ -6,9 +6,19 @@ import { TbCheck, TbX } from "react-icons/tb";
 import moment from "moment";
 import { BiTrash } from "react-icons/bi";
 import { TiEdit } from "react-icons/ti";
-import { format } from "date-fns";
+import {
+  FiCheck,
+  FiDatabase,
+  FiPlus,
+  FiTrash2,
+  FiUserPlus,
+  FiUserX,
+  FiX,
+} from "react-icons/fi";
+import { format, formatDistanceToNowStrict, parseISO } from "date-fns";
 import { AdminMenuContext } from "@/components/Layouts/AdminDashboardLayout";
 import { useParams } from "react-router-dom";
+import { UserActivity } from "@/types/activity";
 
 export const beautify = (str: string | undefined) => {
   if (typeof str !== "string") {
@@ -596,4 +606,93 @@ export const getPasswordValidationState = (
   }
 
   return validatePasswordRequirements(password);
+};
+
+export function getActivityDescription(desc: string): string {
+  const match = desc.match(/'message':\s*'([^']+)'/);
+  return match ? beautify(match[1]) : beautify(desc);
+}
+
+export const getActivityOperationIcon = (activity: UserActivity) => {
+  const operation = beautify(activity.operation);
+  const model = beautify(activity.model);
+
+  if (operation.includes("Delete")) {
+    return <FiTrash2 size={16} color="gray" />;
+  }
+  if (operation === "Create") {
+    return <FiPlus size={16} color="gray" />;
+  }
+  if (operation === "Follow") {
+    return <FiUserPlus size={16} color="gray" />;
+  }
+  if (operation === "Unfollow") {
+    return <FiUserX size={16} color="gray" />;
+  }
+  if (operation.includes("Enable")) {
+    return <FiCheck size={16} color="gray" />;
+  }
+  if (operation.includes("Disable")) {
+    return <FiX size={16} color="gray" />;
+  }
+  if (model === "Database") {
+    return <FiDatabase size={20} color="gray" />;
+  }
+
+  return null;
+};
+
+// User activity relative date helper
+export function formatRelativeDate(dateString: string) {
+  try {
+    return formatDistanceToNowStrict(parseISO(dateString), { addSuffix: true });
+  } catch {
+    return dateString;
+  }
+}
+
+// User activity status color
+export const getStatusColor = (status: string): string => {
+  const statusLower = status.toLowerCase();
+  if (statusLower.includes("success") || statusLower === "completed") {
+    return "green";
+  }
+  if (statusLower.includes("fail") || statusLower === "error") {
+    return "red";
+  }
+  if (statusLower.includes("pending") || statusLower === "in progress") {
+    return "yellow";
+  }
+  return "gray";
+};
+
+// Date for tooltip
+export const formatAbsoluteDate = (dateString: string): string => {
+  const date = new Date(dateString);
+  return date.toLocaleString();
+};
+
+// Get color for tag badges
+export const getTagColor = (tagName: string) => {
+  const brightColors = [
+    "blue.6",
+    "cyan.6",
+    "teal.6",
+    "green.6",
+    "lime.6",
+    "yellow.6",
+    "orange.6",
+    "red.6",
+    "pink.6",
+    "grape.6",
+    "violet.6",
+    "indigo.6",
+  ];
+
+  let hash = 0;
+  for (let i = 0; i < tagName.length; i++) {
+    hash = tagName.charCodeAt(i) + ((hash << 5) - hash);
+  }
+
+  return brightColors[Math.abs(hash) % brightColors.length];
 };

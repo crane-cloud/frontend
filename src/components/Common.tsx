@@ -45,7 +45,7 @@ export const ProfileAvatar = ({
       {user?.profile_picture ? (
         <img
           src={user?.profile_picture}
-          alt={user.name}
+          alt={user?.name}
           referrerPolicy="no-referrer"
           style={{
             width: size,
@@ -57,8 +57,8 @@ export const ProfileAvatar = ({
         />
       ) : (
         <Avatar
-          alt={user.username}
-          name={user.name || user.username}
+          alt={user?.username}
+          name={user?.name || user?.username}
           radius="xl"
           size={size}
           color="initials"
@@ -127,7 +127,7 @@ export const UserDropDown = () => {
                 lh={1}
                 display={{ base: "none", sm: "block" }}
               >
-                {user.username || user.name}
+                {user.name || user.username}
               </Text>
             </Group>
             <FiChevronDown size={16} />
@@ -138,12 +138,12 @@ export const UserDropDown = () => {
         </UnstyledButton>
       </Menu.Target>
       <Menu.Dropdown>
-        <Menu.Item onClick={() => navigate(`/profile/${user?.id}`)}>
+        <Menu.Item onClick={() => navigate(`/${user?.username}`)}>
           <Group gap={10}>
             <ProfileAvatar user={user} />
             <Stack gap={2}>
               <Text fw={500} size="sm" lh={1} mr={3}>
-                {user.username || user.name}
+                {user.name || user.username}
               </Text>
               <Text size="xs" c="dimmed">
                 {user.email}
