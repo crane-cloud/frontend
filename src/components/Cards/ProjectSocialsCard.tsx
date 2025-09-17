@@ -38,6 +38,7 @@ export default function ProjectSocialsCard({
   const [isFollowingProject, setIsFollowingProject] = useState(
     project?.is_following,
   );
+  const [isPublicProject, setIsPrivateProject] = useState(project?.is_public);
 
   const isProjectOwner = useMemo(() => {
     if (!user?.id || !project?.owner_id) {
@@ -72,6 +73,14 @@ export default function ProjectSocialsCard({
     submitting: unpinningProject,
     success: unpin_success,
     data: unpin_response,
+  } = usePost();
+
+  //Private/Public functionality
+  const {
+    uploadData: makePublicProject,
+    submitting: makingProjectPublic,
+    success: public_success,
+    data: public_response,
   } = usePost();
 
   // Handle pin success
@@ -110,6 +119,15 @@ export default function ProjectSocialsCard({
     }
   }, [unfollow_success, unfollow_response]);
 
+  //Handle public success
+  useEffect(() => {
+    if (public_success && public_response) {
+      setIsPrivateProject(public_response.is_public);
+      setMenuOpened(false);
+      refreshUserProjects();
+    }
+  }, [public_success, public_response]);
+
   // Handle follow/unfollow click
   const onFollowClick = () => {
     if (isFollowingProject) {
@@ -138,8 +156,18 @@ export default function ProjectSocialsCard({
     }
   };
 
+  // Handle make private/public click
+  const onMakePrivateClick = (projectID: string, currentStatus: boolean) => {
+    makePublicProject({
+      api: `${API_PROJECTS}/${projectID}`,
+      method: "PATCH",
+      params: { is_public: !currentStatus },
+    });
+  };
+
   const isFollowLoading = following || unfollowing;
   const isPinLoading = pinningProject || unpinningProject;
+  const isPrivateLoading = makingProjectPublic;
 
   return (
     <>
@@ -190,6 +218,7 @@ export default function ProjectSocialsCard({
                         ? "Unpin"
                         : "Pin"}
                   </Menu.Item>
+                  <Divider />
                 </>
               )}
 
@@ -199,16 +228,27 @@ export default function ProjectSocialsCard({
 
                   {isProjectOwner && (
                     <Menu.Item
-                      onClick={() => {}}
+                      onClick={() =>
+                        onMakePrivateClick(project.id, isPublicProject)
+                      }
                       leftSection={
-                        project.is_public ? (
+                        isPrivateLoading ? (
+                          <Loader size="xs" />
+                        ) : isPublicProject ? (
                           <FiEyeOff size={14} />
                         ) : (
                           <FiEye size={14} />
                         )
                       }
+                      disabled={isPrivateLoading}
                     >
-                      {project.is_public ? "Make Private" : "Make Public"}
+                      {isPrivateLoading
+                        ? isPublicProject
+                          ? "Making Private.."
+                          : "Making Public.."
+                        : isPublicProject
+                          ? "Make Private"
+                          : "Make Public"}
                     </Menu.Item>
                   )}
 
