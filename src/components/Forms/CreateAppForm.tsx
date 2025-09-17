@@ -33,30 +33,20 @@ import { API_APPS, API_PROJECTS } from "@/utils/apis";
 import { useNavigate, useParams } from "react-router-dom";
 import { IoRocketSharp } from "react-icons/io5";
 import { FaCheck, FaDocker } from "react-icons/fa";
-import {
-  TbCopy,
-  TbUpload,
-  TbX,
-  TbFileZip,
-  TbPlugConnected,
-} from "react-icons/tb";
+import { TbCopy, TbPlugConnected } from "react-icons/tb";
 import { LuLink, LuScreenShare, LuServer } from "react-icons/lu";
 import { MdDriveFileRenameOutline } from "react-icons/md";
 import {
-  FRAMEWORKS,
   MODAL_API_TYPES,
   MODAL_SERVERS,
   MODEL_DEPLOYMENT_INSTRUCTIONS,
-  REGISTRIES,
 } from "@/utils/constants";
-import { Dropzone, FileWithPath, MIME_TYPES } from "@mantine/dropzone";
-import { useAuth } from "@/utils/AuthContext";
-import { MIRA_API_URL } from "@/config";
 import { Table } from "../Elements/CustomTable";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { RiRobot2Line } from "react-icons/ri";
 import useForm from "@/hooks/generic/useForm";
 import { useHuggingFaceTasks } from "@/hooks/useHuggingFaceTasks";
+import CreateMiraAppForm from "./CreateMiraAppForm";
 
 // Types for deployment instructions
 interface InstructionItem {
@@ -169,7 +159,7 @@ const CreateAppForm = () => {
   const { project } = useGetProject(project_id || "");
   return (
     <div>
-      <Tabs defaultValue="single">
+      <Tabs defaultValue="mira">
         <Tabs.List>
           <Tabs.Tab value="single">Single App</Tabs.Tab>
           <Tabs.Tab value="mira">Deploy with MIRA</Tabs.Tab>
@@ -181,7 +171,7 @@ const CreateAppForm = () => {
         </Tabs.Panel>
 
         <Tabs.Panel value="mira" pt={10}>
-          <CreateMIRAAppForm project={project} />
+          <CreateMiraAppForm project={project} />
         </Tabs.Panel>
 
         {/* <Tabs.Panel value="multiple" pt={10}>
@@ -573,160 +563,6 @@ export const CreateSingleAppForm = (props: {
                 color="gray.9"
               >
                 {app ? "Update App" : "Deploy App"}
-              </Button>
-            </Group>
-          </Stack>
-        </form>
-      </Paper>
-    </div>
-  );
-};
-
-const CreateMIRAAppForm = (props: { project: any }) => {
-  const { project } = props;
-  const { authToken } = useAuth();
-  const [files, setFiles] = useState<FileWithPath[]>([]);
-  const { form, onChange, updateFormValue, updateFormValues } = useForm();
-  const { uploadData, submitting, error } = usePost();
-
-  useEffect(() => {
-    updateFormValues({
-      files,
-    });
-  }, [files]);
-
-  useEffect(() => {
-    updateFormValues({
-      project: project?.id,
-      token: authToken,
-    });
-  }, []);
-
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    uploadData({
-      api: `${MIRA_API_URL}/containerize`,
-      params: form,
-      isExternal: true,
-      type: "multipart/form-data",
-    });
-  };
-
-  const Previews = files.map((file, index) => (
-    <Flex key={index} gap="xs" align="center">
-      <TbFileZip size={24} />
-      <Text size="sm" lineClamp={1}>
-        {file.name}
-      </Text>
-    </Flex>
-  ));
-
-  return (
-    <div>
-      <TitleText>Deploy with MIRA</TitleText>
-      <Paper p="lg" radius="md">
-        <form onSubmit={handleSubmit}>
-          <Stack>
-            <Select
-              label="Select Framework"
-              name="framework"
-              placeholder="Select framework"
-              required
-              data={FRAMEWORKS}
-              value={form?.framework as string}
-              onChange={(value) => updateFormValue("framework", value)}
-              error={error?.framework}
-            />
-            <Select
-              label="Select Registry"
-              name="registry"
-              placeholder="Select registry"
-              description="Select the registry to deploy the application to"
-              required
-              data={REGISTRIES}
-              value={form?.registry as string}
-              onChange={(value) => updateFormValue("registry", value)}
-              error={error?.registry}
-            />
-            <TextInput
-              label="Image"
-              name="image"
-              placeholder="Enter image"
-              description="Enter the image to deploy the application to"
-              required
-              value={form?.image as string}
-              onChange={onChange}
-              error={error?.image}
-            />
-            <TextInput
-              label="Version"
-              name="tag"
-              placeholder="Enter version"
-              description="This is the preffered tag for the image"
-              value={form?.tag as string}
-              onChange={onChange}
-              error={error?.tag}
-            />
-            <Stack gap={2}>
-              <Text className="subtitle">Zip File</Text>
-              {files.length > 0 && (
-                <Flex gap="xs" align="center">
-                  {Previews}
-                  <Button
-                    variant="subtle"
-                    color="red"
-                    onClick={() => setFiles([])}
-                    size="compact-xs"
-                    leftSection={<TbX size={14} />}
-                  >
-                    Remove
-                  </Button>
-                </Flex>
-              )}
-            </Stack>
-
-            <Dropzone
-              name="file"
-              onDrop={(files) => setFiles(files)}
-              accept={[MIME_TYPES.zip, MIME_TYPES.rar]}
-              maxFiles={1}
-              maxSize={3 * 1024 ** 2}
-            >
-              <Group
-                justify="center"
-                gap="xl"
-                mih={120}
-                style={{ pointerEvents: "none" }}
-              >
-                <Dropzone.Accept>
-                  <TbUpload size={52} color="var(--mantine-color-blue-6)" />
-                </Dropzone.Accept>
-                <Dropzone.Reject>
-                  <TbX size={52} color="var(--mantine-color-red-6)" />
-                </Dropzone.Reject>
-                <Dropzone.Idle>
-                  <TbFileZip size={52} color="var(--mantine-color-dimmed)" />
-                </Dropzone.Idle>
-                <div>
-                  <Text size="xl" inline>
-                    Drag zip/rar here or click to select
-                  </Text>
-                  <Text size="sm" c="dimmed" inline mt={7}>
-                    Single archive file, not exceeding 3MB
-                  </Text>
-                </div>
-              </Group>
-            </Dropzone>
-            <Divider />
-            <Group justify="flex-end">
-              <Button
-                variant="filled"
-                type="submit"
-                leftSection={<IoRocketSharp />}
-                disabled={submitting || files.length === 0}
-                loading={submitting}
-              >
-                Deploy App
               </Button>
             </Group>
           </Stack>

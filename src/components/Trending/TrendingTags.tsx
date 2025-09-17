@@ -1,63 +1,95 @@
-import React from "react";
-import { Card, Group, Title, Stack, Badge, Text } from "@mantine/core";
+import React, { useEffect } from "react";
+import {
+  Card,
+  Group,
+  Title,
+  Stack,
+  Badge,
+  Text,
+  Skeleton,
+} from "@mantine/core";
 import { FiTrendingUp } from "react-icons/fi";
 import { Link } from "react-router-dom";
-
-interface TrendingTag {
-  name: string;
-  projects: number;
-  trend: string;
-}
+import useGet from "@/utils/useGet";
+import { API_TAGS } from "@/utils/apis";
+import { Tag } from "@/types/tag";
+import { getTagColor } from "@/utils/helpers";
 
 interface TrendingTagsProps {
-  tags?: TrendingTag[];
   title?: string;
-  showTrend?: boolean;
 }
 
-const defaultTags: TrendingTag[] = [
-  { name: "kubernetes", projects: 450, trend: "+12%" },
-  { name: "react", projects: 380, trend: "+8%" },
-  { name: "machine-learning", projects: 290, trend: "+15%" },
-  { name: "devops", projects: 240, trend: "+5%" },
-  { name: "microservices", projects: 180, trend: "+9%" },
-];
-
 export default function TrendingTags({
-  tags = defaultTags,
   title = "Trending Tags",
-  showTrend = true,
 }: TrendingTagsProps) {
+  const { data: response, getData, loading } = useGet();
+
+  useEffect(() => {
+    getData({
+      api: `${API_TAGS}`,
+      params: { page: 1, per_page: 5 },
+    });
+  }, []);
+
   return (
     <Card p="lg" withBorder radius="lg">
       <Group mb="md">
-        <FiTrendingUp size={20} />
-        <Title order={4}>{title}</Title>
+        <FiTrendingUp size={18} />
+        <Title order={4} size="md">
+          {title}
+        </Title>
       </Group>
+
       <Stack gap="xs">
-        {tags.map((tag) => (
-          <Group key={tag.name} justify="space-between">
-            <Badge
-              variant="light"
-              component={Link}
-              to={`/tags/${tag.name}`}
-              style={{ cursor: "pointer", textDecoration: "none" }}
-            >
-              #{tag.name}
-            </Badge>
-            <Group gap={4}>
-              <Text size="xs" c="dimmed">
-                {tag.projects}
-              </Text>
-              {showTrend && (
-                <Text size="xs" c="green">
-                  {tag.trend}
-                </Text>
-              )}
-            </Group>
-          </Group>
-        ))}
+        {loading ? (
+          <TagsSkeleton />
+        ) : (
+          response?.data
+            ?.reduce((uniqueTags: Tag[], tag: Tag) => {
+              if (
+                !uniqueTags.some((existingTag) => existingTag.name === tag.name)
+              ) {
+                uniqueTags.push(tag);
+              }
+              return uniqueTags;
+            }, [])
+            .slice(0, 5)
+            .map((tag: Tag) => (
+              <Group key={tag.name} justify="space-between">
+                <Badge
+                  variant="outline"
+                  color={getTagColor(tag.name)}
+                  component={Link}
+                  to={`/tags/${tag.name}`}
+                  style={{ cursor: "pointer", textDecoration: "none" }}
+                >
+                  # {tag.name}
+                </Badge>
+                <Group gap={4}>
+                  <Text size="xs" c="dimmed">
+                    {tag.projects_count} projects
+                  </Text>
+                </Group>
+              </Group>
+            ))
+        )}
       </Stack>
     </Card>
   );
 }
+
+const TagsSkeleton = () => {
+  return (
+    <>
+      {Array.from({ length: 5 }).map((_, index) => (
+        <Group key={index} justify="space-between" mb="xs">
+          {/* Badge skeleton */}
+          <Skeleton height={24} width={Math.random() * 40 + 80} radius="xl" />
+
+          {/* Project count skeleton */}
+          <Skeleton height={12} width={Math.random() * 20 + 60} />
+        </Group>
+      ))}
+    </>
+  );
+};

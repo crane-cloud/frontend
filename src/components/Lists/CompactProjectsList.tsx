@@ -68,8 +68,6 @@ const CompactProjectsList = ({
         color: "inherit",
         cursor: "pointer",
         transition: "all 0.2s ease",
-        background: "linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%)",
-        border: "1px solid #dee2e6",
         position: "relative",
         overflow: "hidden",
         minHeight: "75px",
@@ -204,7 +202,7 @@ const CompactProjectsList = ({
   );
 
   return (
-    <Card p="md" withBorder radius="lg">
+    <Card p="md" withBorder radius="lg" h="100%">
       <Group mb="sm" justify="space-between">
         <Group gap="xs">
           <FiCode size={18} />
@@ -266,7 +264,7 @@ const CompactProjectsList = ({
           {showCreateButton && (
             <Button
               component={Link}
-              to="/projects/new"
+              to="/projects/create"
               variant="light"
               size="xs"
               leftSection={<FiPlus size={14} />}

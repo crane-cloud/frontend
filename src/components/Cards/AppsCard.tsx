@@ -1,19 +1,33 @@
 import { beautify } from "@/utils/helpers";
+import { MODAL_SERVERS } from "@/utils/constants";
 import { Anchor, Card, Flex, Group, Pill, Stack, Text } from "@mantine/core";
 import { FiLayers } from "react-icons/fi";
 import { GoClock } from "react-icons/go";
 import { HiMiniCubeTransparent } from "react-icons/hi2";
 import { PiShareFatThin } from "react-icons/pi";
 import { SiJupyter } from "react-icons/si";
+import React from "react";
 
 const AppsCard = (props: any) => {
   const { app, project_id } = props;
+
+  const modalServerEntry =
+    app.model_server &&
+    MODAL_SERVERS.find((server) => server.value === app.model_server);
+
+  const modalServerIcon = modalServerEntry?.icon;
+  const modalServerColor = modalServerEntry?.color || "gray";
 
   return (
     <Card p="md" radius="md" withBorder>
       <Group wrap="nowrap" gap={10}>
         {app.is_notebook ? (
           <SiJupyter size={35} color="#f57c00" />
+        ) : modalServerIcon ? (
+          React.createElement(modalServerIcon, {
+            size: 35,
+            color: modalServerColor,
+          })
         ) : (
           <FiLayers size={20} color="gray" />
         )}
@@ -60,7 +74,7 @@ const AppsCard = (props: any) => {
       <Group justify="space-between" mt="md">
         <Group gap={10} align="center">
           {app?.is_notebook && (
-            <Pill w="fit-content">
+            <Pill w="fit-content" py={2}>
               <Flex
                 gap={5}
                 wrap="nowrap"
@@ -75,6 +89,24 @@ const AppsCard = (props: any) => {
               </Flex>
             </Pill>
           )}
+
+          {app.model_server && (
+            <Pill w="fit-content" py={2}>
+              <Flex gap={5} align="center" wrap="nowrap">
+                {modalServerIcon &&
+                  React.createElement(modalServerIcon, {
+                    size: 13,
+                    color: modalServerColor,
+                  })}
+                <Text size="xs" truncate>
+                  {app.model_server === "HUGGINGFACE_SERVER"
+                    ? beautify(app.task)
+                    : modalServerEntry?.label}
+                </Text>
+              </Flex>
+            </Pill>
+          )}
+
           <Flex gap={5} c="var(--mantine-color-dark-3)" align="center">
             <GoClock size={13} />
             <Text size="xs">{app.age}</Text>
