@@ -1,9 +1,6 @@
 // Users
 export const API_USERS = "/users";
 
-//User by id
-export const API_USER = "/user/{user_id}";
-
 // Projects
 export const API_PROJECTS = "/projects";
 

@@ -14,18 +14,20 @@ import {
 } from "@mantine/core";
 import { FiCode, FiUsers } from "react-icons/fi";
 import useGet from "@/utils/useGet";
-import { API_PROJECTS } from "@/utils/apis";
+import { API_SOCIALS } from "@/utils/apis";
 import { Link } from "react-router-dom";
 import { Project } from "@/types/project";
 
 interface TrendingProjectsProps {
   title?: string;
   compact?: boolean;
+  perPage?: number;
 }
 
 export default function TrendingProjects({
   title = "Trending Projects",
   compact = false,
+  perPage = 3,
 }: TrendingProjectsProps) {
   const { data: response, getData, loading } = useGet();
   const { data: userResponse, getData: getUserDetails } = useGet();
@@ -37,8 +39,8 @@ export default function TrendingProjects({
 
   useEffect(() => {
     getData({
-      api: `${API_PROJECTS}`,
-      params: { page: 1, per_page: 3 },
+      api: `${API_SOCIALS}`,
+      params: { entity: "projects" ,page: 1, per_page: perPage },
     });
   }, []);
 
@@ -102,16 +104,6 @@ export default function TrendingProjects({
             <React.Fragment key={project.id}>
               <div style={{ padding: "8px 0" }}>
                 <Group align="flex-start" gap={12} mt={2}>
-                  <Avatar
-                    size="sm"
-                    radius="sm"
-                    color="blue"
-                    variant="gradient"
-                    gradient={{ from: "blue", to: "cyan" }}
-                  >
-                    <FiCode size={14} />
-                  </Avatar>
-
                   <div style={{ flex: 1 }}>
                     <Anchor
                       href={`/projects/${project.id}`}

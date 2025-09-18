@@ -2,15 +2,17 @@ import React, { useEffect } from "react";
 import { Card, Group, Title, Stack, Divider } from "@mantine/core";
 import { FiUserPlus } from "react-icons/fi";
 import useGet from "@/utils/useGet";
-import { API_USERS } from "@/utils/apis";
+import { API_SOCIALS } from "@/utils/apis";
 import { User } from "@/types/user";
 import UserCard from "../Cards/UserCard";
 
-export default function SuggestedUsers({ title }: { title: string }) {
+export default function SuggestedUsers({ title, perPage=6 }: { title: string, perPage?: number }) {
   const { data: response, getData } = useGet();
 
   useEffect(() => {
-    getData({ api: `${API_USERS}` });
+    getData({ api: `${API_SOCIALS}`,
+    params: { entity: "users", page: 1, per_page: perPage } 
+  });
   }, []);
 
   return (
@@ -23,11 +25,10 @@ export default function SuggestedUsers({ title }: { title: string }) {
       </Group>
       <Stack gap={0}>
         {response?.data?.users
-          ?.slice(0, 5)
           ?.map((user: User, index: number) => (
             <React.Fragment key={user.username}>
-              <UserCard user={user} />
-              {index < response?.data?.users?.slice(0, 5).length - 1 && (
+              <UserCard user={user} isCard={false} showBorder={false} />
+              {index < response?.data?.users?.slice(0, perPage).length - 1 && (
                 <Divider />
               )}
             </React.Fragment>

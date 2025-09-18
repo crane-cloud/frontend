@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, Fragment } from "react";
 import {
   Container,
   Title,
@@ -46,7 +46,12 @@ import TrendingProjects from "@/components/Trending/TrendingProjects";
 import SuggestedUsers from "@/components/Trending/SuggestedUsers";
 import useGet from "@/utils/useGet";
 import { API_SOCIALS } from "@/utils/apis";
+import usePost from "@/utils/usePost";
+import { showNotification } from "@mantine/notifications";
 import ProjectExploreCard from "@/components/Cards/ProjectExploreCard";
+import TrendingTags from "@/components/Trending/TrendingTags";
+import { User } from "@/types/user";
+import UserCard from "@/components/Cards/UserCard";
 
 const ExplorePage = () => {
   useSetNoSidebar();
@@ -75,7 +80,7 @@ const ExplorePage = () => {
 
   useEffect(() => {
     getDevelopers({
-      api: `${API_SOCIALS}?entity=users&per_page=12&page=1`,
+      api: `${API_SOCIALS}?entity=users&per_page=21&page=1`,
     });
   }, []);
 
@@ -93,6 +98,75 @@ const ExplorePage = () => {
     { value: "devops", label: "DevOps & Infrastructure", icon: FiGitBranch },
     { value: "data", label: "Data Science", icon: FiTrendingUp },
   ];
+
+
+  type TagType = {
+    id: string;
+    is_following: boolean;
+    [key: string]: any;
+  };
+  const [tagStates, setTagStates] = useState<{ [id: string]: { is_following: boolean; loading: boolean } }>({});
+
+  useEffect(() => {
+    if (tagsResponse?.data?.tags) {
+      const initial: { [id: string]: { is_following: boolean; loading: boolean } } = {};
+      tagsResponse.data.tags.forEach((tag: TagType) => {
+        initial[tag.id] = { is_following: tag.is_following ?? false, loading: false };
+      });
+      setTagStates(initial);
+    }
+  }, [tagsResponse]);
+
+  const { uploadData: followTag } = usePost();
+  const { uploadData: unfollowTag } = usePost();
+
+  const handleTagFollow = (tag: TagType) => {
+    setTagStates((prev) => ({
+      ...prev,
+      [tag.id]: {
+        ...prev[tag.id],
+        is_following: !prev[tag.id].is_following,
+        loading: true,
+      },
+    }));
+    const wasFollowing = tagStates[tag.id]?.is_following;
+    const wait = new Promise((resolve) => setTimeout(resolve, 2000));
+    if (wasFollowing) {
+      Promise.all([
+        unfollowTag({ api: `/tags/${tag.id}/following`, method: "DELETE" }),
+        wait,
+      ])
+        .then(() => {
+          setTagStates((prev) => ({
+            ...prev,
+            [tag.id]: { ...prev[tag.id], is_following: false, loading: false },
+          }));
+        })
+        .catch(() => {
+          setTagStates((prev) => ({
+            ...prev,
+            [tag.id]: { ...prev[tag.id], is_following: true, loading: false },
+          }));
+        });
+    } else {
+      Promise.all([
+        followTag({ api: `/tags/${tag.id}/following` }),
+        wait,
+      ])
+        .then(() => {
+          setTagStates((prev) => ({
+            ...prev,
+            [tag.id]: { ...prev[tag.id], is_following: true, loading: false },
+          }));
+        })
+        .catch(() => {
+          setTagStates((prev) => ({
+            ...prev,
+            [tag.id]: { ...prev[tag.id], is_following: false, loading: false },
+          }));
+        });
+    }
+  };
 
   return (
     <Container size="xl" py="lg">
@@ -172,68 +246,22 @@ const ExplorePage = () => {
                 <Stack gap="lg">
                   <TrendingProjects
                     compact
-                    projects={socialsResponse?.data?.projects?.map(
-                      (project) => ({
-                        id: project.id,
-                        name: project.name,
-                        author: project.owner_id,
-                        apps: project.apps_count,
-                        tags: project.tags || [],
-                        description: project.description,
-                      }),
-                    )}
+                    title="Trending Projects"
+                    perPage={4}
                   />
                 </Stack>
               </Grid.Col>
 
               <Grid.Col span={{ base: 12, sm: 6, md: 4 }}>
                 <SuggestedUsers
-                  users={socialsResponse?.data?.users?.map((user) => ({
-                    id: user.id,
-                    name: user.name,
-                    avatar: user.profile_picture,
-                    username: user.username,
-                    followerCount: user.followers_count,
-                    ownedProjects: user.owned_projects_count,
-                    bio: user.biography,
-                  }))}
                   title="Top Developers"
+                  perPage={5}
                 />
               </Grid.Col>
 
               <Grid.Col span={{ base: 12, sm: 12, md: 4 }}>
                 <Stack gap="lg">
-                  <Card p="md" withBorder radius="lg">
-                    <Group mb="sm">
-                      <FiTag size={18} />
-                      <Title order={4} size="md">
-                        Popular Tags
-                      </Title>
-                    </Group>
-                    <Stack gap="xs">
-                      {socialsResponse?.data?.tags?.map((tag) => (
-                        <Group key={tag.id} justify="space-between">
-                          <Group gap="xs">
-                            <Badge
-                              variant="light"
-                              color={tag.color}
-                              component={Link}
-                              to={`/tags/${tag.id}`}
-                              style={{
-                                cursor: "pointer",
-                                textDecoration: "none",
-                              }}
-                            >
-                              {tag.name}
-                            </Badge>
-                            <Text size="sm" c="dimmed">
-                              {formatPlural(tag.projects_count, "project")}
-                            </Text>
-                          </Group>
-                        </Group>
-                      ))}
-                    </Stack>
-                  </Card>
+                  <TrendingTags title="Popular Tags" perPage={10} />
                 </Stack>
               </Grid.Col>
             </Grid>
@@ -253,47 +281,11 @@ const ExplorePage = () => {
 
           <Tabs.Panel value="developers">
             <SimpleGrid cols={{ base: 1, sm: 2, md: 3 }} spacing="md">
-              {developersResponse?.data?.users?.map((user, index) => (
-                <Card
-                  key={`${user.username}-${index}`}
-                  p="lg"
-                  withBorder
-                  radius="lg"
-                  style={{ height: "auto" }}
-                >
-                  <Group mb="md">
-                    <Avatar src={user.profile_picture} size="lg" />
-                    <div style={{ flex: 1 }}>
-                      <Anchor
-                        component={Link}
-                        to={user.link}
-                        size="lg"
-                        fw={600}
-                        style={{ textDecoration: "none" }}
-                      >
-                        {beautify(user.name)}
-                      </Anchor>
-                      <Text size="sm" c="dimmed">
-                        @{user.username}
-                      </Text>
-                    </div>
-                    <Button variant="outline" size="sm">
-                      Follow
-                    </Button>
-                  </Group>
-                  <Text size="sm" c="dimmed" mb="md">
-                    {user.biography}
-                  </Text>
-                  <Group gap="lg">
-                    <Text size="sm" c="dimmed">
-                      {formatPlural(user.followers_count, "follower")}
-                    </Text>
-                    <Text size="sm" c="dimmed">
-                      {formatPlural(user.owned_projects_count, "project")}
-                    </Text>
-                  </Group>
-                </Card>
-              ))}
+              {developersResponse?.data?.users?.map((user: User) => (
+             <Fragment key={user.username}>
+               <UserCard user={user} isCard showBorder={true} />
+             </Fragment>
+             ))}
             </SimpleGrid>
           </Tabs.Panel>
 
@@ -304,47 +296,73 @@ const ExplorePage = () => {
                   cols={{ base: 1, sm: 2, md: 4, lg: 7 }}
                   spacing="md"
                 >
-                  {tagsResponse?.data?.tags?.map((tag, index) => (
-                    <Card
-                      key={tag.id}
-                      p="lg"
-                      withBorder
-                      radius="lg"
-                      ta="center"
-                      component={Link}
-                      to={`/tags/${tag.name}`}
-                      style={{
-                        cursor: "pointer",
-                        textDecoration: "none",
-                        color: "inherit",
-                        transition: "all 0.2s ease",
-                        display: "flex",
-                        flexDirection: "column",
-                      }}
-                      className="hover:shadow-md"
-                    >
-                      <ThemeIcon
-                        size="xl"
-                        variant="light"
-                        color={getTagColor(index)}
-                        mx="auto"
-                        mb="md"
+                  {tagsResponse?.data?.tags?.map((tag: TagType) => {
+                    const tagState = tagStates[tag.id] || { is_following: tag.is_following, loading: false };
+                    return (
+                      <Card
+                        key={tag.id}
+                        p="lg"
+                        withBorder
+                        radius="lg"
+                        ta="center"
+                        component={Link}
+                        to={`/tags/${tag.name}`}
+                        style={{
+                          cursor: "pointer",
+                          textDecoration: "none",
+                          color: "inherit",
+                          transition: "all 0.2s ease",
+                          display: "flex",
+                          flexDirection: "column",
+                        }}
+                        className="hover:shadow-md"
+                        onClick={(e) => {
+                          if ((e.target as HTMLElement).closest('button')) {
+                            e.preventDefault();
+                          }
+                        }}
                       >
-                        <FiTag size={24} />
-                      </ThemeIcon>
-                      <Stack gap="xs" align="center" style={{ flex: 1 }}>
-                        <Title order={4} size="sm">
-                          {beautify(tag.name)}
-                        </Title>
-                        <Text size="sm" c="dimmed" mb="xs">
-                          {tag.projects_count} projects
-                        </Text>
-                        <Button variant="outline" size="xs" mt="xs">
-                          Follow
-                        </Button>
-                      </Stack>
-                    </Card>
-                  ))}
+                        <ThemeIcon
+                          size="xl"
+                          variant="light"
+                          color={getTagColor(tag.name)}
+                          mx="auto"
+                          mb="md"
+                        >
+                          <FiTag size={24} />
+                        </ThemeIcon>
+                        <Stack gap="xs" align="center" style={{ flex: 1 }}>
+                          <Title order={4} size="sm">
+                            {beautify(tag.name)}
+                          </Title>
+                          <Text size="sm" c="dimmed" mb="xs">
+                            {tag.projects_count} projects
+                          </Text>
+                          <Button
+                            variant="outline"
+                            color="blue"
+                            size="xs"
+                            mt="xs"
+                            loading={tagState.loading}
+                            disabled={tagState.loading}
+                            onClick={(e) => {
+                              e.preventDefault();
+                              handleTagFollow(tag);
+                            }}
+                            leftSection={tagState.is_following ? <FiCheck size={14} /> : <FiUserPlus size={14} />}
+                          >
+                            {tagState.loading
+                              ? tagState.is_following
+                                ? "Following..."
+                                : "Unfollowing..."
+                              : tagState.is_following
+                                ? "Following"
+                                : "Follow"}
+                          </Button>
+                        </Stack>
+                      </Card>
+                    );
+                  })}
                 </SimpleGrid>
               </Grid.Col>
             </Grid>

@@ -15,7 +15,7 @@ import { useState, useEffect } from "react";
 import { FiCheck, FiUserPlus } from "react-icons/fi";
 import { Link } from "react-router-dom";
 
-const ProjectExploreCard = (project) => {
+const ProjectExploreCard = ({project}) => {
   const [isFollowingProject, setIsFollowingProject] = useState(
     project?.is_following,
   );
