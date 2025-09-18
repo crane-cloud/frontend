@@ -1,9 +1,8 @@
 import { Button, Card, Divider, Flex, Group, Stack, Text } from "@mantine/core";
 import { useEffect, useState } from "react";
 import { HiPlus } from "react-icons/hi2";
-import { FaArrowLeft } from "react-icons/fa"; // 👈 Correct import for arrow
+import { FaArrowLeft, FaLockOpen } from "react-icons/fa";
 import { FaLock, FaPencil } from "react-icons/fa6";
-import { FaLockOpen } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
 import TitleText from "@/components/TitleText";
