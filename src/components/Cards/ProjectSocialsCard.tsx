@@ -171,7 +171,13 @@ export default function ProjectSocialsCard({
 
   return (
     <>
-      <Card key={project.id} withBorder radius="md" p="md">
+      <Card
+        key={project.id}
+        withBorder
+        radius="md"
+        p="md"
+        style={{ position: "relative" }}
+      >
         <Group justify="space-between" mb="sm">
           <Text fw={600} lineClamp={1}>
             {project?.name}
@@ -300,7 +306,7 @@ export default function ProjectSocialsCard({
         <Group justify="space-between" align="flex-end">
           <Group gap="sm">
             {project?.tags &&
-              project.tags.map((tag: ProjectTag) => (
+              project.tags.slice(0, 3).map((tag: ProjectTag) => (
                 <Badge
                   key={tag.id}
                   size="sm"
@@ -313,8 +319,50 @@ export default function ProjectSocialsCard({
                   {tag.name}
                 </Badge>
               ))}
+
+            {/* Tags Plus Counter & Dropdown */}
+            {project?.tags && project.tags.length > 3 && (
+              <Menu shadow="md" width={200} position="bottom-start">
+                <Menu.Target>
+                  <Badge
+                    size="sm"
+                    color="blue"
+                    variant="light"
+                    style={{ cursor: "pointer" }}
+                  >
+                    +{project.tags.length - 3}
+                  </Badge>
+                </Menu.Target>
+
+                <Menu.Dropdown>
+                  {project.tags.slice(3).map((tag: ProjectTag) => (
+                    <Menu.Item
+                      key={tag.id}
+                      component={Link}
+                      to={`/tags/${tag.name}`}
+                    >
+                      {tag.name}
+                    </Menu.Item>
+                  ))}
+                </Menu.Dropdown>
+              </Menu>
+            )}
           </Group>
         </Group>
+
+        {/* Project Visibility Status Badge */}
+        <Badge
+          size="sm"
+          color={isPublicProject ? "green" : "red"}
+          variant="light"
+          style={{
+            position: "absolute",
+            bottom: "15px",
+            right: "8px",
+          }}
+        >
+          {isPublicProject ? "Public" : "Private"}
+        </Badge>
       </Card>
     </>
   );
