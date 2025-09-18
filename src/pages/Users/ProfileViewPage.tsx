@@ -35,7 +35,7 @@ import {
 } from "react-icons/fi";
 import { ProfileAvatar } from "@/components/Common";
 import { LuUserCheck, LuUsers } from "react-icons/lu";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { FaCircleDot, FaUsersViewfinder, FaXTwitter } from "react-icons/fa6";
 import { ACTIVITY_LOGS_API_URL } from "@/config";
 import { Project } from "@/types/project";
@@ -49,6 +49,7 @@ const ProfileViewPage = () => {
   useSetNoSidebar();
   useSetContainerSize("xl");
 
+  const navigate = useNavigate();
   const { user } = useAuth();
   const { username } = useParams<{ username: string }>();
 
@@ -342,6 +343,7 @@ const ProfileViewPage = () => {
                             variant="outline"
                             size="sm"
                             color="blue"
+                            onClick={() => navigate("/users/profile/settings")}
                             leftSection={<FiEdit size={20} />}
                           >
                             Edit Profile

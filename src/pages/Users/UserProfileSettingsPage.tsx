@@ -1,6 +1,10 @@
 import { Button, Card, Divider, Flex, Group, Stack, Text } from "@mantine/core";
 import { useEffect, useState } from "react";
 import { HiPlus } from "react-icons/hi2";
+import { FaArrowLeft } from "react-icons/fa"; // 👈 Correct import for arrow
+import { FaLock, FaPencil } from "react-icons/fa6";
+import { FaLockOpen } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 import TitleText from "@/components/TitleText";
 import { ModalConfirm } from "@/components/Elements/Modals";
@@ -16,15 +20,13 @@ import {
   SocialMediaLinksForm,
   UpdateProfileForm,
 } from "@/components/Forms/UpdateProfileForm";
-import { FaLock, FaPencil } from "react-icons/fa6";
-import { FaLockOpen } from "react-icons/fa";
 import { SOCIAL_LINKS_DATA } from "@/utils/constants";
 
 const UserProfileSettingsPage = () => {
   const { user } = useAuth();
-
   const [refresh, setRefresh] = useState<number>(0);
   const { getData: getUser, data: userData } = useGet();
+  const navigate = useNavigate(); // 👈 for back button
 
   useSetNoSidebar();
   useSetContainerSize("md");
@@ -43,6 +45,17 @@ const UserProfileSettingsPage = () => {
 
   return (
     <div>
+      {/* Back Button */}
+      <Button
+        variant="subtle"
+        color="gray"
+        leftSection={<FaArrowLeft />} // 👈 arrow now visible
+        onClick={() => navigate(-1)} // back to previous page
+        mb="md"
+      >
+        Back
+      </Button>
+
       <SocialLinksTab user={userData?.data?.user} setRefresh={setRefresh} />
     </div>
   );
