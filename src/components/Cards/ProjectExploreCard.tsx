@@ -86,7 +86,6 @@ const ProjectExploreCard = ({ project }: ProjectExploreCardProps) => {
       radius="lg"
       style={{
         flex: "1 1 350px",
-        maxWidth: "380px",
         display: "flex",
         flexDirection: "column",
       }}
@@ -97,7 +96,7 @@ const ProjectExploreCard = ({ project }: ProjectExploreCardProps) => {
             <div>
               <Anchor
                 component={Link}
-                to={project.link || "#"}
+                to={`/explore/${project?.id}`}
                 fw={600}
                 style={{ textDecoration: "none" }}
               >

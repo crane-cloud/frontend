@@ -360,6 +360,7 @@ export default function ProjectSocialsCard({
             bottom: "15px",
             right: "8px",
           }}
+          tt="capitalize"
         >
           {isPublicProject ? "Public" : "Private"}
         </Badge>

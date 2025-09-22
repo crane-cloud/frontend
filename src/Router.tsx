@@ -10,6 +10,7 @@ import HealthCheck from "./components/HealthCheck";
 import ClustersPage from "./pages/admin/ClustersPage";
 import ClusterSettingsPage from "./pages/admin/cluster/ClusterSettingsPage";
 import ProfileViewPage from "./pages/Users/ProfileViewPage";
+import ProjectViewPage from "./pages/Projects/ProjectViewPage";
 
 // import { HomePage } from "./pages/Home.page";
 const AppsListPage = React.lazy(() => import("./pages/Apps/AppsListPage"));
@@ -82,6 +83,7 @@ export const DashboardRoutes = [
   { path: "/", element: <LandingPage /> },
   { path: "/explore", element: <ExplorePage /> },
   { path: "/tags/:tagName", element: <TagDetailsPage /> },
+  { path: "/explore/:project_id", element: <ProjectViewPage /> },
   { path: "/profile/:user_id", element: <UserProfilePage /> },
   { path: "/users/profile/settings", element: <UserProfileSettingsPage /> },
   { path: "/:username", element: <ProfileViewPage /> },
