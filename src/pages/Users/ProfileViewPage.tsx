@@ -591,7 +591,7 @@ const ProfileHeaderSkeleton = () => {
   );
 };
 
-const ProjectsSkeleton = () => {
+export const ProjectsSkeleton = () => {
   return (
     <SimpleGrid cols={{ base: 1, md: 2 }} spacing="md">
       {[...Array(4)].map((_, i) => (

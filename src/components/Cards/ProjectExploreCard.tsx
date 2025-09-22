@@ -143,7 +143,7 @@ const ProjectExploreCard = ({ project }: ProjectExploreCardProps) => {
         </Group>
       </div>
       <div>
-        <Divider color="gray.3" style={{ width: "100%" }} />
+        <Divider mt="xs" mb="xs" style={{ width: "100%" }} />
         <Group gap="lg" mt={2}>
           <Text size="sm" c="dimmed">
             {formatPlural(project.members_count, "member")}

@@ -33,7 +33,7 @@ export default function SuggestedUsers({
       <Stack gap={0}>
         {response?.data?.users?.map((user: User, index: number) => (
           <React.Fragment key={user.username}>
-            <UserCard user={user} isCard={false} showBorder={false} />
+            <UserCard user={user} isCard={false} showBorder />
             {index < response?.data?.users?.slice(0, perPage).length - 1 && (
               <Divider />
             )}

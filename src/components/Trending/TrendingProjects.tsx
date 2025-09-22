@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import {
   Card,
   Group,
@@ -30,12 +30,6 @@ export default function TrendingProjects({
   perPage = 3,
 }: TrendingProjectsProps) {
   const { data: response, getData, loading } = useGet();
-  const { data: userResponse, getData: getUserDetails } = useGet();
-
-  const [userDetailsCache, setUserDetailsCache] = useState<Record<string, any>>(
-    {},
-  );
-  const [fetchingUsers, setFetchingUsers] = useState<Set<string>>(new Set());
 
   useEffect(() => {
     getData({
@@ -43,47 +37,6 @@ export default function TrendingProjects({
       params: { entity: "projects", page: 1, per_page: perPage },
     });
   }, []);
-
-  // Effect to update cache when userResponse changes
-  useEffect(() => {
-    if (userResponse?.data?.user) {
-      setUserDetailsCache((prev) => ({
-        ...prev,
-        [userResponse.data?.user?.id]: userResponse.data.user,
-      }));
-
-      // Remove from fetching set
-      setFetchingUsers((prev) => {
-        const newSet = new Set(prev);
-        newSet.delete(userResponse.data.user.id);
-        return newSet;
-      });
-    }
-  }, [userResponse]);
-
-  // Function to get user name and trigger fetch if needed
-  const getUserName = useCallback(
-    (userId: string) => {
-      if (!userId) {
-        return "";
-      }
-
-      // Return cached name if available
-      const userDetails = userDetailsCache[userId];
-      if (userDetails) {
-        return userDetails.name || userDetails.username || userId;
-      }
-
-      // Fetch if not already fetching and not in cache
-      if (!fetchingUsers.has(userId)) {
-        setFetchingUsers((prev) => new Set([...prev, userId]));
-        getUserDetails({ api: `/users/${userId}` });
-      }
-
-      return userId; // Return ID while loading
-    },
-    [userDetailsCache, fetchingUsers, getUserDetails],
-  );
 
   const trendingProjects = response?.data?.projects || [];
 

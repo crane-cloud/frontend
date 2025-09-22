@@ -10,7 +10,6 @@ import { FiCheck, FiUserPlus } from "react-icons/fi";
 const UserCard = ({
   user,
   isCard = false,
-  showBorder = false,
 }: {
   user: User;
   isCard: boolean;
@@ -154,9 +153,8 @@ const UserCard = ({
         {content}
       </Card>
     );
-  } else {
-    return <div style={{ padding: "8px 0" }}>{content}</div>;
   }
+  return <div style={{ padding: "8px 0" }}>{content}</div>;
 };
 
 // User card loading state
