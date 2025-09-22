@@ -1,4 +1,4 @@
-import { Anchor, Button, Group, Skeleton, Text } from "@mantine/core";
+import { Anchor, Button, Card, Group, Skeleton, Text } from "@mantine/core";
 import React, { useEffect, useState } from "react";
 import { ProfileAvatar } from "../Common";
 import { User } from "@/types/user";
@@ -7,7 +7,14 @@ import usePost from "@/utils/usePost";
 import { API_USERS } from "@/utils/apis";
 import { FiCheck, FiUserPlus } from "react-icons/fi";
 
-const UserCard = ({ user }: { user: User }) => {
+const UserCard = ({
+  user,
+  isCard = false,
+}: {
+  user: User;
+  isCard: boolean;
+  showBorder: boolean;
+}) => {
   const {
     uploadData: followUser,
     submitting: following,
@@ -79,8 +86,8 @@ const UserCard = ({ user }: { user: User }) => {
     return <UserCardSkeleton />;
   }
 
-  return (
-    <div style={{ padding: "8px 0" }}>
+  const content = (
+    <>
       <Group mb={4} align="flex-start">
         <ProfileAvatar user={user} size={40} />
         <div style={{ flex: 1 }}>
@@ -137,8 +144,17 @@ const UserCard = ({ user }: { user: User }) => {
           </Text>
         </div>
       </Group>
-    </div>
+    </>
   );
+
+  if (isCard) {
+    return (
+      <Card style={{ padding: "8px 0" }} withBorder radius="md" p="md">
+        {content}
+      </Card>
+    );
+  }
+  return <div style={{ padding: "8px 0" }}>{content}</div>;
 };
 
 // User card loading state

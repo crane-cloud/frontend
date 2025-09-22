@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import {
   Card,
   Group,
@@ -14,74 +14,29 @@ import {
 } from "@mantine/core";
 import { FiCode, FiUsers } from "react-icons/fi";
 import useGet from "@/utils/useGet";
-import { API_PROJECTS } from "@/utils/apis";
+import { API_SOCIALS } from "@/utils/apis";
 import { Link } from "react-router-dom";
 import { Project } from "@/types/project";
 
 interface TrendingProjectsProps {
   title?: string;
   compact?: boolean;
+  perPage?: number;
 }
 
 export default function TrendingProjects({
   title = "Trending Projects",
   compact = false,
+  perPage = 3,
 }: TrendingProjectsProps) {
   const { data: response, getData, loading } = useGet();
-  const { data: userResponse, getData: getUserDetails } = useGet();
-
-  const [userDetailsCache, setUserDetailsCache] = useState<Record<string, any>>(
-    {},
-  );
-  const [fetchingUsers, setFetchingUsers] = useState<Set<string>>(new Set());
 
   useEffect(() => {
     getData({
-      api: `${API_PROJECTS}`,
-      params: { page: 1, per_page: 3 },
+      api: `${API_SOCIALS}`,
+      params: { entity: "projects", page: 1, per_page: perPage },
     });
   }, []);
-
-  // Effect to update cache when userResponse changes
-  useEffect(() => {
-    if (userResponse?.data?.user) {
-      setUserDetailsCache((prev) => ({
-        ...prev,
-        [userResponse.data?.user?.id]: userResponse.data.user,
-      }));
-
-      // Remove from fetching set
-      setFetchingUsers((prev) => {
-        const newSet = new Set(prev);
-        newSet.delete(userResponse.data.user.id);
-        return newSet;
-      });
-    }
-  }, [userResponse]);
-
-  // Function to get user name and trigger fetch if needed
-  const getUserName = useCallback(
-    (userId: string) => {
-      if (!userId) {
-        return "";
-      }
-
-      // Return cached name if available
-      const userDetails = userDetailsCache[userId];
-      if (userDetails) {
-        return userDetails.name || userDetails.username || userId;
-      }
-
-      // Fetch if not already fetching and not in cache
-      if (!fetchingUsers.has(userId)) {
-        setFetchingUsers((prev) => new Set([...prev, userId]));
-        getUserDetails({ api: `/users/${userId}` });
-      }
-
-      return userId; // Return ID while loading
-    },
-    [userDetailsCache, fetchingUsers, getUserDetails],
-  );
 
   const trendingProjects = response?.data?.projects || [];
 
@@ -102,16 +57,6 @@ export default function TrendingProjects({
             <React.Fragment key={project.id}>
               <div style={{ padding: "8px 0" }}>
                 <Group align="flex-start" gap={12} mt={2}>
-                  <Avatar
-                    size="sm"
-                    radius="sm"
-                    color="blue"
-                    variant="gradient"
-                    gradient={{ from: "blue", to: "cyan" }}
-                  >
-                    <FiCode size={14} />
-                  </Avatar>
-
                   <div style={{ flex: 1 }}>
                     <Anchor
                       href={`/projects/${project.id}`}
@@ -132,10 +77,6 @@ export default function TrendingProjects({
                     >
                       {project?.name}
                     </Anchor>
-
-                    <Text size="xs" c="dimmed" mb={4}>
-                      by {getUserName(project?.owner_id)}
-                    </Text>
 
                     {!compact && (
                       <Text

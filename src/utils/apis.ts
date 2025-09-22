@@ -15,3 +15,6 @@ export const API_TAGS = "/tags";
 
 // Apps
 export const API_APPS = "/apps";
+
+//Socials
+export const API_SOCIALS = "/socials";

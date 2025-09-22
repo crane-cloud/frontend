@@ -11,23 +11,25 @@ import {
 import { FiTrendingUp } from "react-icons/fi";
 import { Link } from "react-router-dom";
 import useGet from "@/utils/useGet";
-import { API_TAGS } from "@/utils/apis";
+import { API_SOCIALS } from "@/utils/apis";
 import { Tag } from "@/types/tag";
 import { getTagColor } from "@/utils/helpers";
 
 interface TrendingTagsProps {
   title?: string;
+  perPage?: number;
 }
 
 export default function TrendingTags({
   title = "Trending Tags",
+  perPage = 5,
 }: TrendingTagsProps) {
   const { data: response, getData, loading } = useGet();
 
   useEffect(() => {
     getData({
-      api: `${API_TAGS}`,
-      params: { page: 1, per_page: 5 },
+      api: `${API_SOCIALS}`,
+      params: { entity: "tags", page: 1, per_page: perPage },
     });
   }, []);
 
@@ -44,34 +46,24 @@ export default function TrendingTags({
         {loading ? (
           <TagsSkeleton />
         ) : (
-          response?.data
-            ?.reduce((uniqueTags: Tag[], tag: Tag) => {
-              if (
-                !uniqueTags.some((existingTag) => existingTag.name === tag.name)
-              ) {
-                uniqueTags.push(tag);
-              }
-              return uniqueTags;
-            }, [])
-            .slice(0, 5)
-            .map((tag: Tag) => (
-              <Group key={tag.name} justify="space-between">
-                <Badge
-                  variant="outline"
-                  color={getTagColor(tag.name)}
-                  component={Link}
-                  to={`/tags/${tag.name}`}
-                  style={{ cursor: "pointer", textDecoration: "none" }}
-                >
-                  # {tag.name}
-                </Badge>
-                <Group gap={4}>
-                  <Text size="xs" c="dimmed">
-                    {tag.projects_count} projects
-                  </Text>
-                </Group>
+          response?.data?.tags?.map((tag: Tag) => (
+            <Group key={tag.name} justify="space-between">
+              <Badge
+                variant="outline"
+                color={getTagColor(tag.name)}
+                component={Link}
+                to={`/tags/${tag.name}`}
+                style={{ cursor: "pointer", textDecoration: "none" }}
+              >
+                # {tag.name}
+              </Badge>
+              <Group gap={4}>
+                <Text size="xs" c="dimmed">
+                  {tag.projects_count} projects
+                </Text>
               </Group>
-            ))
+            </Group>
+          ))
         )}
       </Stack>
     </Card>
