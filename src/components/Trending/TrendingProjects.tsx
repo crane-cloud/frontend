@@ -40,7 +40,7 @@ export default function TrendingProjects({
   useEffect(() => {
     getData({
       api: `${API_SOCIALS}`,
-      params: { entity: "projects" ,page: 1, per_page: perPage },
+      params: { entity: "projects", page: 1, per_page: perPage },
     });
   }, []);
 

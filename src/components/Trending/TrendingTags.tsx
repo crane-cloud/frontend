@@ -46,25 +46,24 @@ export default function TrendingTags({
         {loading ? (
           <TagsSkeleton />
         ) : (
-          response?.data?.tags
-            ?.map((tag: Tag) => (
-              <Group key={tag.name} justify="space-between">
-                <Badge
-                  variant="outline"
-                  color={getTagColor(tag.name)}
-                  component={Link}
-                  to={`/tags/${tag.name}`}
-                  style={{ cursor: "pointer", textDecoration: "none" }}
-                >
-                  # {tag.name}
-                </Badge>
-                <Group gap={4}>
-                  <Text size="xs" c="dimmed">
-                    {tag.projects_count} projects
-                  </Text>
-                </Group>
+          response?.data?.tags?.map((tag: Tag) => (
+            <Group key={tag.name} justify="space-between">
+              <Badge
+                variant="outline"
+                color={getTagColor(tag.name)}
+                component={Link}
+                to={`/tags/${tag.name}`}
+                style={{ cursor: "pointer", textDecoration: "none" }}
+              >
+                # {tag.name}
+              </Badge>
+              <Group gap={4}>
+                <Text size="xs" c="dimmed">
+                  {tag.projects_count} projects
+                </Text>
               </Group>
-            ))
+            </Group>
+          ))
         )}
       </Stack>
     </Card>

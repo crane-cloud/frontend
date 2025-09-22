@@ -99,19 +99,25 @@ const ExplorePage = () => {
     { value: "data", label: "Data Science", icon: FiTrendingUp },
   ];
 
-
   type TagType = {
     id: string;
     is_following: boolean;
     [key: string]: any;
   };
-  const [tagStates, setTagStates] = useState<{ [id: string]: { is_following: boolean; loading: boolean } }>({});
+  const [tagStates, setTagStates] = useState<{
+    [id: string]: { is_following: boolean; loading: boolean };
+  }>({});
 
   useEffect(() => {
     if (tagsResponse?.data?.tags) {
-      const initial: { [id: string]: { is_following: boolean; loading: boolean } } = {};
+      const initial: {
+        [id: string]: { is_following: boolean; loading: boolean };
+      } = {};
       tagsResponse.data.tags.forEach((tag: TagType) => {
-        initial[tag.id] = { is_following: tag.is_following ?? false, loading: false };
+        initial[tag.id] = {
+          is_following: tag.is_following ?? false,
+          loading: false,
+        };
       });
       setTagStates(initial);
     }
@@ -149,10 +155,7 @@ const ExplorePage = () => {
           }));
         });
     } else {
-      Promise.all([
-        followTag({ api: `/tags/${tag.id}/following` }),
-        wait,
-      ])
+      Promise.all([followTag({ api: `/tags/${tag.id}/following` }), wait])
         .then(() => {
           setTagStates((prev) => ({
             ...prev,
@@ -253,10 +256,7 @@ const ExplorePage = () => {
               </Grid.Col>
 
               <Grid.Col span={{ base: 12, sm: 6, md: 4 }}>
-                <SuggestedUsers
-                  title="Top Developers"
-                  perPage={5}
-                />
+                <SuggestedUsers title="Top Developers" perPage={5} />
               </Grid.Col>
 
               <Grid.Col span={{ base: 12, sm: 12, md: 4 }}>
@@ -282,10 +282,10 @@ const ExplorePage = () => {
           <Tabs.Panel value="developers">
             <SimpleGrid cols={{ base: 1, sm: 2, md: 3 }} spacing="md">
               {developersResponse?.data?.users?.map((user: User) => (
-             <Fragment key={user.username}>
-               <UserCard user={user} isCard showBorder={true} />
-             </Fragment>
-             ))}
+                <Fragment key={user.username}>
+                  <UserCard user={user} isCard showBorder={true} />
+                </Fragment>
+              ))}
             </SimpleGrid>
           </Tabs.Panel>
 
@@ -297,7 +297,10 @@ const ExplorePage = () => {
                   spacing="md"
                 >
                   {tagsResponse?.data?.tags?.map((tag: TagType) => {
-                    const tagState = tagStates[tag.id] || { is_following: tag.is_following, loading: false };
+                    const tagState = tagStates[tag.id] || {
+                      is_following: tag.is_following,
+                      loading: false,
+                    };
                     return (
                       <Card
                         key={tag.id}
@@ -317,7 +320,7 @@ const ExplorePage = () => {
                         }}
                         className="hover:shadow-md"
                         onClick={(e) => {
-                          if ((e.target as HTMLElement).closest('button')) {
+                          if ((e.target as HTMLElement).closest("button")) {
                             e.preventDefault();
                           }
                         }}
@@ -349,7 +352,13 @@ const ExplorePage = () => {
                               e.preventDefault();
                               handleTagFollow(tag);
                             }}
-                            leftSection={tagState.is_following ? <FiCheck size={14} /> : <FiUserPlus size={14} />}
+                            leftSection={
+                              tagState.is_following ? (
+                                <FiCheck size={14} />
+                              ) : (
+                                <FiUserPlus size={14} />
+                              )
+                            }
                           >
                             {tagState.loading
                               ? tagState.is_following

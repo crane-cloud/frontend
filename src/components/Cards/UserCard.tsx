@@ -7,7 +7,15 @@ import usePost from "@/utils/usePost";
 import { API_USERS } from "@/utils/apis";
 import { FiCheck, FiUserPlus } from "react-icons/fi";
 
-const UserCard = ({ user, isCard=false, showBorder = false }: { user: User,isCard:boolean, showBorder: boolean }) => {
+const UserCard = ({
+  user,
+  isCard = false,
+  showBorder = false,
+}: {
+  user: User;
+  isCard: boolean;
+  showBorder: boolean;
+}) => {
   const {
     uploadData: followUser,
     submitting: following,
