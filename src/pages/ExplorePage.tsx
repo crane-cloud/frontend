@@ -271,7 +271,7 @@ const ExplorePage = () => {
             <Grid>
               <Grid.Col span={12}>
                 <Flex wrap="wrap" gap="lg" justify="flex-start">
-                  {projectsResponse?.data?.projects?.map((project) => (
+                  {projectsResponse?.data?.projects?.map((project: any) => (
                     <ProjectExploreCard project={project} />
                   ))}
                 </Flex>

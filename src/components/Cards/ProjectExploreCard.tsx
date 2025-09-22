@@ -15,7 +15,29 @@ import { useState, useEffect } from "react";
 import { FiCheck, FiUserPlus } from "react-icons/fi";
 import { Link } from "react-router-dom";
 
-const ProjectExploreCard = ({project}) => {
+interface ProjectTag {
+  id: number | string;
+  name: string;
+}
+
+interface Project {
+  id: number | string;
+  name: string;
+  description: string;
+  link?: string;
+  is_following?: boolean;
+  owner_id?: number | string;
+  tags?: ProjectTag[];
+  members_count: number;
+  followers_count: number;
+  apps_count: number;
+}
+
+interface ProjectExploreCardProps {
+  project: Project;
+}
+
+const ProjectExploreCard = ({ project }: ProjectExploreCardProps) => {
   const [isFollowingProject, setIsFollowingProject] = useState(
     project?.is_following,
   );
@@ -81,9 +103,6 @@ const ProjectExploreCard = ({project}) => {
               >
                 {beautify(project?.name)}
               </Anchor>
-              {/* <Text size="xs" c="dimmed">
-                                by {project.owner_id}
-                              </Text> */}
             </div>
           </Group>
           <Group gap="sm">
