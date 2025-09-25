@@ -35,7 +35,7 @@ import { Logo, UserDropDown } from "./Common";
 import { Link, useNavigate } from "react-router-dom";
 import Search from "./Elements/Search";
 import { useAuth } from "@/utils/AuthContext";
-import { IoAirplaneOutline } from "react-icons/io5";
+import { DOCS_URL } from "@/config";
 
 interface HeaderProps {
   opened: boolean;
@@ -71,12 +71,18 @@ export const DashboardHeader = ({ opened, toggle }: HeaderProps) => {
           >
             <Group gap={5}>
               <Text fw={700}>Explore</Text>
-              <IoAirplaneOutline
-                size={18}
-                style={{ transform: "rotate(315deg)" }}
-              />
             </Group>
           </Link>
+          <a
+            href={`${DOCS_URL}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ textDecoration: "none", paddingLeft: "10px" }}
+          >
+            <Group gap={5}>
+              <Text fw={700}>Docs</Text>
+            </Group>
+          </a>
         </Group>
         <Group>
           <Search />

@@ -59,7 +59,7 @@ export default function TrendingProjects({
                 <Group align="flex-start" gap={12} mt={2}>
                   <div style={{ flex: 1 }}>
                     <Anchor
-                      href={`/projects/${project.id}`}
+                      href={`/explore/${project.id}`}
                       size="sm"
                       fw={500}
                       style={{
@@ -110,7 +110,7 @@ export default function TrendingProjects({
 
                 <Group gap={2} mt={6}>
                   <FiUsers size={10} color="#6c757d" />
-                  <Text size="xs" c="dimmed" fw={500} ml={2}>
+                  <Text size="sm" c="dimmed" fw={500} ml={2}>
                     {project.followers_count || 0} followers
                   </Text>
                 </Group>

@@ -12,7 +12,6 @@ import {
   Select,
   SimpleGrid,
   ThemeIcon,
-  Flex,
   Center,
   Box,
   Loader,
@@ -282,37 +281,29 @@ const ExplorePage = () => {
           </Tabs.Panel>
 
           <Tabs.Panel value="projects">
-            <Grid>
-              <Grid.Col span={12}>
-                <Flex wrap="wrap" gap="lg" justify="flex-start">
-                  {searching ? (
-                    <Center w="100%" h="300px">
-                      <Loader size="xl" type="oval" />
-                    </Center>
-                  ) : selectedCategory === "projects" ? (
-                    searchQuery !== "" ? (
-                      searchResponse?.data?.projects?.length > 0 ? (
-                        searchResponse.data.projects.map((project: any) => (
-                          <ProjectExploreCard
-                            key={project.id}
-                            project={project}
-                          />
-                        ))
-                      ) : (
-                        <EmptyState message="No projects found" />
-                      )
-                    ) : (
-                      projectsResponse?.data?.projects?.map((project: any) => (
-                        <ProjectExploreCard
-                          key={project.id}
-                          project={project}
-                        />
-                      ))
-                    )
-                  ) : null}
-                </Flex>
-              </Grid.Col>
-            </Grid>
+            <SimpleGrid cols={{ base: 1, sm: 2, md: 3 }} spacing="md">
+              {searching ? (
+                <div style={{ gridColumn: "1 / -1" }}>
+                  <Center w="100%" h="300px">
+                    <Loader size="xl" type="oval" />
+                  </Center>
+                </div>
+              ) : selectedCategory === "projects" ? (
+                searchQuery !== "" ? (
+                  searchResponse?.data?.projects?.length > 0 ? (
+                    searchResponse.data.projects.map((project: any) => (
+                      <ProjectExploreCard key={project.id} project={project} />
+                    ))
+                  ) : (
+                    <EmptyState message="No projects found" />
+                  )
+                ) : (
+                  projectsResponse?.data?.projects?.map((project: any) => (
+                    <ProjectExploreCard key={project.id} project={project} />
+                  ))
+                )
+              ) : null}
+            </SimpleGrid>
           </Tabs.Panel>
 
           <Tabs.Panel value="users">
@@ -545,7 +536,7 @@ interface EmptyStateProps {
   message?: string;
 }
 
-const EmptyState = ({ message = "No data found" }: EmptyStateProps) => {
+export const EmptyState = ({ message = "No data found" }: EmptyStateProps) => {
   return (
     <Center w="100%" h="200px">
       <Box
