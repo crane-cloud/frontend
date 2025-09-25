@@ -1,54 +1,48 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect, Fragment } from "react";
 import {
   Container,
   Title,
   Text,
   Group,
   Stack,
-  Grid,
-  Card,
   Badge,
   Button,
-  Box,
-  Avatar,
   Anchor,
   SimpleGrid,
   ThemeIcon,
-  Progress,
   Breadcrumbs,
-  Select,
   Tabs,
   ActionIcon,
   Tooltip,
   Center,
   Skeleton,
   Notification,
+  Loader,
 } from "@mantine/core";
 import {
   FiUsers,
   FiCode,
   FiTag,
-  FiHeart,
-  FiBook,
-  FiGlobe,
-  FiActivity,
-  FiFilter,
-  FiExternalLink,
-  FiGithub,
   FiShare2,
-  FiBookmark,
   FiXCircle,
+  FiCheck,
+  FiUserPlus,
+  FiCalendar,
 } from "react-icons/fi";
 import { Link, useParams } from "react-router-dom";
 import {
   getTagColor,
   useSetContainerSize,
   useSetNoSidebar,
+  formatPlural,
 } from "@/utils/helpers";
 import useGet from "@/utils/useGet";
 import usePost from "@/utils/usePost";
 import { API_TAGS } from "@/utils/apis";
 import { Tag } from "@/types/tag";
+import ProjectExploreCard from "@/components/Cards/ProjectExploreCard";
+import UserCard from "@/components/Cards/UserCard";
+import { User } from "@/types/user";
 
 interface Project {
   id: string;
@@ -125,6 +119,7 @@ const TagDetailsPage = () => {
   const [error, setError] = useState<string | null>(null);
   const [hasInteracted, setHasInteracted] = useState(false);
   const [tagId, setTagId] = useState<string | null>(null);
+  const [expandedTags, setExpandedTags] = useState<Set<string>>(new Set());
 
   // Hook for getting tag data
   const {
@@ -236,10 +231,6 @@ const TagDetailsPage = () => {
         ...tagDetails,
         // category: tagDetails.category || "Technology",
         color: getTagColor(tagDetails.name),
-        relatedTags: ["javascript", "typescript", "web"], // Default related tags
-        officialWebsite: `https://${tagDetails.name}.org`,
-        documentation: `https://docs.${tagDetails.name}.org`,
-        github: `https://github.com/${tagDetails.name}`,
       });
 
       // Set the following status based on the API response
@@ -276,6 +267,7 @@ const TagDetailsPage = () => {
       }
     }
   }, [tagFollowersResponse]);
+
 
   // Handle follow success/error
   useEffect(() => {
@@ -322,27 +314,6 @@ const TagDetailsPage = () => {
       api: `${API_TAGS}/${tagId}/following`,
       method: isFollowing ? "DELETE" : "POST",
     });
-  };
-
-  // Format date to relative time
-  const formatRelativeTime = (dateString: string) => {
-    const date = new Date(dateString);
-    const now = new Date();
-    const diffInSeconds = Math.floor((now.getTime() - date.getTime()) / 1000);
-
-    if (diffInSeconds < 60) {
-      return "just now";
-    }
-    if (diffInSeconds < 3600) {
-      return `${Math.floor(diffInSeconds / 60)} minutes ago`;
-    }
-    if (diffInSeconds < 86400) {
-      return `${Math.floor(diffInSeconds / 3600)} hours ago`;
-    }
-    if (diffInSeconds < 2592000) {
-      return `${Math.floor(diffInSeconds / 86400)} days ago`;
-    }
-    return `${Math.floor(diffInSeconds / 2592000)} months ago`;
   };
 
   const breadcrumbItems = [
@@ -458,8 +429,9 @@ const TagDetailsPage = () => {
                 label={isFollowing ? "Unfollow this tag" : "Follow this tag"}
               >
                 <Button
-                  variant={isFollowing ? "filled" : "outline"}
-                  leftSection={<FiHeart size={16} />}
+                  variant="outline"
+                  leftSection={
+                  isFollowing? <FiCheck size={16}/> : <FiUserPlus size={16} />}
                   onClick={handleFollowToggle}
                   loading={followSubmitting}
                   disabled={followSubmitting}
@@ -477,52 +449,26 @@ const TagDetailsPage = () => {
 
           {/* Tag Statistics */}
           <Group gap="sm">
-            <Button
-              variant="light"
-              leftSection={<FiCode size={16} />}
-              size="md"
-              style={{ minWidth: "auto" }}
-            >
-              {(tagData.projects_count || 0).toLocaleString()} Projects
-            </Button>
-            <Button
-              variant="light"
-              leftSection={<FiUsers size={16} />}
-              size="md"
-              style={{ minWidth: "auto" }}
-            >
-              {(tagData.followers_count || 0).toLocaleString()} Followers
-            </Button>
-            <Button
-              variant="light"
-              leftSection={<FiGlobe size={16} />}
-              rightSection={<FiExternalLink size={14} />}
-              component="a"
-              href={tagData.officialWebsite}
-              target="_blank"
-            >
-              Official Website
-            </Button>
-            <Button
-              variant="light"
-              leftSection={<FiBook size={16} />}
-              rightSection={<FiExternalLink size={14} />}
-              component="a"
-              href={tagData.documentation}
-              target="_blank"
-            >
-              Documentation
-            </Button>
-            <Button
-              variant="light"
-              leftSection={<FiGithub size={16} />}
-              rightSection={<FiExternalLink size={14} />}
-              component="a"
-              href={tagData.github}
-              target="_blank"
-            >
-              GitHub
-            </Button>
+            <Group gap={4}>
+              <FiCode size={16} />
+              <Text size="sm">
+                {formatPlural(tagData.projects_count || 0, "Project", "Projects")}
+             </Text>
+            </Group>
+
+            <Group gap={4}>
+              <FiUsers size={16} />
+              <Text size="sm">
+                {formatPlural(tagData.followers_count || 0, "Follower", "Followers")}
+              </Text>
+            </Group>
+
+            <Group gap={4}>
+              <FiCalendar size={16} />
+              <Text size="sm">
+                 Created on {new Date(tagData.date_created).toLocaleDateString()}
+              </Text>
+            </Group>
           </Group>
         </Stack>
 
@@ -534,311 +480,38 @@ const TagDetailsPage = () => {
             <Tabs.Tab value="developers" leftSection={<FiUsers size={16} />}>
               Developers ({(tagData.followers_count || 0).toLocaleString()})
             </Tabs.Tab>
-            <Tabs.Tab value="analytics" leftSection={<FiActivity size={16} />}>
-              Analytics
-            </Tabs.Tab>
           </Tabs.List>
 
-          <Tabs.Panel value="projects">
-            <Grid>
-              <Grid.Col span={9}>
-                <Stack gap="lg">
-                  <Group justify="space-between">
-                    <Title order={3}>Projects</Title>
-                    <Group>
-                      <Select
-                        data={[
-                          { value: "trending", label: "Trending" },
-                          { value: "stars", label: "Most Stars" },
-                          { value: "recent", label: "Recently Updated" },
-                          { value: "forks", label: "Most Forks" },
-                        ]}
-                        value={sortBy}
-                        onChange={handleSortChange}
-                        leftSection={<FiFilter size={16} />}
-                      />
-                    </Group>
-                  </Group>
-
-                  {tagProjectsLoading ? (
-                    <Stack gap="md">
-                      {Array.from({ length: 4 }).map((_, index) => (
-                        <Card key={index} p="lg" withBorder radius="lg">
-                          <Grid>
-                            <Grid.Col span={8}>
-                              <Group mb="sm">
-                                <Skeleton height={40} width={40} circle />
-                                <div style={{ flex: 1 }}>
-                                  <Skeleton height={20} width={200} mb={4} />
-                                  <Skeleton height={16} width={150} mb="xs" />
-                                  <Skeleton height={16} width={300} mb="sm" />
-                                  <Group gap="lg">
-                                    <Skeleton height={16} width={100} />
-                                    <Skeleton height={16} width={80} />
-                                    <Skeleton height={16} width={120} />
-                                  </Group>
-                                </div>
-                              </Group>
-                            </Grid.Col>
-                            <Grid.Col span={4}>
-                              <Group justify="flex-end" align="flex-start">
-                                <Skeleton height={24} width={80} />
-                                <Skeleton height={24} width={24} circle />
-                                <Skeleton height={24} width={24} circle />
-                              </Group>
-                            </Grid.Col>
-                          </Grid>
-                        </Card>
-                      ))}
-                    </Stack>
-                  ) : projects.length > 0 ? (
-                    <Stack gap="md">
-                      {projects.map((project, index) => (
-                        <Card key={project.id} p="lg" withBorder radius="lg">
-                          <Grid>
-                            <Grid.Col span={8}>
-                              <Group mb="sm">
-                                <Avatar
-                                  size="md"
-                                  radius="sm"
-                                  color="blue"
-                                  variant="gradient"
-                                  gradient={{ from: "blue", to: "cyan" }}
-                                >
-                                  <FiCode size={14} />
-                                </Avatar>
-                                <div style={{ flex: 1 }}>
-                                  <Group gap="xs" mb={4}>
-                                    <Anchor
-                                      component={Link}
-                                      to={`/projects/${project.id}`}
-                                      size="lg"
-                                      fw={600}
-                                      style={{ textDecoration: "none" }}
-                                      onMouseEnter={(e) => {
-                                        e.currentTarget.style.textDecoration =
-                                          "underline";
-                                      }}
-                                      onMouseLeave={(e) => {
-                                        e.currentTarget.style.textDecoration =
-                                          "none";
-                                      }}
-                                    >
-                                      {project.name || "Unnamed Project"}
-                                    </Anchor>
-                                    <Badge size="sm" variant="light">
-                                      #{index + 1}
-                                    </Badge>
-                                  </Group>
-                                  <Text size="sm" c="dimmed" mb="xs">
-                                    {project.organisation || "Personal Project"}
-                                  </Text>
-                                  <Text size="sm" c="dimmed" mb="sm">
-                                    {project.description ||
-                                      "No description available"}
-                                  </Text>
-                                  <Group gap="lg">
-                                    <Group gap={4}>
-                                      <FiCode size={14} color="#6c757d" />
-                                      <Text size="sm" c="dimmed">
-                                        {project.apps_count || 0} Apps
-                                      </Text>
-                                    </Group>
-                                    <Group gap={4}>
-                                      <FiUsers size={14} color="#6c757d" />
-                                      <Text size="sm" c="dimmed">
-                                        {project.members_count || 0} Members
-                                      </Text>
-                                    </Group>
-                                    <Group gap={4}>
-                                      <FiHeart size={14} color="#6c757d" />
-                                      <Text size="sm" c="dimmed">
-                                        {project.followers_count || 0} Followers
-                                      </Text>
-                                    </Group>
-                                    <Text size="sm" c="dimmed">
-                                      Created{" "}
-                                      {formatRelativeTime(project.date_created)}
-                                    </Text>
-                                  </Group>
-                                </div>
-                              </Group>
-                            </Grid.Col>
-                            <Grid.Col span={4}>
-                              <Group justify="flex-end" align="flex-start">
-                                <Badge variant="light">
-                                  {project.project_type || "Unknown"}
-                                </Badge>
-                                <ActionIcon variant="subtle">
-                                  <FiHeart size={16} />
-                                </ActionIcon>
-                                <ActionIcon variant="subtle">
-                                  <FiBookmark size={16} />
-                                </ActionIcon>
-                              </Group>
-                            </Grid.Col>
-                          </Grid>
-
-                          {/* Project Tags */}
-                          {project.tags && project.tags.length > 0 && (
-                            <Group gap="xs" mt="md">
-                              {project.tags.slice(0, 5).map((tag) => (
-                                <Badge
-                                  key={tag.id}
-                                  variant="light"
-                                  color={getTagColor(tag.name)}
-                                  component={Link}
-                                  to={`/tags/${tag.name}`}
-                                  style={{ cursor: "pointer" }}
-                                >
-                                  #{tag.name}
-                                </Badge>
-                              ))}
-                              {project.tags.length > 5 && (
-                                <Badge variant="outline">
-                                  +{project.tags.length - 5} more
-                                </Badge>
-                              )}
-                            </Group>
-                          )}
-                        </Card>
-                      ))}
-                    </Stack>
-                  ) : (
-                    <Center style={{ height: 200 }}>
-                      <Text c="dimmed">No projects found for this tag.</Text>
-                    </Center>
-                  )}
-                </Stack>
-              </Grid.Col>
-
-              <Grid.Col span={3}>
-                <Stack gap="lg">
-                  {/* Related Tags */}
-                  <Card p="md" withBorder radius="lg">
-                    <Title order={4} mb="md">
-                      Related Tags
-                    </Title>
-                    <Stack gap="xs">
-                      {tagData.relatedTags.map((tag: string) => (
-                        <Group key={tag} justify="space-between">
-                          <Badge
-                            variant="light"
-                            component={Link}
-                            to={`/tags/${tag}`}
-                            style={{ cursor: "pointer" }}
-                          >
-                            #{tag}
-                          </Badge>
-                          <Text size="xs" c="dimmed">
-                            {Math.floor(Math.random() * 500) + 100}
-                          </Text>
-                        </Group>
-                      ))}
-                    </Stack>
-                  </Card>
-
-                  {/* Weekly Activity */}
-                  <Card p="md" withBorder radius="lg">
-                    <Title order={4} mb="md">
-                      Statistics
-                    </Title>
-                    <Stack gap="sm">
-                      <Group justify="space-between">
-                        <Text size="sm">Total Projects</Text>
-                        <Badge variant="light" color="blue">
-                          {tagData.projects_count || 0}
-                        </Badge>
-                      </Group>
-                      <Group justify="space-between">
-                        <Text size="sm">Total Followers</Text>
-                        <Badge variant="light" color="green">
-                          {tagData.followers_count || 0}
-                        </Badge>
-                      </Group>
-                      <Group justify="space-between">
-                        <Text size="sm">Super Tag</Text>
-                        <Badge
-                          variant="light"
-                          color={tagData.is_super_tag ? "green" : "gray"}
-                        >
-                          {tagData.is_super_tag ? "Yes" : "No"}
-                        </Badge>
-                      </Group>
-                    </Stack>
-                  </Card>
-                </Stack>
-              </Grid.Col>
-            </Grid>
+         <Tabs.Panel value="projects">
+            {tagProjectsLoading ? (
+              <Center w="100%" h="300px">
+                <Loader size="xl" type="oval" />
+              </Center>
+            ) : projects.length > 0 ? (
+              <SimpleGrid cols={{ base: 1, sm: 3, md: 4 }} spacing="md">
+                {projects.map((project) => (
+                  <ProjectExploreCard key={project.id} project={project} />
+                ))}
+              </SimpleGrid>
+            ) : (
+              <Center style={{ height: 200 }}>
+                <Text c="dimmed">No projects found for this tag.</Text>
+              </Center>
+            )}
           </Tabs.Panel>
 
-          <Tabs.Panel value="developers">
+         <Tabs.Panel value="developers">
             <Stack gap="lg">
-              <Title order={3}>Developers Following This Tag</Title>
               {tagFollowersLoading ? (
-                <SimpleGrid cols={{ base: 1, md: 2 }} spacing="lg">
-                  {Array.from({ length: 4 }).map((_, index) => (
-                    <Card key={index} p="lg" withBorder radius="lg">
-                      <Group mb="md">
-                        <Skeleton height={50} width={50} circle />
-                        <div style={{ flex: 1 }}>
-                          <Skeleton height={20} width={150} mb={4} />
-                          <Skeleton height={16} width={100} />
-                        </div>
-                        <Skeleton height={30} width={80} />
-                      </Group>
-                      <Skeleton height={16} width="100%" mb="md" />
-                      <Group justify="space-between">
-                        <Skeleton height={16} width={100} />
-                        <Skeleton height={16} width={80} />
-                      </Group>
-                    </Card>
-                  ))}
-                </SimpleGrid>
+                <Center w="100%" h="300px">
+                  <Loader size="xl" type="oval" />
+                </Center>
               ) : followers.length > 0 ? (
                 <SimpleGrid cols={{ base: 1, md: 2, lg: 3 }} spacing="lg">
                   {followers.map((developer) => (
-                    <Card key={developer.id} p="lg" withBorder radius="lg">
-                      <Group mb="md">
-                        <Avatar
-                          src={developer.profile_picture || undefined}
-                          size="lg"
-                          radius="xl"
-                        />
-                        <div style={{ flex: 1 }}>
-                          <Anchor
-                            component={Link}
-                            to={`/users/${developer.username}`}
-                            size="lg"
-                            fw={600}
-                            style={{ textDecoration: "none" }}
-                          >
-                            {developer.name}
-                          </Anchor>
-                          <Text size="sm" c="dimmed">
-                            @{developer.username}
-                          </Text>
-                        </div>
-                        <Button variant="outline" size="sm">
-                          Follow
-                        </Button>
-                      </Group>
-                      {developer.biography && (
-                        <Text size="sm" c="dimmed" mb="md" lineClamp={2}>
-                          {developer.biography}
-                        </Text>
-                      )}
-                      <Group justify="space-between">
-                        <Group gap="lg">
-                          <Text size="sm" c="dimmed">
-                            {developer.followers_count} followers
-                          </Text>
-                          <Text size="sm" c="dimmed">
-                            {developer.owned_projects_count} projects
-                          </Text>
-                        </Group>
-                      </Group>
-                    </Card>
+                    <Fragment key={developer.username}>
+                      <UserCard user={developer as User} isCard showBorder />
+                    </Fragment>
                   ))}
                 </SimpleGrid>
               ) : (
@@ -849,80 +522,6 @@ const TagDetailsPage = () => {
                 </Center>
               )}
             </Stack>
-          </Tabs.Panel>
-
-          <Tabs.Panel value="analytics">
-            <Grid>
-              <Grid.Col span={8}>
-                <Stack gap="lg">
-                  <Title order={3}>Growth Analytics</Title>
-                  <Card p="lg" withBorder radius="lg">
-                    <Stack gap="md">
-                      <Title order={4}>Project Growth Over Time</Title>
-                      <Box h={300} bg="gray.0" style={{ borderRadius: 8 }}>
-                        <Center h="100%">
-                          <Text c="dimmed">
-                            Chart placeholder - Project growth visualization
-                          </Text>
-                        </Center>
-                      </Box>
-                    </Stack>
-                  </Card>
-
-                  <Card p="lg" withBorder radius="lg">
-                    <Stack gap="md">
-                      <Title order={4}>Language Distribution</Title>
-                      <Box h={200} bg="gray.0" style={{ borderRadius: 8 }}>
-                        <Center h="100%">
-                          <Text c="dimmed">
-                            Chart placeholder - Language distribution
-                          </Text>
-                        </Center>
-                      </Box>
-                    </Stack>
-                  </Card>
-                </Stack>
-              </Grid.Col>
-
-              <Grid.Col span={4}>
-                <Card p="md" withBorder radius="lg">
-                  <Title order={4} mb="md">
-                    Key Metrics
-                  </Title>
-                  <Stack gap="md">
-                    <div>
-                      <Group justify="space-between" mb="xs">
-                        <Text size="sm">Weekly Activity</Text>
-                        <Text size="sm" fw={600}>
-                          High
-                        </Text>
-                      </Group>
-                      <Progress value={85} color="green" size="sm" />
-                    </div>
-
-                    <div>
-                      <Group justify="space-between" mb="xs">
-                        <Text size="sm">Community Health</Text>
-                        <Text size="sm" fw={600}>
-                          Excellent
-                        </Text>
-                      </Group>
-                      <Progress value={95} color="blue" size="sm" />
-                    </div>
-
-                    <div>
-                      <Group justify="space-between" mb="xs">
-                        <Text size="sm">Growth Rate</Text>
-                        <Text size="sm" fw={600}>
-                          +15%
-                        </Text>
-                      </Group>
-                      <Progress value={45} color={tagData.color} size="sm" />
-                    </div>
-                  </Stack>
-                </Card>
-              </Grid.Col>
-            </Grid>
           </Tabs.Panel>
         </Tabs>
       </Stack>
