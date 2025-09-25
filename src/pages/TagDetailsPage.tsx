@@ -268,7 +268,6 @@ const TagDetailsPage = () => {
     }
   }, [tagFollowersResponse]);
 
-
   // Handle follow success/error
   useEffect(() => {
     if (followSuccess) {
@@ -431,7 +430,12 @@ const TagDetailsPage = () => {
                 <Button
                   variant="outline"
                   leftSection={
-                  isFollowing? <FiCheck size={16}/> : <FiUserPlus size={16} />}
+                    isFollowing ? (
+                      <FiCheck size={16} />
+                    ) : (
+                      <FiUserPlus size={16} />
+                    )
+                  }
                   onClick={handleFollowToggle}
                   loading={followSubmitting}
                   disabled={followSubmitting}
@@ -452,21 +456,29 @@ const TagDetailsPage = () => {
             <Group gap={4}>
               <FiCode size={16} />
               <Text size="sm">
-                {formatPlural(tagData.projects_count || 0, "Project", "Projects")}
-             </Text>
+                {formatPlural(
+                  tagData.projects_count || 0,
+                  "Project",
+                  "Projects",
+                )}
+              </Text>
             </Group>
 
             <Group gap={4}>
               <FiUsers size={16} />
               <Text size="sm">
-                {formatPlural(tagData.followers_count || 0, "Follower", "Followers")}
+                {formatPlural(
+                  tagData.followers_count || 0,
+                  "Follower",
+                  "Followers",
+                )}
               </Text>
             </Group>
 
             <Group gap={4}>
               <FiCalendar size={16} />
               <Text size="sm">
-                 Created on {new Date(tagData.date_created).toLocaleDateString()}
+                Created on {new Date(tagData.date_created).toLocaleDateString()}
               </Text>
             </Group>
           </Group>
@@ -482,7 +494,7 @@ const TagDetailsPage = () => {
             </Tabs.Tab>
           </Tabs.List>
 
-         <Tabs.Panel value="projects">
+          <Tabs.Panel value="projects">
             {tagProjectsLoading ? (
               <Center w="100%" h="300px">
                 <Loader size="xl" type="oval" />
@@ -500,7 +512,7 @@ const TagDetailsPage = () => {
             )}
           </Tabs.Panel>
 
-         <Tabs.Panel value="developers">
+          <Tabs.Panel value="developers">
             <Stack gap="lg">
               {tagFollowersLoading ? (
                 <Center w="100%" h="300px">
