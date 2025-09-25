@@ -114,12 +114,10 @@ const TagDetailsPage = () => {
   useSetContainerSize("full");
 
   const { tagName } = useParams<{ tagName: string }>();
-  const [sortBy, setSortBy] = useState("trending");
   const [isFollowing, setIsFollowing] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [hasInteracted, setHasInteracted] = useState(false);
   const [tagId, setTagId] = useState<string | null>(null);
-  const [expandedTags, setExpandedTags] = useState<Set<string>>(new Set());
 
   // Hook for getting tag data
   const {
@@ -286,17 +284,6 @@ const TagDetailsPage = () => {
       setIsFollowing((prev) => !prev);
     }
   }, [followSuccess, followError, hasInteracted, tagId]);
-
-  // Handle sort change
-  const handleSortChange = (value: string | null) => {
-    if (value && tagId) {
-      setSortBy(value || "trending");
-      getTagProjects({
-        api: `${API_TAGS}/${tagId}/projects`,
-        params: { page: 1, per_page: 10 },
-      });
-    }
-  };
 
   // Handle follow/unfollow
   const handleFollowToggle = () => {
