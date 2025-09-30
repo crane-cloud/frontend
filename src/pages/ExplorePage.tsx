@@ -257,27 +257,182 @@ const ExplorePage = () => {
           </Tabs.List>
 
           <Tabs.Panel value="all">
-            <Grid>
-              <Grid.Col span={{ base: 12, sm: 6, md: 4 }}>
-                <Stack gap="lg">
-                  <TrendingProjects
-                    compact
-                    title="Trending Projects"
-                    perPage={4}
-                  />
-                </Stack>
-              </Grid.Col>
+            {searchQuery !== "" ? (
+              <Stack>
+                {searching ? (
+                  <Center w="100%" h="300px">
+                    <Loader size="xl" type="oval" />
+                  </Center>
+                ) : (
+                  <>
+                    {searchResponse?.data?.projects?.length > 0 && (
+                      <Box>
+                        <Title order={3} mb="md">
+                          Projects
+                        </Title>
+                        <SimpleGrid
+                          cols={{ base: 1, sm: 2, md: 3 }}
+                          spacing="md"
+                        >
+                          {searchResponse.data.projects.map((project: any) => (
+                            <ProjectExploreCard
+                              key={project.id}
+                              project={project}
+                            />
+                          ))}
+                        </SimpleGrid>
+                      </Box>
+                    )}
 
-              <Grid.Col span={{ base: 12, sm: 6, md: 4 }}>
-                <SuggestedUsers title="Top Developers" perPage={5} />
-              </Grid.Col>
+                    {searchResponse?.data?.users?.length > 0 && (
+                      <Box>
+                        <Title order={3} mb="md">
+                          Developers
+                        </Title>
+                        <SimpleGrid
+                          cols={{ base: 1, sm: 2, md: 3 }}
+                          spacing="md"
+                        >
+                          {searchResponse.data.users.map((user: any) => (
+                            <UserCard
+                              key={user.username}
+                              user={user}
+                              isCard
+                              showBorder
+                            />
+                          ))}
+                        </SimpleGrid>
+                      </Box>
+                    )}
 
-              <Grid.Col span={{ base: 12, sm: 12, md: 4 }}>
-                <Stack gap="lg">
-                  <TrendingTags title="Popular Tags" perPage={10} />
-                </Stack>
-              </Grid.Col>
-            </Grid>
+                    {searchResponse?.data?.tags?.length > 0 && (
+                      <Box>
+                        <Title order={3} mb="md">
+                          Tags
+                        </Title>
+                        <SimpleGrid
+                          cols={{ base: 2, sm: 3, md: 4, lg: 6 }}
+                          spacing="md"
+                        >
+                          {searchResponse.data.tags.map((tag: any) => {
+                            const tagState = tagStates[tag.id] || {
+                              is_following: tag.is_following,
+                              loading: false,
+                            };
+                            return (
+                              <Card
+                                key={tag.id}
+                                p="lg"
+                                withBorder
+                                radius="lg"
+                                ta="center"
+                                component={Link}
+                                to={`/tags/${tag.name}`}
+                                style={{
+                                  cursor: "pointer",
+                                  textDecoration: "none",
+                                  color: "inherit",
+                                  transition: "all 0.2s ease",
+                                  display: "flex",
+                                  flexDirection: "column",
+                                }}
+                                className="hover:shadow-md"
+                                onClick={(e) => {
+                                  if (
+                                    (e.target as HTMLElement).closest("button")
+                                  ) {
+                                    e.preventDefault();
+                                  }
+                                }}
+                              >
+                                <ThemeIcon
+                                  size="xl"
+                                  variant="light"
+                                  color={getTagColor(tag.name)}
+                                  mx="auto"
+                                  mb="md"
+                                >
+                                  <FiTag size={24} />
+                                </ThemeIcon>
+                                <Stack
+                                  gap="xs"
+                                  align="center"
+                                  style={{ flex: 1 }}
+                                >
+                                  <Title order={4} size="sm">
+                                    {beautify(tag.name)}
+                                  </Title>
+                                  <Text size="sm" c="dimmed" mb="xs">
+                                    {tag.projects_count} projects
+                                  </Text>
+                                  <Button
+                                    variant="outline"
+                                    color="blue"
+                                    size="xs"
+                                    mt="xs"
+                                    loading={tagState.loading}
+                                    disabled={tagState.loading}
+                                    onClick={(e) => {
+                                      e.preventDefault();
+                                      handleTagFollow(tag);
+                                    }}
+                                    leftSection={
+                                      tagState.is_following ? (
+                                        <FiCheck size={14} />
+                                      ) : (
+                                        <FiUserPlus size={14} />
+                                      )
+                                    }
+                                  >
+                                    {tagState.loading
+                                      ? tagState.is_following
+                                        ? "Following..."
+                                        : "Unfollowing..."
+                                      : tagState.is_following
+                                        ? "Following"
+                                        : "Follow"}
+                                  </Button>
+                                </Stack>
+                              </Card>
+                            );
+                          })}
+                        </SimpleGrid>
+                      </Box>
+                    )}
+
+                    {!searchResponse?.data?.projects?.length &&
+                      !searchResponse?.data?.users?.length &&
+                      !searchResponse?.data?.tags?.length && (
+                        <Center w="100%" h="200px">
+                          <EmptyState message="No results found" />
+                        </Center>
+                      )}
+                  </>
+                )}
+              </Stack>
+            ) : (
+              <Grid>
+                <Grid.Col span={{ base: 12, sm: 6, md: 4 }}>
+                  <Stack gap="lg">
+                    <TrendingProjects
+                      compact
+                      title="Trending Projects"
+                      perPage={4}
+                    />
+                  </Stack>
+                </Grid.Col>
+
+                <Grid.Col span={{ base: 12, sm: 6, md: 4 }}>
+                  <SuggestedUsers title="Top Developers" perPage={5} />
+                </Grid.Col>
+
+                <Grid.Col span={{ base: 12, sm: 12, md: 4 }}>
+                  <Stack gap="lg">
+                    <TrendingTags title="Popular Tags" perPage={10} />
+                  </Stack>
+                </Grid.Col>
+              </Grid>
+            )}
           </Tabs.Panel>
 
           <Tabs.Panel value="projects">
