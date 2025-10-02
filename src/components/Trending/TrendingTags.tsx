@@ -47,7 +47,7 @@ export default function TrendingTags({
           <TagsSkeleton />
         ) : (
           response?.data?.tags?.map((tag: Tag) => (
-            <Group key={tag.name} justify="space-between">
+            <Group key={tag.id} justify="space-between">
               <Badge
                 variant="outline"
                 color={getTagColor(tag.name)}
