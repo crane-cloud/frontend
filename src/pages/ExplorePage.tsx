@@ -45,6 +45,7 @@ import { User } from "@/types/user";
 import UserCard from "@/components/Cards/UserCard";
 import { TbFolderOff } from "react-icons/tb";
 import { useDebouncedValue } from "@mantine/hooks";
+import { useInfiniteScrollWithPagination } from "@/hooks/generic/useInfiniteScroll";
 
 const ExplorePage = () => {
   useSetNoSidebar();
@@ -61,9 +62,64 @@ const ExplorePage = () => {
     getData: searchSocials,
     loading: searching,
   } = useGet();
-  const { data: projectsResponse, getData: getProjects } = useGet();
-  const { data: developersResponse, getData: getDevelopers } = useGet();
+  const {
+    data: projectsResponse,
+    getData: getProjects,
+    loading,
+    success,
+  } = useGet();
+  const {
+    data: usersResponse,
+    getData: getUsers,
+    loading: loadingUsers,
+    success: fetchedUsers,
+  } = useGet();
   const { data: tagsResponse, getData: getTags } = useGet();
+
+  const { items: projects, lastElementRef } = useInfiniteScrollWithPagination({
+    loading,
+    success,
+    data: projectsResponse,
+    extractItems: (data) => data?.data?.projects || [],
+    extractPagination: (data) => data?.data?.pagination || {},
+    extractItemId: (project) => project.id,
+    onLoadMore: (page) => {
+      getProjects({
+        api: `${API_SOCIALS}?entity=projects`,
+        params: { page, per_page: 10 },
+      });
+    },
+  });
+
+  useEffect(() => {
+    getProjects({
+      api: `${API_SOCIALS}?entity=projects`,
+      params: { page: 1, per_page: 10 },
+    });
+  }, []);
+
+  const { items: users, lastElementRef: userLastElementRef } =
+    useInfiniteScrollWithPagination({
+      loading: loadingUsers,
+      success: fetchedUsers,
+      data: usersResponse,
+      extractItems: (data) => data?.data?.users || [],
+      extractPagination: (data) => data?.data?.pagination || {},
+      extractItemId: (user) => user.id,
+      onLoadMore: (page) => {
+        getUsers({
+          api: `${API_SOCIALS}?entity=users`,
+          params: { page, per_page: 25 },
+        });
+      },
+    });
+
+  useEffect(() => {
+    getUsers({
+      api: `${API_SOCIALS}?entity=users`,
+      params: { page: 1, per_page: 25 },
+    });
+  }, []);
 
   useEffect(() => {
     const params = new URLSearchParams();
@@ -88,8 +144,8 @@ const ExplorePage = () => {
   }, []);
 
   useEffect(() => {
-    getDevelopers({
-      api: `${API_SOCIALS}?entity=users&per_page=21&page=1`,
+    getUsers({
+      api: `${API_SOCIALS}?entity=users&per_page=25&page=1`,
     });
   }, []);
 
@@ -453,9 +509,21 @@ const ExplorePage = () => {
                     <EmptyState message="No projects found" />
                   )
                 ) : (
-                  projectsResponse?.data?.projects?.map((project: any) => (
-                    <ProjectExploreCard key={project.id} project={project} />
-                  ))
+                  projects?.map((project: any, index) => {
+                    const isLast = index === projects.length - 1;
+                    return (
+                      <div
+                        key={project.id}
+                        ref={isLast ? lastElementRef : null}
+                        style={{ height: "100%" }}
+                      >
+                        <ProjectExploreCard
+                          key={project.id}
+                          project={project}
+                        />
+                      </div>
+                    );
+                  })
                 )
               ) : null}
             </SimpleGrid>
@@ -483,11 +551,17 @@ const ExplorePage = () => {
                     </div>
                   )
                 ) : (
-                  developersResponse?.data?.users?.map((user: User) => (
-                    <Fragment key={user.username}>
-                      <UserCard user={user} isCard showBorder />
-                    </Fragment>
-                  ))
+                  users?.map((user: User, index) => {
+                    const isLast = index === projects.length - 1;
+                    return (
+                      <div
+                        key={user.id}
+                        ref={isLast ? userLastElementRef : null}
+                      >
+                        <UserCard user={user} isCard showBorder />
+                      </div>
+                    );
+                  })
                 )
               ) : null}
             </SimpleGrid>
