@@ -6,7 +6,7 @@ import useGet from "@/utils/useGet";
 import usePost from "@/utils/usePost";
 import { API_USERS } from "@/utils/apis";
 import { FiCheck, FiUserPlus } from "react-icons/fi";
-
+import { useAuth } from "@/utils/AuthContext";
 const UserCard = ({
   user,
   isCard = false,
@@ -15,6 +15,9 @@ const UserCard = ({
   isCard: boolean;
   showBorder: boolean;
 }) => {
+  const { user: currentUser } = useAuth();
+  const isCurrentUser = currentUser?.id === user.id;
+
   const {
     uploadData: followUser,
     submitting: following,
@@ -115,29 +118,32 @@ const UserCard = ({
                 @{user.username}
               </Text>
             </div>
-            <Button
-              variant="outline"
-              size="xs"
-              color="blue"
-              leftSection={
-                isFollowingUser ? (
-                  <FiCheck size={14} />
-                ) : (
-                  <FiUserPlus size={14} />
-                )
-              }
-              onClick={() => onFollowClick(user.id)}
-              loading={isLoading}
-              disabled={isLoading}
-            >
-              {isLoading
-                ? isFollowingUser
-                  ? "Unfollowing..."
-                  : "Following..."
-                : isFollowingUser
-                  ? "Following"
-                  : "Follow"}
-            </Button>
+
+            {!isCurrentUser && (
+              <Button
+                variant="outline"
+                size="xs"
+                color="blue"
+                leftSection={
+                  isFollowingUser ? (
+                    <FiCheck size={14} />
+                  ) : (
+                    <FiUserPlus size={14} />
+                  )
+                }
+                onClick={() => onFollowClick(user.id)}
+                loading={isLoading}
+                disabled={isLoading}
+              >
+                {isLoading
+                  ? isFollowingUser
+                    ? "Unfollowing..."
+                    : "Following..."
+                  : isFollowingUser
+                    ? "Following"
+                    : "Follow"}
+              </Button>
+            )}
           </Group>
           <Text size="xs" c="dimmed" mb={4} style={{ lineHeight: 1.3 }}>
             {user.biography}
@@ -157,26 +163,23 @@ const UserCard = ({
   return <div style={{ padding: "8px 0" }}>{content}</div>;
 };
 
-// User card loading state
-const UserCardSkeleton = () => {
-  return (
-    <div style={{ padding: "8px 0" }}>
-      <Group mb={4} align="flex-start">
-        <Skeleton height={40} circle />
-        <div style={{ flex: 1 }}>
-          <Group justify="space-between" align="flex-start" mb={2}>
-            <div style={{ flex: 1 }}>
-              <Skeleton height={16} width="60%" mb={4} />
-              <Skeleton height={12} width="40%" mb={4} />
-            </div>
-            <Skeleton height={24} width={70} />
-          </Group>
-          <Skeleton height={12} width="80%" mb={2} />
-          <Skeleton height={12} width="60%" />
-        </div>
-      </Group>
-    </div>
-  );
-};
+const UserCardSkeleton = () => (
+  <div style={{ padding: "8px 0" }}>
+    <Group mb={4} align="flex-start">
+      <Skeleton height={40} circle />
+      <div style={{ flex: 1 }}>
+        <Group justify="space-between" align="flex-start" mb={2}>
+          <div style={{ flex: 1 }}>
+            <Skeleton height={16} width="60%" mb={4} />
+            <Skeleton height={12} width="40%" mb={4} />
+          </div>
+          <Skeleton height={24} width={70} />
+        </Group>
+        <Skeleton height={12} width="80%" mb={2} />
+        <Skeleton height={12} width="60%" />
+      </div>
+    </Group>
+  </div>
+);
 
 export default UserCard;
