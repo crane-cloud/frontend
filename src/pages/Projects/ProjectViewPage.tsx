@@ -107,12 +107,18 @@ const ProjectViewPage = () => {
   useEffect(() => {
     if (follow_success && follow_response) {
       setIsFollowingProject(true);
+      getProjectFollowers({
+        api: `${API_PROJECTS}/${project_id}/following`,
+      });
     }
   }, [follow_success, follow_response]);
 
   useEffect(() => {
     if (unfollow_success && unfollow_response) {
       setIsFollowingProject(false);
+      getProjectFollowers({
+        api: `${API_PROJECTS}/${project_id}/following`,
+      });
     }
   }, [unfollow_success, unfollow_response]);
 
