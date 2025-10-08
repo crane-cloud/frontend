@@ -6,12 +6,10 @@ import {
   getActivityOperationIcon,
   getStatusColor,
 } from "@/utils/helpers";
-import { Box, Button, Card, Group, Stack, Text, Tooltip } from "@mantine/core";
+import { Box, Card, Group, Stack, Text, Tooltip } from "@mantine/core";
 import { ProfileAvatar } from "../Common";
 import { useAuth } from "@/utils/AuthContext";
-import { Link } from "react-router-dom";
 import { UserActivity } from "@/types/activity";
-import { FiCornerDownRight } from "react-icons/fi";
 
 interface ActivityItemProps {
   activity: UserActivity;

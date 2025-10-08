@@ -645,7 +645,8 @@ export const getActivityOperationIcon = (activity: UserActivity) => {
 // User activity relative date helper
 export function formatRelativeDate(dateString: string) {
   try {
-    return formatDistanceToNowStrict(parseISO(dateString), { addSuffix: true });
+    const normalized = dateString.endsWith("Z") ? dateString : `${dateString}Z`;
+    return formatDistanceToNowStrict(parseISO(normalized), { addSuffix: true });
   } catch {
     return dateString;
   }
