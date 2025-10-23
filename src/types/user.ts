@@ -22,4 +22,5 @@ export interface User {
   name: string;
   profile_picture: string;
   email: string;
+  is_following?: boolean;
 }

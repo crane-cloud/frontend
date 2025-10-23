@@ -15,6 +15,7 @@ import {
   Center,
   Box,
   Loader,
+  Divider,
 } from "@mantine/core";
 import {
   FiSearch,
@@ -74,7 +75,12 @@ const ExplorePage = () => {
     loading: loadingUsers,
     success: fetchedUsers,
   } = useGet();
-  const { data: tagsResponse, getData: getTags } = useGet();
+  const {
+    data: tagsResponse,
+    getData: getTags,
+    loading: loadingTags,
+    success: fetchedTags,
+  } = useGet();
 
   const { items: projects, lastElementRef } = useInfiniteScrollWithPagination({
     loading,
@@ -118,6 +124,29 @@ const ExplorePage = () => {
     getUsers({
       api: `${API_SOCIALS}?entity=users`,
       params: { page: 1, per_page: 25 },
+    });
+  }, []);
+
+  const { items: tags, lastElementRef: tagLastElementRef } =
+    useInfiniteScrollWithPagination({
+      loading: loadingTags,
+      success: fetchedTags,
+      data: tagsResponse,
+      extractItems: (data) => data?.data?.tags || [],
+      extractPagination: (data) => data?.data?.pagination || {},
+      extractItemId: (tag) => tag.id,
+      onLoadMore: (page) => {
+        getTags({
+          api: `${API_SOCIALS}?entity=tags`,
+          params: { page, per_page: 10 },
+        });
+      },
+    });
+
+  useEffect(() => {
+    getTags({
+      api: `${API_SOCIALS}?entity=tags`,
+      params: { page: 1, per_page: 10 },
     });
   }, []);
 
@@ -340,6 +369,8 @@ const ExplorePage = () => {
                       </Box>
                     )}
 
+                    <Divider py="sm" />
+
                     {searchResponse?.data?.users?.length > 0 && (
                       <Box>
                         <Title order={3} mb="md">
@@ -360,6 +391,8 @@ const ExplorePage = () => {
                         </SimpleGrid>
                       </Box>
                     )}
+
+                    <Divider py="sm" />
 
                     {searchResponse?.data?.tags?.length > 0 && (
                       <Box>
@@ -671,80 +704,94 @@ const ExplorePage = () => {
                         </Box>
                       )
                     ) : (
-                      tagsResponse?.data?.tags?.map((tag: TagType) => {
+                      tags?.map((tag: TagType, index) => {
+                        const isLast = index === tags.length - 1;
+
                         const tagState = tagStates[tag.id] || {
                           is_following: tag.is_following,
                           loading: false,
                         };
                         return (
-                          <Card
+                          <div
                             key={tag.id}
-                            p="lg"
-                            withBorder
-                            radius="lg"
-                            ta="center"
-                            component={Link}
-                            to={`/tags/${tag.name}`}
-                            style={{
-                              cursor: "pointer",
-                              textDecoration: "none",
-                              color: "inherit",
-                              transition: "all 0.2s ease",
-                              display: "flex",
-                              flexDirection: "column",
-                            }}
-                            className="hover:shadow-md"
-                            onClick={(e) => {
-                              if ((e.target as HTMLElement).closest("button")) {
-                                e.preventDefault();
-                              }
-                            }}
+                            ref={isLast ? tagLastElementRef : null}
+                            style={{ height: "100%" }}
                           >
-                            <ThemeIcon
-                              size="xl"
-                              variant="light"
-                              color={getTagColor(tag.name)}
-                              mx="auto"
-                              mb="md"
-                            >
-                              <FiTag size={24} />
-                            </ThemeIcon>
-                            <Stack gap="xs" align="center" style={{ flex: 1 }}>
-                              <Title order={4} size="sm">
-                                {beautify(tag.name)}
-                              </Title>
-                              <Text size="sm" c="dimmed" mb="xs">
-                                {tag.projects_count} projects
-                              </Text>
-                              <Button
-                                variant="outline"
-                                color="blue"
-                                size="xs"
-                                mt="xs"
-                                loading={tagState.loading}
-                                disabled={tagState.loading}
-                                onClick={(e) => {
+                            <Card
+                              key={tag.id}
+                              p="lg"
+                              withBorder
+                              radius="lg"
+                              ta="center"
+                              component={Link}
+                              to={`/tags/${tag.name}`}
+                              style={{
+                                cursor: "pointer",
+                                textDecoration: "none",
+                                color: "inherit",
+                                transition: "all 0.2s ease",
+                                display: "flex",
+                                flexDirection: "column",
+                              }}
+                              className="hover:shadow-md"
+                              onClick={(e) => {
+                                if (
+                                  (e.target as HTMLElement).closest("button")
+                                ) {
                                   e.preventDefault();
-                                  handleTagFollow(tag);
-                                }}
-                                leftSection={
-                                  tagState.is_following ? (
-                                    <FiCheck size={14} />
-                                  ) : (
-                                    <FiUserPlus size={14} />
-                                  )
                                 }
+                              }}
+                            >
+                              <ThemeIcon
+                                size="xl"
+                                variant="light"
+                                color={getTagColor(tag.name)}
+                                mx="auto"
+                                mb="md"
                               >
-                                {tagState.loading
-                                  ? tagState.is_following
-                                    ? "Following..."
-                                    : "Unfollowing..."
-                                  : tagState.is_following
-                                    ? "Following"
-                                    : "Follow"}
-                              </Button>
-                            </Stack>
-                          </Card>
+                                <FiTag size={24} />
+                              </ThemeIcon>
+                              <Stack
+                                gap="xs"
+                                align="center"
+                                style={{ flex: 1 }}
+                              >
+                                <Title order={4} size="sm">
+                                  {beautify(tag.name)}
+                                </Title>
+                                <Text size="sm" c="dimmed" mb="xs">
+                                  {tag.projects_count} projects
+                                </Text>
+                                <Button
+                                  variant="outline"
+                                  color="blue"
+                                  size="xs"
+                                  mt="xs"
+                                  loading={tagState.loading}
+                                  disabled={tagState.loading}
+                                  onClick={(e) => {
+                                    e.preventDefault();
+                                    handleTagFollow(tag);
+                                  }}
+                                  leftSection={
+                                    tagState.is_following ? (
+                                      <FiCheck size={14} />
+                                    ) : (
+                                      <FiUserPlus size={14} />
+                                    )
+                                  }
+                                >
+                                  {tagState.loading
+                                    ? tagState.is_following
+                                      ? "Following..."
+                                      : "Unfollowing..."
+                                    : tagState.is_following
+                                      ? "Following"
+                                      : "Follow"}
+                                </Button>
+                              </Stack>
+                            </Card>
+                          </div>
                         );
                       })
                     )

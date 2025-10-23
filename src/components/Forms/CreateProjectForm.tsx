@@ -29,6 +29,7 @@ type TCreateProjectForm = {
   isUpdatingProject?: boolean;
   onCancel?: () => void;
   refresh?: () => void;
+  shouldRedirect?: boolean;
   setContainerSize?: boolean;
 };
 
@@ -39,6 +40,7 @@ const CreateProjectForm = (props: TCreateProjectForm) => {
     showTitle = true,
     onCancel = false,
     refresh = () => {},
+    shouldRedirect = false,
     setContainerSize = true,
   } = props;
   if (setContainerSize) {
@@ -128,7 +130,9 @@ const CreateProjectForm = (props: TCreateProjectForm) => {
   };
   useEffect(() => {
     if (success && project_data) {
-      if (onCancel) {
+      if (shouldRedirect) {
+        navigate(`/projects/${project_data?.data?.project?.id}`);
+      } else if (onCancel) {
         onCancel();
         refresh();
       } else {
