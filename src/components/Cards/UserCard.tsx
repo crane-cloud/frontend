@@ -6,6 +6,7 @@ import usePost from "@/utils/usePost";
 import { API_USERS } from "@/utils/apis";
 import { FiCheck, FiUserPlus } from "react-icons/fi";
 import { beautify } from "@/utils/helpers";
+import { useAuth } from "@/utils/AuthContext";
 
 const UserCard = ({
   user,
