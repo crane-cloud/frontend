@@ -88,6 +88,7 @@ const ProjectExploreCard = ({ project }: ProjectExploreCardProps) => {
         flex: "1 1 350px",
         display: "flex",
         flexDirection: "column",
+        height: "100%",
       }}
     >
       <div style={{ flex: 1 }}>

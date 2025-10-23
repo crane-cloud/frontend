@@ -360,10 +360,12 @@ const ExplorePage = () => {
                           spacing="md"
                         >
                           {searchResponse.data.projects.map((project: any) => (
-                            <ProjectExploreCard
+                            <div
                               key={project.id}
-                              project={project}
-                            />
+                              style={{ display: "flex", height: "100%" }}
+                            >
+                              <ProjectExploreCard project={project} />
+                            </div>
                           ))}
                         </SimpleGrid>
                       </Box>
@@ -536,7 +538,15 @@ const ExplorePage = () => {
                 searchQuery !== "" ? (
                   searchResponse?.data?.projects?.length > 0 ? (
                     searchResponse.data.projects.map((project: any) => (
-                      <ProjectExploreCard key={project.id} project={project} />
+                      <div
+                        key={project.id}
+                        style={{ display: "flex", height: "100%" }}
+                      >
+                        <ProjectExploreCard
+                          key={project.id}
+                          project={project}
+                        />
+                      </div>
                     ))
                   ) : (
                     <EmptyState message="No projects found" />
@@ -548,12 +558,9 @@ const ExplorePage = () => {
                       <div
                         key={project.id}
                         ref={isLast ? lastElementRef : null}
-                        style={{ height: "100%" }}
+                        style={{ display: "flex", height: "100%" }}
                       >
-                        <ProjectExploreCard
-                          key={project.id}
-                          project={project}
-                        />
+                        <ProjectExploreCard project={project} />
                       </div>
                     );
                   })
