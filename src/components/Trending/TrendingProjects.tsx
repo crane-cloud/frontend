@@ -17,6 +17,7 @@ import useGet from "@/utils/useGet";
 import { API_SOCIALS } from "@/utils/apis";
 import { Link } from "react-router-dom";
 import { Project } from "@/types/project";
+import { beautify } from "@/utils/helpers";
 
 interface TrendingProjectsProps {
   title?: string;
@@ -75,7 +76,7 @@ export default function TrendingProjects({
                         e.currentTarget.style.textDecoration = "none";
                       }}
                     >
-                      {project?.name}
+                      {beautify(project?.name)}
                     </Anchor>
 
                     {!compact && (

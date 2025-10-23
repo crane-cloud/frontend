@@ -1,11 +1,11 @@
-import { Anchor, Button, Card, Group, Skeleton, Text } from "@mantine/core";
+import { Anchor, Button, Card, Group, Text } from "@mantine/core";
 import React, { useEffect, useState } from "react";
 import { ProfileAvatar } from "../Common";
 import { User } from "@/types/user";
-import useGet from "@/utils/useGet";
 import usePost from "@/utils/usePost";
 import { API_USERS } from "@/utils/apis";
 import { FiCheck, FiUserPlus } from "react-icons/fi";
+import { beautify } from "@/utils/helpers";
 
 const UserCard = ({
   user,
@@ -27,30 +27,12 @@ const UserCard = ({
     success: unfollow_success,
     data: unfollow_response,
   } = usePost();
-  const {
-    data: userResponse,
-    getData: getUserDetails,
-    loading,
-    success,
-  } = useGet();
 
-  const [isFollowingUser, setIsFollowingUser] = useState(false);
-  const [initialLoading, setInitialLoading] = useState(true);
+  const [isFollowingUser, setIsFollowingUser] = useState(user?.is_following);
 
-  // Fetch user details
   useEffect(() => {
-    getUserDetails({ api: `${API_USERS}/${user.id}` });
-  }, [user.id]);
-
-  // User data loading
-  useEffect(() => {
-    if (success && userResponse?.data) {
-      setIsFollowingUser(
-        userResponse.data.user?.requesting_user_follows || false,
-      );
-      setInitialLoading(false);
-    }
-  }, [success, userResponse]);
+    setIsFollowingUser(user?.is_following);
+  }, [user?.is_following]);
 
   // Handle follow success
   useEffect(() => {
@@ -81,11 +63,6 @@ const UserCard = ({
 
   const isLoading = following || unfollowing;
 
-  // skeleton while initial data is loading
-  if (initialLoading || loading) {
-    return <UserCardSkeleton />;
-  }
-
   const content = (
     <>
       <Group mb={4} align="flex-start">
@@ -109,7 +86,7 @@ const UserCard = ({
                   e.currentTarget.style.textDecoration = "none";
                 }}
               >
-                {user.name}
+                {beautify(user.name)}
               </Anchor>
               <Text size="xs" c="dimmed" mb={4}>
                 @{user.username}
@@ -139,9 +116,6 @@ const UserCard = ({
                   : "Follow"}
             </Button>
           </Group>
-          <Text size="xs" c="dimmed" mb={4} style={{ lineHeight: 1.3 }}>
-            {user.biography}
-          </Text>
         </div>
       </Group>
     </>
@@ -155,28 +129,6 @@ const UserCard = ({
     );
   }
   return <div style={{ padding: "8px 0" }}>{content}</div>;
-};
-
-// User card loading state
-const UserCardSkeleton = () => {
-  return (
-    <div style={{ padding: "8px 0" }}>
-      <Group mb={4} align="flex-start">
-        <Skeleton height={40} circle />
-        <div style={{ flex: 1 }}>
-          <Group justify="space-between" align="flex-start" mb={2}>
-            <div style={{ flex: 1 }}>
-              <Skeleton height={16} width="60%" mb={4} />
-              <Skeleton height={12} width="40%" mb={4} />
-            </div>
-            <Skeleton height={24} width={70} />
-          </Group>
-          <Skeleton height={12} width="80%" mb={2} />
-          <Skeleton height={12} width="60%" />
-        </div>
-      </Group>
-    </div>
-  );
 };
 
 export default UserCard;

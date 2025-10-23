@@ -19,7 +19,11 @@ import {
 } from "@mantine/core";
 import React, { useEffect, useMemo, useState } from "react";
 import { useAuth } from "@/utils/AuthContext";
-import { useSetContainerSize, useSetNoSidebar } from "@/utils/helpers";
+import {
+  beautify,
+  useSetContainerSize,
+  useSetNoSidebar,
+} from "@/utils/helpers";
 import useGet from "@/utils/useGet";
 import { FaGithub, FaLinkedin } from "react-icons/fa";
 import {
@@ -71,6 +75,7 @@ const ProfileViewPage = () => {
     getData: getRecentActivity,
     data: activitiesData,
     loading: fetchingUserActivities,
+    error,
   } = useGet();
 
   // Handle user follow/unfollow
@@ -275,7 +280,7 @@ const ProfileViewPage = () => {
                           </Text>
 
                           <Text size="md" maw={600} lineClamp={3}>
-                            {userData?.data?.user?.biography}
+                            {beautify(userData?.data?.user?.biography)}
                           </Text>
 
                           <Group gap="xl" mt={20}>
@@ -508,7 +513,7 @@ const ProfileViewPage = () => {
 
                 {fetchingUserActivities ? (
                   <UserActivitiesSkeleton />
-                ) : activitiesData?.data?.activity?.length === 0 ? (
+                ) : error || activitiesData?.data?.activity?.length === 0 ? (
                   <Center
                     mih={200}
                     style={{ flexDirection: "column", textAlign: "center" }}

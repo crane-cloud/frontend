@@ -1,6 +1,7 @@
 import { Project, ProjectTag } from "@/types/project";
 import { API_PROJECTS } from "@/utils/apis";
 import { useAuth } from "@/utils/AuthContext";
+import { beautify } from "@/utils/helpers";
 import usePost from "@/utils/usePost";
 import {
   ActionIcon,
@@ -180,7 +181,7 @@ export default function ProjectSocialsCard({
       >
         <Group justify="space-between" mb="sm">
           <Text fw={600} lineClamp={1}>
-            {project?.name}
+            {beautify(project?.name)}
           </Text>
           <Menu
             shadow="md"
@@ -300,7 +301,7 @@ export default function ProjectSocialsCard({
             lineHeight: "1.2em",
           }}
         >
-          {project.description}
+          {beautify(project.description)}
         </Text>
 
         <Group justify="space-between" align="flex-end">

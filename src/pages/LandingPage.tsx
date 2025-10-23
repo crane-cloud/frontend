@@ -239,14 +239,8 @@ const LandingPage = () => {
                     </Paper>
                   ))}
                 </Stack>
-              ) : error && Object.keys(error).length > 0 ? (
-                <Stack gap="md" align="center" justify="center" h={200}>
-                  <Text c="red">Failed to load activities</Text>
-                  <Button variant="outline" size="sm" onClick={fetchActivities}>
-                    Retry
-                  </Button>
-                </Stack>
-              ) : activities.length === 0 ? (
+              ) : (error && Object.keys(error).length > 0) ||
+                activities.length === 0 ? (
                 <Stack gap="lg" align="center" justify="center" h={500}>
                   <Box
                     style={{
@@ -311,6 +305,7 @@ const LandingPage = () => {
       >
         <CreateProjectForm
           showTitle={false}
+          shouldRedirect
           onCancel={() => setProjectModalOpen(false)}
           refresh={() => setProjectModalOpen(false)}
           setContainerSize={false}

@@ -15,7 +15,7 @@ import { FiCode, FiLock, FiUsers, FiPlus, FiLayers } from "react-icons/fi";
 import { Link } from "react-router-dom";
 import useGet from "@/utils/useGet";
 import { API_PROJECTS } from "@/utils/apis";
-import { formatAgo } from "@/utils/helpers";
+import { beautify, formatAgo } from "@/utils/helpers";
 
 interface CompactProjectsListProps {
   title?: string;
@@ -127,7 +127,7 @@ const CompactProjectsList = ({
                 lineHeight: 1.2,
               }}
             >
-              {project.name}
+              {beautify(project.name)}
             </Text>
           </Group>
 
