@@ -270,17 +270,20 @@ const TagDetailsPage = () => {
   useEffect(() => {
     if (followSuccess) {
       setError(null);
-      // Refresh tag data to update follower count and follow status
+
       if (tagId) {
         getTagDetails({
           api: `${API_TAGS}/${tagId}`,
+        });
+
+        getTagFollowers({
+          api: `${API_TAGS}/${tagId}/following`,
+          params: { page: 1, per_page: 10 },
         });
       }
     }
 
     if (followError && hasInteracted) {
-      // setError(followError.message || "Failed to update follow status");
-      // Revert the follow state on error
       setIsFollowing((prev) => !prev);
     }
   }, [followSuccess, followError, hasInteracted, tagId]);

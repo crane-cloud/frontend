@@ -15,6 +15,9 @@ const UserCard = ({
   isCard: boolean;
   showBorder: boolean;
 }) => {
+  const { user: currentUser } = useAuth();
+  const isCurrentUser = currentUser?.id === user.id;
+
   const {
     uploadData: followUser,
     submitting: following,
@@ -92,29 +95,32 @@ const UserCard = ({
                 @{user.username}
               </Text>
             </div>
-            <Button
-              variant="outline"
-              size="xs"
-              color="blue"
-              leftSection={
-                isFollowingUser ? (
-                  <FiCheck size={14} />
-                ) : (
-                  <FiUserPlus size={14} />
-                )
-              }
-              onClick={() => onFollowClick(user.id)}
-              loading={isLoading}
-              disabled={isLoading}
-            >
-              {isLoading
-                ? isFollowingUser
-                  ? "Unfollowing..."
-                  : "Following..."
-                : isFollowingUser
-                  ? "Following"
-                  : "Follow"}
-            </Button>
+
+            {!isCurrentUser && (
+              <Button
+                variant="outline"
+                size="xs"
+                color="blue"
+                leftSection={
+                  isFollowingUser ? (
+                    <FiCheck size={14} />
+                  ) : (
+                    <FiUserPlus size={14} />
+                  )
+                }
+                onClick={() => onFollowClick(user.id)}
+                loading={isLoading}
+                disabled={isLoading}
+              >
+                {isLoading
+                  ? isFollowingUser
+                    ? "Unfollowing..."
+                    : "Following..."
+                  : isFollowingUser
+                    ? "Following"
+                    : "Follow"}
+              </Button>
+            )}
           </Group>
         </div>
       </Group>
