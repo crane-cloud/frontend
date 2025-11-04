@@ -490,7 +490,7 @@ const TagDetailsPage = () => {
                 <Loader size="xl" type="oval" />
               </Center>
             ) : projects.length > 0 ? (
-              <SimpleGrid cols={{ base: 1, sm: 3, md: 4 }} spacing="md">
+              <SimpleGrid cols={{ base: 1, sm: 3, md: 3 }} spacing="md">
                 {projects.map((project) => (
                   <ProjectExploreCard key={project.id} project={project} />
                 ))}

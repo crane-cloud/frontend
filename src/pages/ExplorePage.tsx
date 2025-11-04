@@ -137,7 +137,7 @@ const ExplorePage = () => {
       extractItemId: (tag) => tag.id,
       onLoadMore: (page) => {
         getTags({
-          api: `${API_SOCIALS}?entity=tags`,
+          api: `${API_SOCIALS}?filter=${sortBy}&entity=tags`,
           params: { page, per_page: 10 },
         });
       },
@@ -145,7 +145,7 @@ const ExplorePage = () => {
 
   useEffect(() => {
     getTags({
-      api: `${API_SOCIALS}?entity=tags`,
+      api: `${API_SOCIALS}?filter=${sortBy}&entity=tags`,
       params: { page: 1, per_page: 10 },
     });
   }, []);
@@ -180,7 +180,7 @@ const ExplorePage = () => {
 
   useEffect(() => {
     getTags({
-      api: `${API_SOCIALS}?entity=tags&per_page=14&page=1`,
+      api: `${API_SOCIALS}?filter=${sortBy}&&entity=tags&per_page=14&page=1`,
     });
   }, []);
 
