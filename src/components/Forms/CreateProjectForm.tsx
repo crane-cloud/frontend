@@ -13,7 +13,12 @@ import {
   Text,
   Alert,
 } from "@mantine/core";
-import { useSetContainerSize, validateProjectName } from "@/utils/helpers";
+import {
+  InvalidFeedback,
+  sanitizeTags,
+  useSetContainerSize,
+  validateProjectName,
+} from "@/utils/helpers";
 import useGet from "@/utils/useGet";
 import { API_CLUSTERS, API_PROJECTS, API_TAGS } from "@/utils/apis";
 import { NO, ORGANISATIONS, PROJECT_TYPES, YES } from "@/utils/constants";
@@ -66,6 +71,7 @@ const CreateProjectForm = (props: TCreateProjectForm) => {
   } = usePost();
 
   const [nameValid, setNameValid] = useState<boolean | null>(null);
+  const [feedback, setFeedback] = useState<InvalidFeedback>({});
 
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     onChange(e);
@@ -140,6 +146,17 @@ const CreateProjectForm = (props: TCreateProjectForm) => {
       }
     }
   }, [success, project_data]);
+
+  const handleTagChange = (values: string[]) => {
+    const { validTags, invalid } = sanitizeTags(values);
+    setFeedback(invalid);
+    updateFormValue("tags_add", validTags);
+  };
+
+  const hasFeedback =
+    feedback.hashtags?.length ||
+    feedback.commas?.length ||
+    feedback.numbers?.length;
 
   return (
     <div>
@@ -239,15 +256,53 @@ const CreateProjectForm = (props: TCreateProjectForm) => {
             )}
             <TagsInput
               label="Tags"
-              description="Add tags to help identify your project"
+              description="Press Enter after typing a tag to add another. Keep them short and relevant, e.g. 'python', 'ai2', 'frontend'."
               placeholder="Add tags"
               name="tags_add"
-              data={Array.from(new Set(tags))}
+              data={Array.from(new Set(tags as string[]))}
               rightSection={tagsLoading ? <Loader size="xs" /> : null}
-              onChange={(value) => updateFormValue("tags_add", value)}
               value={form.tags_add as string[]}
               error={error?.tags_add}
+              onChange={handleTagChange}
             />
+
+            {hasFeedback && (
+              <div>
+                {feedback.hashtags?.length ? (
+                  <Text size="xs" c="red">
+                    Tags can’t start with “#”. Remove the symbol and just type:
+                    <br />
+                    <b>
+                      {feedback.hashtags
+                        .map((t) => t.replace(/^#+/, ""))
+                        .join(", ")}
+                    </b>
+                  </Text>
+                ) : null}
+
+                {feedback.commas?.length ? (
+                  <Text size="xs" c="red" mt={4}>
+                    Tags can’t contain commas. Enter each tag separately:
+                    <br />
+                    <b>{feedback.commas.join(", ")}</b>
+                  </Text>
+                ) : null}
+
+                {feedback.numbers?.length ? (
+                  <Text size="xs" c="red" mt={4}>
+                    Single numbers are not allowed. Use words or combine with
+                    letters:
+                    <br />
+                    <b>
+                      {feedback.numbers
+                        .map((n) => `${n} → web3, ai2`)
+                        .join(", ")}
+                    </b>
+                  </Text>
+                ) : null}
+              </div>
+            )}
+
             <Group justify="flex-end">
               {onCancel && (
                 <Button variant="default" onClick={onCancel}>

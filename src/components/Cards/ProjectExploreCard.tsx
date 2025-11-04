@@ -131,7 +131,7 @@ const ProjectExploreCard = ({ project }: ProjectExploreCardProps) => {
             </Button>
           </Group>
         </Group>
-        <Text size="sm" c="dimmed" mb={4}>
+        <Text size="sm" c="dimmed" mb={4} lineClamp={3}>
           {beautify(project.description)}
         </Text>
         <Group gap={4} mt={4} mb={4}>

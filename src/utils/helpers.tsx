@@ -724,3 +724,43 @@ export function timeAgo(dateString: string): string {
 
   return "just now";
 }
+
+export type InvalidFeedback = {
+  hashtags?: string[];
+  commas?: string[];
+  numbers?: string[];
+};
+
+export const sanitizeTags = (values: string[]) => {
+  const invalid: InvalidFeedback = {};
+  const valid: string[] = [];
+
+  for (const tag of values) {
+    const trimmed = tag.trim().toLowerCase();
+    if (!trimmed) {
+      continue;
+    }
+
+    if (trimmed.startsWith("#")) {
+      invalid.hashtags = [...(invalid.hashtags || []), tag];
+      continue;
+    }
+
+    if (trimmed.includes(",")) {
+      invalid.commas = [...(invalid.commas || []), tag];
+      continue;
+    }
+
+    if (/^\d+$/.test(trimmed)) {
+      invalid.numbers = [...(invalid.numbers || []), tag];
+      continue;
+    }
+
+    valid.push(trimmed);
+  }
+
+  // Deduplicate valid tags
+  const uniqueValid = Array.from(new Set(valid));
+
+  return { validTags: uniqueValid, invalid };
+};
