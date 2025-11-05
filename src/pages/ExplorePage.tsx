@@ -34,6 +34,7 @@ import {
   useSetContainerSize,
   useSetNoSidebar,
   beautify,
+  formatPlural,
 } from "@/utils/helpers";
 import TrendingProjects from "@/components/Trending/TrendingProjects";
 import SuggestedUsers from "@/components/Trending/SuggestedUsers";
@@ -115,7 +116,7 @@ const ExplorePage = () => {
       onLoadMore: (page) => {
         getUsers({
           api: `${API_SOCIALS}?entity=users`,
-          params: { page, per_page: 25 },
+          params: { page, per_page: 10 },
         });
       },
     });
@@ -123,7 +124,7 @@ const ExplorePage = () => {
   useEffect(() => {
     getUsers({
       api: `${API_SOCIALS}?entity=users`,
-      params: { page: 1, per_page: 25 },
+      params: { page: 1, per_page: 10 },
     });
   }, []);
 
@@ -174,7 +175,7 @@ const ExplorePage = () => {
 
   useEffect(() => {
     getUsers({
-      api: `${API_SOCIALS}?entity=users&per_page=25&page=1`,
+      api: `${API_SOCIALS}?entity=users&per_page=10&page=1`,
     });
   }, []);
 
@@ -711,96 +712,102 @@ const ExplorePage = () => {
                         </Box>
                       )
                     ) : (
-                      tags?.map((tag: TagType, index) => {
-                        const isLast = index === tags.length - 1;
+                      tags
+                        ?.filter((tag: TagType) => tag.projects_count > 0)
+                        .map((tag: TagType, index) => {
+                          const isLast = index === tags.length - 1;
 
-                        const tagState = tagStates[tag.id] || {
-                          is_following: tag.is_following,
-                          loading: false,
-                        };
-                        return (
-                          <div
-                            key={tag.id}
-                            ref={isLast ? tagLastElementRef : null}
-                            style={{ height: "100%" }}
-                          >
-                            <Card
+                          const tagState = tagStates[tag.id] || {
+                            is_following: tag.is_following,
+                            loading: false,
+                          };
+
+                          return (
+                            <div
                               key={tag.id}
-                              p="lg"
-                              withBorder
-                              radius="lg"
-                              ta="center"
-                              component={Link}
-                              to={`/tags/${tag.name}`}
-                              style={{
-                                cursor: "pointer",
-                                textDecoration: "none",
-                                color: "inherit",
-                                transition: "all 0.2s ease",
-                                display: "flex",
-                                flexDirection: "column",
-                              }}
-                              className="hover:shadow-md"
-                              onClick={(e) => {
-                                if (
-                                  (e.target as HTMLElement).closest("button")
-                                ) {
-                                  e.preventDefault();
-                                }
-                              }}
+                              ref={isLast ? tagLastElementRef : null}
+                              style={{ height: "100%" }}
                             >
-                              <ThemeIcon
-                                size="xl"
-                                variant="light"
-                                color={getTagColor(tag.name)}
-                                mx="auto"
-                                mb="md"
-                              >
-                                <FiTag size={24} />
-                              </ThemeIcon>
-                              <Stack
-                                gap="xs"
-                                align="center"
-                                style={{ flex: 1 }}
-                              >
-                                <Title order={4} size="sm">
-                                  {beautify(tag.name)}
-                                </Title>
-                                <Text size="sm" c="dimmed" mb="xs">
-                                  {tag.projects_count} projects
-                                </Text>
-                                <Button
-                                  variant="outline"
-                                  color="blue"
-                                  size="xs"
-                                  mt="xs"
-                                  loading={tagState.loading}
-                                  disabled={tagState.loading}
-                                  onClick={(e) => {
+                              <Card
+                                key={tag.id}
+                                p="lg"
+                                withBorder
+                                radius="lg"
+                                ta="center"
+                                component={Link}
+                                to={`/tags/${tag.name}`}
+                                style={{
+                                  cursor: "pointer",
+                                  textDecoration: "none",
+                                  color: "inherit",
+                                  transition: "all 0.2s ease",
+                                  display: "flex",
+                                  flexDirection: "column",
+                                }}
+                                className="hover:shadow-md"
+                                onClick={(e) => {
+                                  if (
+                                    (e.target as HTMLElement).closest("button")
+                                  ) {
                                     e.preventDefault();
-                                    handleTagFollow(tag);
-                                  }}
-                                  leftSection={
-                                    tagState.is_following ? (
-                                      <FiCheck size={14} />
-                                    ) : (
-                                      <FiUserPlus size={14} />
-                                    )
                                   }
+                                }}
+                              >
+                                <ThemeIcon
+                                  size="xl"
+                                  variant="light"
+                                  color={getTagColor(tag.name)}
+                                  mx="auto"
+                                  mb="md"
                                 >
-                                  {tagState.loading
-                                    ? tagState.is_following
-                                      ? "Following..."
-                                      : "Unfollowing..."
-                                    : tagState.is_following
-                                      ? "Following"
-                                      : "Follow"}
-                                </Button>
-                              </Stack>
-                            </Card>
-                          </div>
-                        );
-                      })
+                                  <FiTag size={24} />
+                                </ThemeIcon>
+                                <Stack
+                                  gap="xs"
+                                  align="center"
+                                  style={{ flex: 1 }}
+                                >
+                                  <Title order={4} size="sm">
+                                    {beautify(tag.name)}
+                                  </Title>
+                                  <Text size="sm" c="dimmed" mb="xs">
+                                    {formatPlural(
+                                      tag.projects_count,
+                                      "project",
+                                    )}
+                                  </Text>
+                                  <Button
+                                    variant="outline"
+                                    color="blue"
+                                    size="xs"
+                                    mt="xs"
+                                    loading={tagState.loading}
+                                    disabled={tagState.loading}
+                                    onClick={(e) => {
+                                      e.preventDefault();
+                                      handleTagFollow(tag);
+                                    }}
+                                    leftSection={
+                                      tagState.is_following ? (
+                                        <FiCheck size={14} />
+                                      ) : (
+                                        <FiUserPlus size={14} />
+                                      )
+                                    }
+                                  >
+                                    {tagState.loading
+                                      ? tagState.is_following
+                                        ? "Following..."
+                                        : "Unfollowing..."
+                                      : tagState.is_following
+                                        ? "Following"
+                                        : "Follow"}
+                                  </Button>
+                                </Stack>
+                              </Card>
+                            </div>
+                          );
+                        })
                     )
                   ) : null}
                 </SimpleGrid>
