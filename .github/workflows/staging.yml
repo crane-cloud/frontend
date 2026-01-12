@@ -1,9 +1,10 @@
-name: Develop deployment
+name: Staging deployment
 
 on:
   push:
     branches:
       - develop
+      - fix-deployement
 
   workflow_dispatch:
 
