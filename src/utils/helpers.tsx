@@ -359,6 +359,61 @@ export const validateProjectName = (name: string) => {
   return name.length <= 30 && /^[a-zA-Z0-9]+(-[a-zA-Z0-9]+)*$/.test(name);
 };
 
+/**
+ * Validates username to ensure it only contains alphanumeric characters, underscores, and hyphens
+ */
+export const validateUsername = (
+  username: string,
+): {
+  isValid: boolean;
+  errorMessage: string | null;
+} => {
+  if (!username || username.trim() === "") {
+    return {
+      isValid: false,
+      errorMessage: "Username is required",
+    };
+  }
+
+  // Check for spaces
+  if (/\s/.test(username)) {
+    return {
+      isValid: false,
+      errorMessage: "Username cannot contain spaces",
+    };
+  }
+
+  // Only allow alphanumeric characters, underscores, and hyphens
+  if (!/^[a-zA-Z0-9_-]+$/.test(username)) {
+    return {
+      isValid: false,
+      errorMessage:
+        "Username can only contain letters, numbers, underscores, and hyphens",
+    };
+  }
+
+  // Optional: Check minimum length
+  if (username.length < 3) {
+    return {
+      isValid: false,
+      errorMessage: "Username must be at least 3 characters long",
+    };
+  }
+
+  // Optional: Check maximum length
+  if (username.length > 30) {
+    return {
+      isValid: false,
+      errorMessage: "Username cannot exceed 30 characters",
+    };
+  }
+
+  return {
+    isValid: true,
+    errorMessage: null,
+  };
+};
+
 export const formatClusterServicePorts = (ports: any) => {
   let portValue = "";
   ports.map((port: any) => {
