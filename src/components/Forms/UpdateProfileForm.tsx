@@ -12,6 +12,7 @@ import usePost from "@/utils/usePost";
 import useForm from "@/hooks/generic/useForm";
 import { FaCheck, FaPlus, FaTrashAlt } from "react-icons/fa";
 import { SOCIAL_LINKS_DATA } from "@/utils/constants";
+import { validateUsername } from "@/utils/helpers";
 
 type UpdateProfileForm = {
   user: any;
@@ -27,6 +28,7 @@ export const UpdateProfileForm = ({
   const { form, onChange, updateFormValues, editedForm } = useForm();
 
   const { uploadData, submitting, success } = usePost();
+  const [usernameError, setUsernameError] = useState<string | null>(null);
 
   useEffect(() => {
     if (user) {
@@ -46,10 +48,26 @@ export const UpdateProfileForm = ({
     }
   }, [success]);
 
+  const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    onChange(e);
+
+    // Validate username
+    const validation = validateUsername(value);
+    setUsernameError(validation.errorMessage);
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!user?.id) {
+      return;
+    }
+
+    // Validate username before submission
+    const validation = validateUsername(form.username as string);
+    if (!validation.isValid) {
+      setUsernameError(validation.errorMessage);
       return;
     }
 
@@ -67,10 +85,11 @@ export const UpdateProfileForm = ({
         <TextInput
           label="Username"
           placeholder="Enter your username"
-          description="This will be your public username. Do not use spaces or special characters."
+          description="This will be your public username. Only letters, numbers, underscores, and hyphens are allowed."
           name="username"
           value={form.username as string}
-          onChange={onChange}
+          onChange={handleUsernameChange}
+          error={usernameError}
           required
         />
 
