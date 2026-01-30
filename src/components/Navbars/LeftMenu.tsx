@@ -204,7 +204,7 @@ const LeftMenu = React.memo(
         {
           label: "Network",
           icon: HiOutlineGlobeAlt,
-          key: "infrastructure",
+          key: "network",
           children: [
             {
               label: "Services",
@@ -369,6 +369,10 @@ const LeftMenu = React.memo(
         appId: app_id,
         clusterId: cluster_id,
       } = getPathIds();
+
+      // Clear links first to prevent stale state
+      setNavbarLinks([]);
+
       switch (menuType) {
         case "home":
           setNavbarLinks(homeNavbarLinks);
@@ -404,7 +408,7 @@ const LeftMenu = React.memo(
           setShowProjectHeader(false);
           break;
       }
-    }, [menuType, projectId, appId, location.pathname]);
+    }, [menuType, projectId, appId, clusterId, location.pathname]);
 
     // const HeaderIcon = () => {
     //   switch (menuType) {
