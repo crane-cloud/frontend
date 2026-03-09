@@ -361,6 +361,7 @@ export const MembersSection = ({ project }: { project: any }) => {
               </Flex>
               <Group justify="start" mt={10}>
                 <Button
+                  radius="xl"
                   color="var(--mantine-color-text)"
                   leftSection={<IoMdSend />}
                   onClick={handleInviteMember}

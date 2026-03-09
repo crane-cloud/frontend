@@ -505,12 +505,10 @@ const ExplorePage = () => {
               </Stack>
             ) : (
               <Grid>
-                {/* Increased md to 8 so it takes up 2/3 of the horizontal space */}
                 <Grid.Col span={{ base: 12, lg: 8 }}>
                   <SuggestedUsersGrid title="Top Users" perPage={8} />
                 </Grid.Col>
 
-                {/* Kept at 4 so it acts as a neat right-hand sidebar */}
                 <Grid.Col span={{ base: 12, lg: 4 }}>
                   <Stack gap="lg">
                     <TrendingTags title="Popular Tags" perPage={30} />
@@ -554,7 +552,6 @@ const ExplorePage = () => {
                         <div
                           key={project.id}
                           ref={isLast ? lastElementRef : null}
-                          // Added flexDirection: "column" so the card expands properly to fill the grid cell
                           style={{
                             display: "flex",
                             flexDirection: "column",
@@ -729,7 +726,7 @@ const ExplorePage = () => {
                         return (
                           <Card
                             key={tag.id}
-                            p="sm" // Reduced padding for a tighter feel
+                            p="sm"
                             withBorder
                             radius="lg"
                             component={Link}
@@ -742,23 +739,21 @@ const ExplorePage = () => {
                             }}
                             className="hover:shadow-md"
                           >
-                            {/* Switched to a horizontal layout to save vertical space */}
                             <Group
                               wrap="nowrap"
                               justify="space-between"
                               align="center"
                             >
-                              {/* Left side: Icon + Text */}
                               <Group
                                 wrap="nowrap"
                                 gap="sm"
                                 style={{ flex: 1, minWidth: 0 }}
                               >
                                 <ThemeIcon
-                                  size="lg" // Reduced from xl to lg
+                                  size="lg"
                                   variant="light"
                                   color={getTagColor(tag.name)}
-                                  radius="md" // Added slightly softer edges to the icon background
+                                  radius="md"
                                 >
                                   <FiTag size={18} />
                                 </ThemeIcon>
@@ -776,15 +771,14 @@ const ExplorePage = () => {
                                 </Box>
                               </Group>
 
-                              {/* Right side: Button */}
                               <Button
                                 variant="outline"
                                 color="blue"
                                 size="xs"
-                                radius="xl" // Updated to pill-shape to match your other modern buttons
+                                radius="xl"
                                 loading={tagState.loading}
                                 disabled={tagState.loading}
-                                style={{ flexShrink: 0 }} // Prevents the button from getting squished
+                                style={{ flexShrink: 0 }}
                                 onClick={(e) => {
                                   e.preventDefault();
                                   handleTagFollow(tag);
@@ -797,7 +791,6 @@ const ExplorePage = () => {
                                   )
                                 }
                               >
-                                {/* Note: I adjusted the loading text logic slightly so it makes sense based on the action */}
                                 {tagState.loading
                                   ? tagState.is_following
                                     ? "Unfollowing..."

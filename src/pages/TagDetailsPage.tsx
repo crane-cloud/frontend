@@ -12,29 +12,28 @@ import {
   ThemeIcon,
   Breadcrumbs,
   Tabs,
-  ActionIcon,
-  Tooltip,
   Center,
   Skeleton,
   Notification,
-  Loader,
+  Card,
+  Box,
+  Grid,
+  LoadingOverlay,
 } from "@mantine/core";
 import {
   FiUsers,
   FiCode,
   FiTag,
-  FiShare2,
   FiXCircle,
   FiCheck,
   FiUserPlus,
-  FiCalendar,
+  FiTrendingUp,
 } from "react-icons/fi";
 import { Link, useParams } from "react-router-dom";
 import {
   getTagColor,
   useSetContainerSize,
   useSetNoSidebar,
-  formatPlural,
 } from "@/utils/helpers";
 import useGet from "@/utils/useGet";
 import usePost from "@/utils/usePost";
@@ -43,6 +42,7 @@ import { Tag } from "@/types/tag";
 import ProjectExploreCard from "@/components/Cards/ProjectExploreCard";
 import UserCard from "@/components/Cards/UserCard";
 import { User } from "@/types/user";
+import PaginationInfo from "@/components/PaginationInfo";
 
 interface Project {
   id: string;
@@ -113,45 +113,41 @@ const TagDetailsPage = () => {
   useSetNoSidebar();
   useSetContainerSize("full");
 
+  const [projectPage, setProjectPage] = useState(1);
   const { tagName } = useParams<{ tagName: string }>();
   const [isFollowing, setIsFollowing] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [hasInteracted, setHasInteracted] = useState(false);
   const [tagId, setTagId] = useState<string | null>(null);
 
-  // Hook for getting tag data
   const {
     data: tagResponse,
     getData: getTagData,
     loading: tagLoading,
   } = useGet();
-
-  // Hook for getting tag details
   const {
     data: tagDetailsResponse,
     getData: getTagDetails,
     loading: tagDetailsLoading,
   } = useGet();
-
-  // Hook for getting tag projects
   const {
     data: tagProjectsResponse,
     getData: getTagProjects,
     loading: tagProjectsLoading,
   } = useGet();
+  const { data: tagFollowersResponse, getData: getTagFollowers } = useGet();
 
-  // Hook for getting tag followers
   const {
-    data: tagFollowersResponse,
-    getData: getTagFollowers,
-    loading: tagFollowersLoading,
+    data: moreTagsResponse,
+    getData: getMoreTags,
+    loading: moreTagsLoading,
   } = useGet();
 
   const [tagData, setTagData] = useState<any>(null);
   const [projects, setProjects] = useState<Project[]>([]);
   const [followers, setFollowers] = useState<Follower[]>([]);
+  const [sidebarTags, setSidebarTags] = useState<Tag[]>([]);
 
-  // Use usePost for both follow and unfollow operations
   const {
     uploadData: followUnfollowTag,
     submitting: followSubmitting,
@@ -159,146 +155,121 @@ const TagDetailsPage = () => {
     error: followError,
   } = usePost();
 
-  // Fetch tag details
   useEffect(() => {
     if (tagName) {
       getTagData({
         api: `${API_TAGS}?keywords=${tagName}`,
         params: { page: 1, per_page: 5 },
       });
+      getMoreTags({ api: API_TAGS, params: { page: 1, per_page: 10 } });
     }
   }, [tagName]);
 
-  // Process tag data when response is received
+  useEffect(() => {
+    if (moreTagsResponse?.data) {
+      const filteredTags = moreTagsResponse.data.filter(
+        (t: Tag) => t.name.toLowerCase() !== tagName?.toLowerCase(),
+      );
+      setSidebarTags(filteredTags.slice(0, 10));
+    }
+  }, [moreTagsResponse, tagName]);
+
   useEffect(() => {
     if (tagResponse && tagResponse.data) {
-      // Find the exact tag match
       const exactTag = tagResponse.data.find(
         (tag: Tag) => tag.name.toLowerCase() === tagName?.toLowerCase(),
       );
+      const targetTag = exactTag || tagResponse.data[0];
 
-      if (exactTag) {
-        setTagId(exactTag.id);
-
-        // Fetch detailed tag information
-        getTagDetails({
-          api: `${API_TAGS}/${exactTag.id}`,
-        });
-
-        // Fetch tag projects
-        getTagProjects({
-          api: `${API_TAGS}/${exactTag.id}/projects`,
-          params: { page: 1, per_page: 10 },
-        });
-
-        // Fetch tag followers
-        getTagFollowers({
-          api: `${API_TAGS}/${exactTag.id}/following`,
-          params: { page: 1, per_page: 10 },
-        });
-      } else if (tagResponse.data.length > 0) {
-        // Use the first result if no exact match
-        const firstTag = tagResponse.data[0];
-        setTagId(firstTag.id);
-
-        // Fetch detailed tag information
-        getTagDetails({
-          api: `${API_TAGS}/${firstTag.id}`,
-        });
-
-        // Fetch tag projects
-        getTagProjects({
-          api: `${API_TAGS}/${firstTag.id}/projects`,
-          params: { page: 1, per_page: 10 },
-        });
-
-        // Fetch tag followers
-        getTagFollowers({
-          api: `${API_TAGS}/${firstTag.id}/following`,
-          params: { page: 1, per_page: 10 },
-        });
+      if (targetTag) {
+        setTagId(targetTag.id);
       }
     }
   }, [tagResponse, tagName]);
 
-  // Process detailed tag response
+  useEffect(() => {
+    if (tagId) {
+      getTagDetails({
+        api: `${API_TAGS}/${tagId}`,
+      });
+      getTagFollowers({
+        api: `${API_TAGS}/${tagId}/following`,
+        params: { page: 1, per_page: 10 },
+      });
+    }
+  }, [tagId]);
+
+  useEffect(() => {
+    if (tagId) {
+      getTagProjects({
+        api: `${API_TAGS}/${tagId}/projects`,
+        params: { page: projectPage, per_page: 8 },
+      });
+    }
+  }, [tagId, projectPage]);
+
+  useEffect(() => {
+    if (tagDetailsResponse && tagDetailsResponse.data) {
+      const tagDetails = tagDetailsResponse.data;
+      setTagData({ ...tagDetails, color: getTagColor(tagDetails.name) });
+      setIsFollowing(tagDetails.is_following || false);
+    }
+  }, [tagDetailsResponse]);
+
+  useEffect(() => {
+    if (tagProjectsResponse?.data) {
+      setProjects(
+        Array.isArray(tagProjectsResponse.data.projects)
+          ? tagProjectsResponse.data.projects
+          : Array.isArray(tagProjectsResponse.data)
+            ? tagProjectsResponse.data
+            : [],
+      );
+    }
+  }, [tagProjectsResponse]);
+
+  useEffect(() => {
+    if (tagFollowersResponse?.data) {
+      setFollowers(
+        Array.isArray(tagFollowersResponse.data.followers)
+          ? tagFollowersResponse.data.followers
+          : Array.isArray(tagFollowersResponse.data)
+            ? tagFollowersResponse.data
+            : [],
+      );
+    }
+  }, [tagFollowersResponse]);
+
   useEffect(() => {
     if (tagDetailsResponse && tagDetailsResponse.data) {
       const tagDetails = tagDetailsResponse.data;
       setTagData({
         ...tagDetails,
-        // category: tagDetails.category || "Technology",
         color: getTagColor(tagDetails.name),
       });
-
-      // Set the following status based on the API response
       setIsFollowing(tagDetails.is_following || false);
     }
   }, [tagDetailsResponse]);
 
-  // Process tag projects response
-  useEffect(() => {
-    if (tagProjectsResponse && tagProjectsResponse.data) {
-      // Check if the response has the expected structure
-      if (
-        tagProjectsResponse.data.projects &&
-        Array.isArray(tagProjectsResponse.data.projects)
-      ) {
-        setProjects(tagProjectsResponse.data.projects);
-      } else if (Array.isArray(tagProjectsResponse.data)) {
-        setProjects(tagProjectsResponse.data);
-      }
-    }
-  }, [tagProjectsResponse]);
-
-  // Process tag followers response
-  useEffect(() => {
-    if (tagFollowersResponse && tagFollowersResponse.data) {
-      // Check if the response has the expected structure
-      if (
-        tagFollowersResponse.data.followers &&
-        Array.isArray(tagFollowersResponse.data.followers)
-      ) {
-        setFollowers(tagFollowersResponse.data.followers);
-      } else if (Array.isArray(tagFollowersResponse.data)) {
-        setFollowers(tagFollowersResponse.data);
-      }
-    }
-  }, [tagFollowersResponse]);
-
-  // Handle follow success/error
   useEffect(() => {
     if (followSuccess) {
       setError(null);
-
       if (tagId) {
-        getTagDetails({
-          api: `${API_TAGS}/${tagId}`,
-        });
-
-        getTagFollowers({
-          api: `${API_TAGS}/${tagId}/following`,
-          params: { page: 1, per_page: 10 },
-        });
+        getTagDetails({ api: `${API_TAGS}/${tagId}` });
       }
     }
-
     if (followError && hasInteracted) {
       setIsFollowing((prev) => !prev);
     }
   }, [followSuccess, followError, hasInteracted, tagId]);
 
-  // Handle follow/unfollow
   const handleFollowToggle = () => {
     if (!tagId) {
       return;
     }
-
     setHasInteracted(true);
     setError(null);
-    // Optimistically update the UI
     setIsFollowing((prev) => !prev);
-
     followUnfollowTag({
       api: `${API_TAGS}/${tagId}/following`,
       method: isFollowing ? "DELETE" : "POST",
@@ -310,120 +281,135 @@ const TagDetailsPage = () => {
     { title: "Tags", href: "/explore#tags" },
     { title: tagData?.name || tagName || "Tag", href: "#" },
   ].map((item, index) => (
-    <Anchor key={index} component={Link} to={item.href} size="sm">
+    <Anchor
+      key={index}
+      component={Link}
+      to={item.href}
+      size="md"
+      c="dimmed"
+      fw={500}
+    >
       {item.title}
     </Anchor>
   ));
+
+  const isNotFound = tagResponse?.data && tagResponse.data.length === 0;
 
   const loading = tagLoading || tagDetailsLoading;
 
   if (loading) {
     return (
-      <Container size="xl" py="lg">
-        <Stack gap="xl">
-          <Skeleton height={20} width={200} />
-          <Stack gap="lg">
-            <Group justify="space-between">
-              <Group>
-                <Skeleton height={50} width={50} circle />
-                <div>
-                  <Skeleton height={30} width={150} mb="xs" />
-                  <Skeleton height={20} width={300} />
-                </div>
-              </Group>
-              <Group>
-                <Skeleton height={36} width={100} />
-                <Skeleton height={36} width={36} circle />
-              </Group>
-            </Group>
-            <Group>
-              {[1, 2, 3, 4].map((i) => (
-                <Skeleton key={i} height={36} width={120} />
-              ))}
-            </Group>
-          </Stack>
-          <Skeleton height={400} />
-        </Stack>
+      <Container size="xl" py="xl">
+        <Grid gutter="xl">
+          <Grid.Col span={{ base: 12, md: 8 }}>
+            <Stack gap="xl">
+              <Skeleton height={20} width={200} radius="sm" />
+              <Card p="xl" radius="lg" withBorder shadow="sm">
+                <Skeleton height={80} width="100%" radius="sm" />
+              </Card>
+              <SimpleGrid cols={{ base: 1, sm: 2 }} spacing="lg">
+                {[...Array(4)].map((_, i) => (
+                  <Skeleton key={i} height={220} radius="lg" />
+                ))}
+              </SimpleGrid>
+            </Stack>
+          </Grid.Col>
+          <Grid.Col span={{ base: 12, md: 4 }}>
+            <Skeleton height={300} radius="lg" />
+          </Grid.Col>
+        </Grid>
       </Container>
     );
   }
 
-  if (!tagData) {
+  if (isNotFound || !tagData) {
     return (
-      <Container size="xl" py="lg">
-        <Stack gap="xl">
-          <Breadcrumbs>
-            <Anchor component={Link} to="/explore" size="sm">
-              Explore
-            </Anchor>
-            <Anchor component={Link} to="/explore#tags" size="sm">
-              Tags
-            </Anchor>
-            <Text size="sm">#{tagName}</Text>
-          </Breadcrumbs>
-          <Center style={{ height: "50vh" }}>
-            <Stack align="center">
-              <Title order={2}>Tag not found</Title>
-              <Text c="dimmed">The tag "{tagName}" could not be found.</Text>
-              <Button component={Link} to="/explore#tags" variant="light">
+      <Stack gap="xl">
+        <Card withBorder radius="lg" py={80} shadow="sm">
+          <Center>
+            <Stack align="center" gap="md">
+              <ThemeIcon size={80} radius="100%" variant="light" color="gray">
+                <FiTag size={40} />
+              </ThemeIcon>
+              <Title order={2} fw={700}>
+                Tag not found
+              </Title>
+              <Text c="dimmed" size="lg">
+                The tag "{tagName}" could not be found.
+              </Text>
+              <Button
+                component={Link}
+                to="/explore#tags"
+                variant="light"
+                size="md"
+                radius="xl"
+                mt="md"
+              >
                 Browse all tags
               </Button>
             </Stack>
           </Center>
-        </Stack>
-      </Container>
+        </Card>
+      </Stack>
     );
   }
 
   return (
-    <Container size="xl" py="lg">
-      <Stack gap="xl">
-        {/* Error notification */}
-        {error && (
-          <Notification
-            icon={<FiXCircle size={18} />}
-            color="red"
-            title="Error"
-            onClose={() => setError(null)}
-          >
-            {error}
-          </Notification>
-        )}
+    <Grid gutter="xl">
+      <Grid.Col span={{ base: 12, md: 8 }}>
+        <Stack gap="xl">
+          {error && (
+            <Notification
+              icon={<FiXCircle size={18} />}
+              color="red"
+              title="Error"
+              onClose={() => setError(null)}
+              radius="md"
+            >
+              {error}
+            </Notification>
+          )}
 
-        {/* Breadcrumbs */}
-        <Breadcrumbs>{breadcrumbItems}</Breadcrumbs>
+          <Breadcrumbs separator="/">{breadcrumbItems}</Breadcrumbs>
 
-        {/* Header Section */}
-        <Stack gap="lg">
-          <Group justify="space-between" align="flex-start">
-            <Group>
-              <ThemeIcon size="xl" variant="light" color={tagData.color}>
-                <FiTag size={32} />
-              </ThemeIcon>
-              <div>
-                <Group gap="xs" mb="xs">
-                  <Title order={1}>#{tagData.name}</Title>
-                  <Badge variant="light" color={tagData.color} size="lg">
-                    {tagData.category}
-                  </Badge>
-                </Group>
-                <Text size="lg" c="dimmed" maw={600}>
-                  Explore projects and developers working with {tagData.name}
-                </Text>
-              </div>
-            </Group>
+          <Card p={{ base: "md", md: "xl" }} radius="lg" withBorder shadow="sm">
+            <Group justify="space-between" align="flex-start" wrap="nowrap">
+              <Group gap="lg" wrap="nowrap">
+                <ThemeIcon
+                  size={80}
+                  radius="xl"
+                  variant="light"
+                  color={tagData.color}
+                >
+                  <FiTag size={40} />
+                </ThemeIcon>
+                <Box>
+                  <Group gap="sm" mb={4}>
+                    <Title
+                      tt="uppercase"
+                      order={1}
+                      fw={800}
+                      style={{ fontSize: 32, letterSpacing: "-0.5px" }}
+                    >
+                      #{tagData.name}
+                    </Title>
+                  </Group>
+                  <Text size="lg" c="dimmed" maw={600} lh={1.4}>
+                    Explore projects and developers working with {tagData.name}
+                  </Text>
+                </Box>
+              </Group>
 
-            <Group>
-              <Tooltip
-                label={isFollowing ? "Unfollow this tag" : "Follow this tag"}
-              >
+              <Group gap="sm">
                 <Button
-                  variant="outline"
+                  variant={isFollowing ? "light" : "filled"}
+                  radius="xl"
+                  size="md"
                   leftSection={
                     isFollowing ? (
-                      <FiCheck size={16} />
+                      <FiCheck size={18} />
                     ) : (
-                      <FiUserPlus size={16} />
+                      <FiUserPlus size={18} />
                     )
                   }
                   onClick={handleFollowToggle}
@@ -432,102 +418,245 @@ const TagDetailsPage = () => {
                 >
                   {isFollowing ? "Following" : "Follow"}
                 </Button>
-              </Tooltip>
-              <Tooltip label="Share tag">
-                <ActionIcon variant="outline" size="lg">
-                  <FiShare2 size={18} />
-                </ActionIcon>
-              </Tooltip>
-            </Group>
-          </Group>
-
-          {/* Tag Statistics */}
-          <Group gap="sm">
-            <Group gap={4}>
-              <FiCode size={16} />
-              <Text size="sm">
-                {formatPlural(
-                  tagData.projects_count || 0,
-                  "Project",
-                  "Projects",
-                )}
-              </Text>
+              </Group>
             </Group>
 
-            <Group gap={4}>
-              <FiUsers size={16} />
-              <Text size="sm">
-                {formatPlural(
-                  tagData.followers_count || 0,
-                  "Follower",
-                  "Followers",
-                )}
-              </Text>
+            <Group gap="xl" mt="xl">
+              <Group gap="xs">
+                <ThemeIcon variant="subtle" color="gray" size="sm">
+                  <FiCode size={16} />
+                </ThemeIcon>
+                <Text size="sm" fw={600}>
+                  {tagData.projects_count?.toLocaleString() || 0}{" "}
+                  <Text component="span" c="dimmed" fw={500}>
+                    Projects
+                  </Text>
+                </Text>
+              </Group>
+              <Group gap="xs">
+                <ThemeIcon variant="subtle" color="gray" size="sm">
+                  <FiUsers size={16} />
+                </ThemeIcon>
+                <Text size="sm" fw={600}>
+                  {tagData.followers_count?.toLocaleString() || 0}{" "}
+                  <Text component="span" c="dimmed" fw={500}>
+                    Followers
+                  </Text>
+                </Text>
+              </Group>
             </Group>
+          </Card>
 
-            <Group gap={4}>
-              <FiCalendar size={16} />
-              <Text size="sm">
-                Created on {new Date(tagData.date_created).toLocaleDateString()}
-              </Text>
-            </Group>
-          </Group>
-        </Stack>
+          <Tabs
+            defaultValue="projects"
+            variant="pills"
+            radius="xl"
+            color="blue"
+          >
+            <Tabs.List mb="xl">
+              <Tabs.Tab value="projects" leftSection={<FiCode size={16} />}>
+                Projects{" "}
+                <Badge size="sm" variant="transparent" c="inherit" p={0} ml={4}>
+                  {(tagData.projects_count || 0).toLocaleString()}
+                </Badge>
+              </Tabs.Tab>
+              <Tabs.Tab value="developers" leftSection={<FiUsers size={16} />}>
+                Developers{" "}
+                <Badge size="sm" variant="transparent" c="inherit" p={0} ml={4}>
+                  {(tagData.followers_count || 0).toLocaleString()}
+                </Badge>
+              </Tabs.Tab>
+            </Tabs.List>
 
-        <Tabs defaultValue="projects">
-          <Tabs.List mb="xl">
-            <Tabs.Tab value="projects" leftSection={<FiCode size={16} />}>
-              Projects ({(tagData.projects_count || 0).toLocaleString()})
-            </Tabs.Tab>
-            <Tabs.Tab value="developers" leftSection={<FiUsers size={16} />}>
-              Developers ({(tagData.followers_count || 0).toLocaleString()})
-            </Tabs.Tab>
-          </Tabs.List>
-
-          <Tabs.Panel value="projects">
-            {tagProjectsLoading ? (
-              <Center w="100%" h="300px">
-                <Loader size="xl" type="oval" />
-              </Center>
-            ) : projects.length > 0 ? (
-              <SimpleGrid cols={{ base: 1, sm: 3, md: 3 }} spacing="md">
-                {projects.map((project) => (
-                  <ProjectExploreCard key={project.id} project={project} />
-                ))}
-              </SimpleGrid>
-            ) : (
-              <Center style={{ height: 200 }}>
-                <Text c="dimmed">No projects found for this tag.</Text>
-              </Center>
-            )}
-          </Tabs.Panel>
-
-          <Tabs.Panel value="developers">
-            <Stack gap="lg">
-              {tagFollowersLoading ? (
-                <Center w="100%" h="300px">
-                  <Loader size="xl" type="oval" />
-                </Center>
-              ) : followers.length > 0 ? (
-                <SimpleGrid cols={{ base: 1, md: 2, lg: 3 }} spacing="lg">
-                  {followers.map((developer) => (
-                    <Fragment key={developer.username}>
-                      <UserCard user={developer as User} isCard showBorder />
-                    </Fragment>
+            <Tabs.Panel value="projects">
+              {tagProjectsLoading && projects.length === 0 ? (
+                <SimpleGrid cols={{ base: 1, sm: 2 }} spacing="lg">
+                  {[...Array(8)].map((_, i) => (
+                    <Skeleton key={i} height={200} radius="lg" />
                   ))}
                 </SimpleGrid>
+              ) : projects.length > 0 ? (
+                <Stack gap="lg">
+                  <Box style={{ position: "relative", minHeight: 200 }}>
+                    <LoadingOverlay
+                      visible={tagProjectsLoading}
+                      zIndex={1000}
+                      overlayProps={{ radius: "sm", blur: 2 }}
+                      loaderProps={{ color: "blue", type: "dots" }}
+                    />
+                    <SimpleGrid cols={{ base: 1, sm: 2 }} spacing="lg">
+                      {projects.map((project) => (
+                        <ProjectExploreCard
+                          key={project.id}
+                          project={project}
+                        />
+                      ))}
+                    </SimpleGrid>
+                  </Box>
+
+                  <Group justify="flex-end" mt="md">
+                    <PaginationInfo
+                      total={
+                        tagProjectsResponse?.data?.pagination?.total ||
+                        tagData?.projects_count ||
+                        0
+                      }
+                      limit={8}
+                      page={projectPage}
+                      setPage={setProjectPage}
+                    />
+                  </Group>
+                </Stack>
               ) : (
-                <Center style={{ height: 200 }}>
-                  <Text c="dimmed">
-                    No developers are following this tag yet.
-                  </Text>
-                </Center>
+                // 3. Empty State: No projects found
+                <Card withBorder radius="lg" py={80} shadow="sm">
+                  <Center
+                    style={{ flexDirection: "column", textAlign: "center" }}
+                  >
+                    <FiCode
+                      size={48}
+                      color="var(--mantine-color-gray-4)"
+                      style={{ marginBottom: 16 }}
+                    />
+                    <Title order={4} fw={600} mb={8}>
+                      No projects yet
+                    </Title>
+                    <Text size="md" c="dimmed">
+                      There are currently no projects using the #{tagData?.name}{" "}
+                      tag.
+                    </Text>
+                  </Center>
+                </Card>
               )}
-            </Stack>
-          </Tabs.Panel>
-        </Tabs>
-      </Stack>
-    </Container>
+            </Tabs.Panel>
+
+            <Tabs.Panel value="developers">
+              <SimpleGrid cols={{ base: 1, sm: 2 }} spacing="lg">
+                {followers.map((developer) => (
+                  <Fragment key={developer.username}>
+                    <UserCard user={developer as User} isCard showBorder />
+                  </Fragment>
+                ))}
+              </SimpleGrid>
+            </Tabs.Panel>
+          </Tabs>
+        </Stack>
+      </Grid.Col>
+
+      <Grid.Col span={{ base: 12, md: 4 }}>
+        <Box style={{ position: "sticky", top: 85 }}>
+          <Card withBorder radius="lg" shadow="sm" p="lg">
+            <Group gap="sm" mb="md" align="center">
+              <ThemeIcon variant="light" color="blue" size="md" radius="md">
+                <FiTrendingUp size={16} />
+              </ThemeIcon>
+              <Title order={3} size="h5" fw={700}>
+                Discover Tags
+              </Title>
+            </Group>
+
+            {moreTagsLoading ? (
+              <Stack gap="md">
+                {[...Array(5)].map((_, i) => (
+                  <Skeleton key={i} height={36} radius="md" />
+                ))}
+              </Stack>
+            ) : (
+              <Stack gap="sm">
+                {sidebarTags.map((tag) => (
+                  <Box
+                    key={tag.id}
+                    component={Link}
+                    to={`/tags/${tag.name}`}
+                    style={{
+                      textDecoration: "none",
+                      display: "block",
+                      padding: "8px 12px",
+                      borderRadius: "var(--mantine-radius-md)",
+                      transition: "background-color 0.2s ease",
+                    }}
+                  >
+                    <Group justify="space-between" wrap="nowrap">
+                      <Group gap="xs" wrap="nowrap">
+                        <ThemeIcon
+                          size={24}
+                          variant="light"
+                          color={getTagColor(tag.name)}
+                          radius="xl"
+                        >
+                          <FiTag size={12} />
+                        </ThemeIcon>
+                        <Text size="md" tt="uppercase" fw={600} lineClamp={1}>
+                          #{tag.name}
+                        </Text>
+                      </Group>
+                      <Badge
+                        tt="capitalize"
+                        size="sm"
+                        variant="outline"
+                        color="gray"
+                        radius="xl"
+                      >
+                        {tag.projects_count || 0} projects
+                      </Badge>
+                    </Group>
+                  </Box>
+                ))}
+              </Stack>
+            )}
+          </Card>
+
+          <Group justify="center" gap="md" mt="lg">
+            <Text size="xs" c="dimmed" fw={500}>
+              © {new Date().getFullYear()} Crane Cloud. All rights reserved.
+            </Text>
+            <Text size="xs" c="dimmed">
+              •
+            </Text>
+            <Anchor
+              href="#"
+              size="xs"
+              c="dimmed"
+              style={{ textDecoration: "none" }}
+            >
+              Documentation
+            </Anchor>
+            <Anchor
+              href="#"
+              size="xs"
+              c="dimmed"
+              style={{ textDecoration: "none" }}
+            >
+              Crane Cloud Status
+            </Anchor>
+            <Anchor
+              href="#"
+              size="xs"
+              c="dimmed"
+              style={{ textDecoration: "none" }}
+            >
+              Privacy Policy
+            </Anchor>
+            <Anchor
+              href="#"
+              size="xs"
+              c="dimmed"
+              style={{ textDecoration: "none" }}
+            >
+              Terms of Service
+            </Anchor>
+            <Anchor
+              href="#"
+              size="xs"
+              c="dimmed"
+              style={{ textDecoration: "none" }}
+            >
+              Contact Support
+            </Anchor>
+          </Group>
+        </Box>
+      </Grid.Col>
+    </Grid>
   );
 };
 
