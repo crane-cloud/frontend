@@ -82,7 +82,7 @@ const Search = ({
   return (
     <Select
       placeholder="Search..."
-      radius="md"
+      radius="xl"
       leftSection={<FiSearch />}
       miw={{ base: "auto", sm: 300 }}
       style={wide ? { flex: 1 } : {}}

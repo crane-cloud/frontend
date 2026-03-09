@@ -1,5 +1,5 @@
 import { API_PROJECTS } from "@/utils/apis";
-import { beautify, formatPlural } from "@/utils/helpers";
+import { beautify } from "@/utils/helpers";
 import usePost from "@/utils/usePost";
 import {
   Card,
@@ -8,8 +8,8 @@ import {
   Button,
   Loader,
   Badge,
-  Divider,
   Text,
+  Box,
 } from "@mantine/core";
 import { useState, useEffect } from "react";
 import { FiCheck, FiUserPlus } from "react-icons/fi";
@@ -78,84 +78,95 @@ const ProjectExploreCard = ({ project }: ProjectExploreCardProps) => {
     }
   };
   const isFollowLoading = following || unfollowing;
+
   return (
     <Card
       key={project.id}
-      p="md"
+      p="sm"
       withBorder
-      radius="lg"
+      radius="md"
       style={{
-        flex: "1 1 350px",
         display: "flex",
         flexDirection: "column",
         height: "100%",
       }}
     >
-      <div style={{ flex: 1 }}>
-        <Group justify="space-between" mb="xs">
-          <Group>
-            <div>
-              <Anchor
-                component={Link}
-                to={`/explore/${project?.id}`}
-                fw={600}
-                style={{ textDecoration: "none" }}
-              >
-                {beautify(project?.name)}
-              </Anchor>
-            </div>
-          </Group>
-          <Group gap="sm">
-            <Button
-              variant="outline"
-              size="xs"
-              onClick={onFollowClick}
-              leftSection={
-                isFollowLoading ? (
-                  <Loader size="xs" />
-                ) : isFollowingProject ? (
-                  <FiCheck size={14} />
-                ) : (
-                  <FiUserPlus size={14} />
-                )
-              }
-              disabled={isFollowLoading}
-            >
-              {isFollowLoading
-                ? isFollowingProject
-                  ? "Unfollowing..."
-                  : "Following..."
-                : isFollowingProject
-                  ? "Following"
-                  : "Follow"}
-            </Button>
-          </Group>
-        </Group>
-        <Text size="sm" c="dimmed" mb={4} lineClamp={3}>
-          {beautify(project.description)}
-        </Text>
-        <Group gap={4} mt={4} mb={4}>
-          {project?.tags?.map((tag) => (
-            <Badge key={tag.id} size="xs" color="blue" variant="light">
+      {/* Header: Title and Button */}
+      {/* Added gap="sm" to ensure there's always space between title and button */}
+      <Group
+        justify="space-between"
+        align="flex-start"
+        wrap="nowrap"
+        mb="xs"
+        gap="sm"
+      >
+        {/* THE FIX: Wrapping the title forces flexbox to respect the text truncation boundaries */}
+        <Box style={{ flex: 1, minWidth: 0 }}>
+          <Anchor
+            component={Link}
+            to={`/explore/${project?.id}`}
+            fw={600}
+            size="md"
+            lineClamp={2}
+            style={{
+              textDecoration: "none",
+              color: "inherit",
+              display: "block",
+            }} // display: block helps lineClamp
+          >
+            {beautify(project?.name) || "Untitled Project"}
+          </Anchor>
+        </Box>
+
+        <Button
+          variant="outline"
+          size="xs"
+          radius="xl"
+          onClick={onFollowClick}
+          style={{ flexShrink: 0 }} // Ensures the button never gets squished
+          leftSection={
+            isFollowLoading ? (
+              <Loader size="xs" />
+            ) : isFollowingProject ? (
+              <FiCheck size={14} />
+            ) : (
+              <FiUserPlus size={14} />
+            )
+          }
+          disabled={isFollowLoading}
+        >
+          {isFollowLoading
+            ? isFollowingProject
+              ? "Unfollowing..."
+              : "Following..."
+            : isFollowingProject
+              ? "Following"
+              : "Follow"}
+        </Button>
+      </Group>
+
+      {/* Body: Description */}
+      <Text size="sm" c="dimmed" lineClamp={2} style={{ flexGrow: 1 }}>
+        {beautify(project.description)}
+      </Text>
+
+      {/* Footer: Tags */}
+      <Group gap="xs" mt="sm">
+        {project?.tags?.slice(0, 4).map((tag) => (
+          <Badge
+            key={tag.id}
+            size="sm"
+            color="blue"
+            variant="light"
+            radius="xl"
+            style={{ maxWidth: "100%", fontWeight: "bold" }} // Prevents ultra-long tags from breaking the layout
+          >
+            <Text size="xs" truncate="end">
               {tag.name}
-            </Badge>
-          ))}
-        </Group>
-      </div>
-      <div>
-        <Divider mt="xs" mb="xs" style={{ width: "100%" }} />
-        <Group gap="lg" mt={2}>
-          <Text size="sm" c="dimmed">
-            {formatPlural(project.members_count, "member")}
-          </Text>
-          <Text size="sm" c="dimmed">
-            {formatPlural(project.followers_count, "follower")}
-          </Text>
-          <Text size="sm" c="dimmed">
-            {formatPlural(project.apps_count, "app")}
-          </Text>
-        </Group>
-      </div>
+            </Text>
+          </Badge>
+        ))}
+      </Group>
     </Card>
   );
 };

@@ -1,7 +1,7 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&display=swap');
 
 :root {
-  --font-family: "Inter", sans-serif;
+  --font-family: "Google Sans", sans-serif;
 }
 
 :root[data-mantine-color-scheme="dark"] {
@@ -75,13 +75,13 @@ a:hover {
   padding: 0;
 }
 
-.subtext > span {
+.subtext>span {
   text-decoration: underline;
   color: #008ac1;
   cursor: pointer;
 }
 
-.subtext.disabled > span {
+.subtext.disabled>span {
   color: grey;
   cursor: not-allowed;
   text-decoration: none;
@@ -107,8 +107,6 @@ a:hover {
 }
 
 .dimmed-placeholder .mantine-InputPlaceholder-placeholder {
-  color: light-dark(
-    var(--mantine-color-gray-6),
-    var(--mantine-color-gray-5)
-  ) !important;
+  color: light-dark(var(--mantine-color-gray-6),
+      var(--mantine-color-gray-5)) !important;
 }

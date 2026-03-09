@@ -1,13 +1,5 @@
 import React, { useEffect } from "react";
-import {
-  Card,
-  Group,
-  Title,
-  Stack,
-  Badge,
-  Text,
-  Skeleton,
-} from "@mantine/core";
+import { Card, Group, Title, Stack, Badge, Skeleton } from "@mantine/core";
 import { FiTrendingUp } from "react-icons/fi";
 import { Link } from "react-router-dom";
 import useGet from "@/utils/useGet";
@@ -22,7 +14,7 @@ interface TrendingTagsProps {
 
 export default function TrendingTags({
   title = "Trending Tags",
-  perPage = 5,
+  perPage = 14,
 }: TrendingTagsProps) {
   const { data: response, getData, loading } = useGet();
 
@@ -46,9 +38,10 @@ export default function TrendingTags({
         {loading ? (
           <TagsSkeleton />
         ) : (
-          response?.data?.tags?.map((tag: Tag) => (
-            <Group key={tag.id} justify="space-between">
+          <Group gap="xs">
+            {response?.data?.tags?.map((tag: Tag) => (
               <Badge
+                key={tag.id}
                 variant="outline"
                 color={getTagColor(tag.name)}
                 component={Link}
@@ -57,13 +50,8 @@ export default function TrendingTags({
               >
                 # {tag.name}
               </Badge>
-              <Group gap={4}>
-                <Text size="xs" c="dimmed">
-                  {tag.projects_count} projects
-                </Text>
-              </Group>
-            </Group>
-          ))
+            ))}
+          </Group>
         )}
       </Stack>
     </Card>
@@ -72,16 +60,15 @@ export default function TrendingTags({
 
 const TagsSkeleton = () => {
   return (
-    <>
-      {Array.from({ length: 5 }).map((_, index) => (
-        <Group key={index} justify="space-between" mb="xs">
-          {/* Badge skeleton */}
-          <Skeleton height={24} width={Math.random() * 40 + 80} radius="xl" />
-
-          {/* Project count skeleton */}
-          <Skeleton height={12} width={Math.random() * 20 + 60} />
-        </Group>
+    <Group gap="xs">
+      {Array.from({ length: 14 }).map((_, index) => (
+        <Skeleton
+          key={index}
+          height={24}
+          width={Math.random() * 40 + 60} // Keeps the organic, varied tag widths
+          radius="xl"
+        />
       ))}
-    </>
+    </Group>
   );
 };
