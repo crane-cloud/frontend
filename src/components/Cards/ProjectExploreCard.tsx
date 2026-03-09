@@ -91,6 +91,8 @@ const ProjectExploreCard = ({ project }: ProjectExploreCardProps) => {
         height: "100%",
       }}
     >
+      {/* Header: Title and Button */}
+      {/* Added gap="sm" to ensure there's always space between title and button */}
       <Group
         justify="space-between"
         align="flex-start"
@@ -98,6 +100,7 @@ const ProjectExploreCard = ({ project }: ProjectExploreCardProps) => {
         mb="xs"
         gap="sm"
       >
+        {/* THE FIX: Wrapping the title forces flexbox to respect the text truncation boundaries */}
         <Box style={{ flex: 1, minWidth: 0 }}>
           <Anchor
             component={Link}
@@ -109,7 +112,7 @@ const ProjectExploreCard = ({ project }: ProjectExploreCardProps) => {
               textDecoration: "none",
               color: "inherit",
               display: "block",
-            }}
+            }} // display: block helps lineClamp
           >
             {beautify(project?.name) || "Untitled Project"}
           </Anchor>
@@ -120,7 +123,7 @@ const ProjectExploreCard = ({ project }: ProjectExploreCardProps) => {
           size="xs"
           radius="xl"
           onClick={onFollowClick}
-          style={{ flexShrink: 0 }}
+          style={{ flexShrink: 0 }} // Ensures the button never gets squished
           leftSection={
             isFollowLoading ? (
               <Loader size="xs" />
@@ -142,20 +145,21 @@ const ProjectExploreCard = ({ project }: ProjectExploreCardProps) => {
         </Button>
       </Group>
 
+      {/* Body: Description */}
       <Text size="sm" c="dimmed" lineClamp={2} style={{ flexGrow: 1 }}>
         {beautify(project.description)}
       </Text>
 
+      {/* Footer: Tags */}
       <Group gap="xs" mt="sm">
         {project?.tags?.slice(0, 4).map((tag) => (
           <Badge
-            fw={900}
             key={tag.id}
             size="sm"
             color="blue"
             variant="light"
             radius="xl"
-            style={{ maxWidth: "100%" }}
+            style={{ maxWidth: "100%", fontWeight: "bold" }} // Prevents ultra-long tags from breaking the layout
           >
             <Text size="xs" truncate="end">
               {tag.name}

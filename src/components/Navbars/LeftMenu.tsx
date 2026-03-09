@@ -488,7 +488,7 @@ const LeftMenu = React.memo(
           )}
 
           {/* Navigation Links Mapping */}
-          {navbarLinks.map((link: INavLink, index) => (
+          {navbarLinks.map((link: INavLink) => (
             <React.Fragment key={link.key}>
               {link.children ? (
                 <Stack gap={5} my={2} mx={10} mt={20}>

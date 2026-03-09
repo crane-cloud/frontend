@@ -36,7 +36,6 @@ export const ModalConfirm = (props: TModalConfirm) => {
       size={size}
       padding="md"
       centered
-      radius="md"
     >
       <Divider pb="md" />
       <Text size="sm" mb="md">
