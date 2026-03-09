@@ -12,7 +12,7 @@ import {
   Skeleton,
   Box,
 } from "@mantine/core";
-import { FiCode, FiUsers } from "react-icons/fi";
+import { FiCode } from "react-icons/fi";
 import useGet from "@/utils/useGet";
 import { API_SOCIALS } from "@/utils/apis";
 import { Link } from "react-router-dom";
@@ -28,7 +28,7 @@ interface TrendingProjectsProps {
 export default function TrendingProjects({
   title = "Trending Projects",
   compact = false,
-  perPage = 3,
+  perPage = 6,
 }: TrendingProjectsProps) {
   const { data: response, getData, loading } = useGet();
 
@@ -107,13 +107,6 @@ export default function TrendingProjects({
                         {tag.name.toLowerCase()}
                       </Badge>
                     ))}
-                </Group>
-
-                <Group gap={2} mt={6}>
-                  <FiUsers size={10} color="#6c757d" />
-                  <Text size="sm" c="dimmed" fw={500} ml={2}>
-                    {project.followers_count || 0} followers
-                  </Text>
                 </Group>
               </div>
               {index < trendingProjects.length - 1 && <Divider />}

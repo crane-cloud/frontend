@@ -1,26 +1,22 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
-  ActionIcon,
   Anchor,
   Tooltip,
   Card,
-  Flex,
   Group,
   Text,
   Divider,
-  Stack,
-  Pill,
   Modal,
   Button,
+  Badge,
 } from "@mantine/core";
 import { HiLockClosed } from "react-icons/hi2";
 import { RiBookLine } from "react-icons/ri";
 import { GoClock } from "react-icons/go";
 import { LiaUserSolid } from "react-icons/lia";
-import { IoPersonAddOutline } from "react-icons/io5";
 import usePost from "@/utils/usePost";
 import { API_PROJECTS } from "@/utils/apis";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { formatAgo, formatPlural } from "@/utils/helpers";
 import { FiLayers } from "react-icons/fi";
 
@@ -105,29 +101,98 @@ const ProjectsCard = (props: any) => {
 
   return (
     <Card
-      p="md"
-      radius="md"
+      p="sm"
+      radius="lg"
       withBorder
+      style={{ display: "flex", flexDirection: "column", height: "100%" }}
       {...props}
-      style={{ position: "relative" }}
     >
-      {invitePending && (
-        <Tooltip label="Membership pending" withArrow>
-          <IoPersonAddOutline
-            color="#228be6"
-            size={24}
-            style={{
-              position: "absolute",
-              top: 8,
-              right: 8,
-              zIndex: 2,
-              cursor: "pointer",
-            }}
-            onClick={() => setShowInviteModal(true)}
-          />
-        </Tooltip>
-      )}
+      {/* --- HEADER --- */}
+      <Group justify="space-between" align="flex-start" wrap="nowrap" mb="xs">
+        <Group gap="xs" wrap="nowrap" style={{ flex: 1, minWidth: 0 }}>
+          {project.disabled ? (
+            <HiLockClosed size={18} color="var(--mantine-color-dimmed)" />
+          ) : (
+            <RiBookLine size={18} color="var(--mantine-color-dimmed)" />
+          )}
 
+          <Anchor
+            component={invitePending ? "button" : (Link as any)}
+            to={!invitePending ? `/projects/${project.id}` : undefined}
+            onClick={invitePending ? () => setShowInviteModal(true) : undefined}
+            fw={600}
+            size="md"
+            lineClamp={1} // Replaces manual textOverflow/whiteSpace styles
+            style={{
+              textDecoration: "none",
+              color: "inherit",
+              textAlign: "left",
+              flex: 1,
+            }}
+          >
+            {project.name}
+          </Anchor>
+        </Group>
+
+        {invitePending && (
+          <Tooltip label="Click to respond" withArrow>
+            <Badge
+              color="blue"
+              variant="light"
+              style={{ cursor: "pointer", flexShrink: 0 }}
+              onClick={() => setShowInviteModal(true)}
+            >
+              Pending Invite
+            </Badge>
+          </Tooltip>
+        )}
+      </Group>
+      {/* --- BODY --- */}
+      <Text c="dimmed" size="sm" lineClamp={2} style={{ flexGrow: 1 }} mb="sm">
+        {project.description || "No description provided."}
+      </Text>
+      {/* --- TAGS --- */}
+      {project.tags?.length > 0 && (
+        <Group gap="xs" mb="sm">
+          {project.tags.map((tag: any) => (
+            <Badge key={tag.id} size="sm" variant="light" radius="xl">
+              {tag.name}
+            </Badge>
+          ))}
+        </Group>
+      )}
+      {/* --- FOOTER METRICS --- */}
+      <Divider mb="sm" mx="-sm" />{" "}
+      {/* mx="-sm" makes divider stretch edge-to-edge */}
+      <Group gap="lg" justify="flex-start">
+        <Tooltip label="Number of applications" withArrow>
+          <Group gap={4} wrap="nowrap" style={{ cursor: "default" }}>
+            <FiLayers size={14} color="var(--mantine-color-dimmed)" />
+            <Text size="xs" c="dimmed">
+              {formatPlural(project.apps_count, "app")}
+            </Text>
+          </Group>
+        </Tooltip>
+
+        <Tooltip label="Members" withArrow>
+          <Group gap={4} wrap="nowrap" style={{ cursor: "default" }}>
+            <LiaUserSolid size={15} color="var(--mantine-color-dimmed)" />
+            <Text size="xs" c="dimmed">
+              {formatPlural(project.members_count, "member")}
+            </Text>
+          </Group>
+        </Tooltip>
+
+        <Tooltip label="Age of project" withArrow>
+          <Group gap={4} wrap="nowrap" style={{ cursor: "default" }}>
+            <GoClock size={13} color="var(--mantine-color-dimmed)" />
+            <Text size="xs" c="dimmed">
+              {formatAgo(project.age)}
+            </Text>
+          </Group>
+        </Tooltip>
+      </Group>
+      {/* --- MODAL --- */}
       <Modal
         opened={showInviteModal}
         onClose={() => setShowInviteModal(false)}
@@ -137,128 +202,20 @@ const ProjectsCard = (props: any) => {
         <Text>
           You have been invited to collaborate on <b>{project.name}</b>.
         </Text>
-        <Group mt="md">
+        <Group mt="xl" justify="flex-end">
           <Button
             color="red"
-            variant="outline"
+            variant="subtle"
             onClick={handleDecline}
             loading={decliningInvitation}
-            disabled={decliningInvitation}
           >
             Decline
           </Button>
-          <Button
-            onClick={handleAccept}
-            loading={acceptingInvitation}
-            disabled={acceptingInvitation}
-          >
+          <Button onClick={handleAccept} loading={acceptingInvitation}>
             Accept
           </Button>
         </Group>
       </Modal>
-
-      <Stack gap={10} justify="space-between" h="100%">
-        <Stack gap={7}>
-          <Group justify="space-between" wrap="nowrap">
-            <Flex gap={10} align="center" justify="start">
-              {project.disabled ? (
-                <HiLockClosed size={16} color="theme.black" />
-              ) : (
-                <RiBookLine size={16} color="theme.black" />
-              )}
-              {invitePending ? (
-                <Anchor
-                  c="blue"
-                  size="1rem"
-                  style={{
-                    textOverflow: "ellipsis",
-                    overflow: "hidden",
-                    whiteSpace: "nowrap",
-                    cursor: "pointer",
-                  }}
-                  onClick={() => setShowInviteModal(true)}
-                >
-                  {project.name}
-                </Anchor>
-              ) : (
-                <Anchor
-                  c="blue"
-                  size="1rem"
-                  href={`/projects/${project.id}`}
-                  style={{
-                    textOverflow: "ellipsis",
-                    overflow: "hidden",
-                    whiteSpace: "nowrap",
-                  }}
-                >
-                  {project.name}
-                </Anchor>
-              )}
-            </Flex>
-          </Group>
-
-          <Text c="theme.gray" truncate size="sm">
-            {project.description}
-          </Text>
-          {project.tags.length > 0 && (
-            <Stack gap="5">
-              <Divider my="xs" />
-              <Flex gap="xs">
-                {project.tags.map((tag: any) => (
-                  <Pill key={tag.id} size="xs" fw={500}>
-                    {tag.name}
-                  </Pill>
-                ))}
-              </Flex>
-            </Stack>
-          )}
-        </Stack>
-
-        <Flex gap={8} align="center" justify="start">
-          <Tooltip label="Number of applications" withArrow>
-            <ActionIcon
-              variant="transparent"
-              color="theme.dark"
-              w="fit-content"
-            >
-              <Flex gap={3} align="center" justify="center" wrap="nowrap">
-                <FiLayers size={12} color="var(--mantine-color-dimmed)" />
-                <Text size="sm" c="dimmed" className="no-wrap">
-                  {formatPlural(project.apps_count, "app")}
-                </Text>
-              </Flex>
-            </ActionIcon>
-          </Tooltip>
-          <Tooltip label="Members" withArrow>
-            <ActionIcon
-              variant="transparent"
-              color="theme.dark"
-              w="fit-content"
-            >
-              <Flex gap={2} align="center" justify="center" wrap="nowrap">
-                <LiaUserSolid size={15} color="var(--mantine-color-dimmed)" />
-                <Text size="sm" c="dimmed" className="no-wrap">
-                  {formatPlural(project?.members_count, "member")}
-                </Text>
-              </Flex>
-            </ActionIcon>
-          </Tooltip>
-          <Tooltip label="Age of project" withArrow>
-            <ActionIcon
-              variant="transparent"
-              color="theme.dark"
-              w="fit-content"
-            >
-              <Flex gap={2} align="center" justify="center" wrap="nowrap">
-                <GoClock size={13} color="var(--mantine-color-dimmed)" />
-                <Text size="sm" c="dimmed" className="no-wrap">
-                  {formatAgo(project.age)}
-                </Text>
-              </Flex>
-            </ActionIcon>
-          </Tooltip>
-        </Flex>
-      </Stack>
     </Card>
   );
 };

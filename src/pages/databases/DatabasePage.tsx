@@ -20,7 +20,7 @@ const DatabasePage = () => {
       <TitleText
         loading={false}
         rightSection={
-          <Button leftSection={<GoPlus />} onClick={open}>
+          <Button radius="xl" leftSection={<GoPlus />} onClick={open}>
             Add Database
           </Button>
         }

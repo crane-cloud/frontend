@@ -1,6 +1,5 @@
 import React, { useEffect, useMemo } from "react";
 import {
-  Container,
   Title,
   Text,
   Button,
@@ -25,7 +24,6 @@ import {
   FiActivity,
   FiSend,
   FiPlus,
-  FiFilter,
   FiDatabase,
   FiCode,
   FiRefreshCw,
@@ -33,7 +31,6 @@ import {
 } from "react-icons/fi";
 import { useSetContainerSize, useSetNoSidebar } from "@/utils/helpers";
 import TrendingTags from "@/components/Trending/TrendingTags";
-import TrendingProjects from "@/components/Trending/TrendingProjects";
 import SuggestedUsers from "@/components/Trending/SuggestedUsers";
 import CompactProjectsList from "@/components/Lists/CompactProjectsList";
 import CreateProjectForm from "@/components/Forms/CreateProjectForm";
@@ -150,7 +147,7 @@ const LandingPage = () => {
   }, [success, created_database]);
 
   return (
-    <Container size="xl" py="sm">
+    <>
       <Grid gutter="lg" align="stretch">
         <Grid.Col span={{ base: 12, sm: 6, md: 3 }}>
           <Stack gap="lg">
@@ -205,16 +202,12 @@ const LandingPage = () => {
                 <Button
                   variant="subtle"
                   size="xs"
-                  leftSection={<FiFilter size={14} />}
-                />
-                <Button
-                  variant="subtle"
-                  size="xs"
                   leftSection={<FiRefreshCw size={14} />}
                   onClick={fetchActivities}
                   loading={loading}
                 />
                 <Select
+                  radius="xl"
                   data={["All Activity", "Following", "Your Activity"]}
                   defaultValue="Your Activity"
                   size="xs"
@@ -223,7 +216,7 @@ const LandingPage = () => {
               </Group>
             </Group>
 
-            <ScrollArea h={900}>
+            <ScrollArea h={964}>
               {loading ? (
                 <Stack gap="md">
                   {Array.from({ length: 5 }).map((_, index) => (
@@ -285,9 +278,8 @@ const LandingPage = () => {
 
         <Grid.Col span={{ base: 12, sm: 6, md: 3 }}>
           <Stack gap="lg" h="100%">
-            <TrendingProjects compact />
             <TrendingTags />
-            <SuggestedUsers title="Suggested For You" />
+            <SuggestedUsers title="Suggested For You" perPage={9} />
           </Stack>
         </Grid.Col>
       </Grid>
@@ -392,7 +384,7 @@ const LandingPage = () => {
           }}
         />
       </Modal>
-    </Container>
+    </>
   );
 };
 

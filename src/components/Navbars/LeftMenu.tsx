@@ -1,5 +1,4 @@
 import {
-  AppShell,
   NavLink,
   Text,
   Group,
@@ -8,6 +7,7 @@ import {
   ScrollArea,
   Stack,
   useMantineColorScheme,
+  Box,
 } from "@mantine/core";
 import {
   HiOutlineSquares2X2,
@@ -447,11 +447,17 @@ const LeftMenu = React.memo(
     // }, [appId, projectId]);
     useEffect(() => {}, [navbarLinks]);
     return (
-      <AppShell.Navbar
-        p="5px"
-        style={{ display: menuType === "noSidebar" ? "none" : "flex" }}
+      <Stack
+        pr="sm"
+        gap={0}
+        style={{
+          display: menuType === "noSidebar" ? "none" : "flex",
+          borderRight: "1px solid var(--mantine-color-default-border)",
+          height: "calc(100vh - 100px)",
+        }}
       >
-        <AppShell.Section grow component={ScrollArea}>
+        {/* 1. Replaced AppShell.Section with ScrollArea */}
+        <ScrollArea style={{ flex: 1 }} type="scroll">
           {showProjectHeader && (
             <Stack pb={20} gap={10}>
               <SelectProject project_id={projectId} />
@@ -471,23 +477,17 @@ const LeftMenu = React.memo(
                       }}
                     >
                       <IoArrowBack />
-                      {/* <HeaderIcon /> */}
-                      <Text fz="sm" fw={700}>
+                      <Text fz="md" fw={700}>
                         {title}
                       </Text>
                     </UnstyledButton>
-                    {/* {subtitle && (
-                  <Pill size="sm" c="gray">
-                  {subtitle}
-                  </Pill>
-                  )} */}
                   </Group>
                 </Stack>
               )}
-
-              {/* <Divider my="md" /> */}
             </Stack>
           )}
+
+          {/* Navigation Links Mapping */}
           {navbarLinks.map((link: INavLink) => (
             <React.Fragment key={link.key}>
               {link.children ? (
@@ -504,13 +504,10 @@ const LeftMenu = React.memo(
                   leftSection={<link.icon />}
                   active={!!matchPath({ path: link.link }, location.pathname)}
                   to={link.link}
+                  mb="xs"
                   styles={{
-                    root: {
-                      borderRadius: "0.4rem",
-                    },
-                    label: {
-                      fontSize: "0.8rem",
-                    },
+                    root: { borderRadius: "0.4rem" },
+                    label: { fontSize: "0.9rem" },
                   }}
                   className="navlink"
                 />
@@ -528,13 +525,8 @@ const LeftMenu = React.memo(
                       }
                       to={child.link}
                       styles={{
-                        root: {
-                          borderRadius: "0.4rem",
-                          paddingLeft: "1.5rem",
-                        },
-                        label: {
-                          fontSize: "0.8rem",
-                        },
+                        root: { borderRadius: "0.4rem", paddingLeft: "1.5rem" },
+                        label: { fontSize: "0.8rem" },
                       }}
                       className="navlink"
                     />
@@ -543,37 +535,34 @@ const LeftMenu = React.memo(
               )}
             </React.Fragment>
           ))}
-        </AppShell.Section>
+        </ScrollArea>
 
-        {/* Optional: Footer section */}
-        <AppShell.Section>
+        {/* 2. Replaced Footer AppShell.Section with Box */}
+        <Box pt="sm">
           <UnstyledButton
             style={{
+              width: "100%", // Ensures button spans full width of sidebar
               padding: rem(8),
               borderRadius: rem(4),
-              "&:hover": {
-                backgroundColor: "#f8f9fa",
-              },
             }}
+            className="hover:bg-gray-100 dark:hover:bg-zinc-800"
             onClick={() =>
               setColorScheme(colorScheme === "dark" ? "light" : "dark")
             }
           >
             <Group gap={8}>
-              {/* <ThemeIcon variant="light" color="gray" size="sm"> */}
               {colorScheme === "dark" ? (
                 <IoSunnyOutline size={16} color="gray" />
               ) : (
                 <IoMoonOutline size={16} color="gray" />
               )}
-              {/* </ThemeIcon> */}
               <Text size="sm" c="dimmed">
                 Theme
               </Text>
             </Group>
           </UnstyledButton>
-        </AppShell.Section>
-      </AppShell.Navbar>
+        </Box>
+      </Stack>
     );
   },
 );
