@@ -24,6 +24,7 @@ import { ModalConfirm } from "@/components/Elements/Modals";
 import CreateProjectForm, {
   MigrateProjectForm,
 } from "@/components/Forms/CreateProjectForm";
+import { IoPencil } from "react-icons/io5";
 
 const ProjectSettingsPage = () => {
   const { project_id } = useParams();
@@ -191,8 +192,10 @@ const GeneralTab = ({
                 </Text>
               </Stack>
               <Button
+                radius="xl"
                 variant="outline"
                 onClick={() => setUpdateConfirmOpened(true)}
+                leftSection={<IoPencil />}
               >
                 Update
               </Button>
@@ -206,6 +209,7 @@ const GeneralTab = ({
                 </Text>
               </Stack>
               <Button
+                radius="xl"
                 variant="outline"
                 onClick={() => setMigrateConfirmOpened(true)}
                 leftSection={<BiTransferAlt />}
@@ -223,6 +227,7 @@ const GeneralTab = ({
                   </Text>
                 </Stack>
                 <Button
+                  radius="xl"
                   variant="outline"
                   color="green"
                   onClick={() => setEnableConfirmOpened(true)}
@@ -241,6 +246,7 @@ const GeneralTab = ({
                   </Text>
                 </Stack>
                 <Button
+                  radius="xl"
                   variant="outline"
                   color="red"
                   onClick={() => setDisableConfirmOpened(true)}
@@ -261,6 +267,7 @@ const GeneralTab = ({
                 </Text>
               </Stack>
               <Button
+                radius="xl"
                 variant="outline"
                 color="red"
                 onClick={() => setDeleteConfirmOpened(true)}

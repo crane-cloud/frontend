@@ -488,7 +488,7 @@ const LeftMenu = React.memo(
           )}
 
           {/* Navigation Links Mapping */}
-          {navbarLinks.map((link: INavLink) => (
+          {navbarLinks.map((link: INavLink, index) => (
             <React.Fragment key={link.key}>
               {link.children ? (
                 <Stack gap={5} my={2} mx={10} mt={20}>
@@ -504,10 +504,19 @@ const LeftMenu = React.memo(
                   leftSection={<link.icon />}
                   active={!!matchPath({ path: link.link }, location.pathname)}
                   to={link.link}
-                  mb="xs"
+                  pb="xs"
+                  mb="sm"
                   styles={{
-                    root: { borderRadius: "0.4rem" },
-                    label: { fontSize: "0.9rem" },
+                    root: {
+                      borderBottom:
+                        index !== navbarLinks.length - 1
+                          ? "0.5px solid var(--mantine-color-gray-7)"
+                          : "none",
+                    },
+                    label: {
+                      fontSize: "0.9rem",
+                      fontWeight: 600,
+                    },
                   }}
                   className="navlink"
                 />

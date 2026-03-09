@@ -36,6 +36,7 @@ export const ModalConfirm = (props: TModalConfirm) => {
       size={size}
       padding="md"
       centered
+      radius="md"
     >
       <Divider pb="md" />
       <Text size="sm" mb="md">
@@ -44,10 +45,11 @@ export const ModalConfirm = (props: TModalConfirm) => {
 
       {showFooterActions && (
         <Group justify="flex-end">
-          <Button variant="default" onClick={onClose}>
+          <Button radius="xl" variant="default" onClick={onClose}>
             Cancel
           </Button>
           <Button
+            radius="xl"
             color={buttonColor || "blue"}
             variant="filled"
             onClick={onConfirm}
