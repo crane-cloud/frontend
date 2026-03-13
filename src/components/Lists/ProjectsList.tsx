@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from "react";
+import React, { useEffect, useMemo } from "react";
 import useGet from "@/utils/useGet";
 import {
   Badge,
@@ -9,19 +9,19 @@ import {
   Skeleton,
   Stack,
   Text,
-  Title,
 } from "@mantine/core";
 import ProjectsCard from "@/components/Cards/ProjectsCard";
 import { GridLayout } from "@/components/Layouts/ListLayouts";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { HiOutlineSquares2X2 } from "react-icons/hi2";
 import { useToggle } from "@mantine/hooks";
+import TitleText from "../TitleText";
 import { Link } from "react-router-dom";
+import Search from "../Elements/Search";
 import { API_PROJECTS } from "@/utils/apis";
 import { DOCS_URL } from "@/config";
 import DataNotFoundMessage from "@/pages/common/DataFoundMessage";
 import { useInfiniteScrollWithPagination } from "@/hooks/generic/useInfiniteScroll";
-import { IoAdd } from "react-icons/io5";
 
 const ProjectsList = () => {
   const { data: projectsData, getData, loading, success } = useGet();
@@ -110,15 +110,12 @@ const ProjectsList = () => {
 
   return (
     <div>
-      <Divider py="xs" mt="sm" />
+      <TitleText>Projects</TitleText>
 
-      <Box py="md">
+      <Box py="lg">
         <Group justify="space-between" align="center">
-          {/* Left Side */}
-          <Title fz="1.8rem">Projects</Title>
-
-          {/* Right Side: Wrapped all buttons in a single Group */}
-          <Group gap="md">
+          <Search type="projects" wide />
+          <Group gap={0}>
             <Button.Group>
               <Button
                 variant={viewMode === "grid" ? "filled" : "default"}
@@ -133,45 +130,41 @@ const ProjectsList = () => {
                 <RxHamburgerMenu />
               </Button>
             </Button.Group>
-
-            <Button
-              leftSection={<IoAdd size={18} />}
-              radius="xl"
-              component={Link}
-              to="/projects/create"
-            >
-              Add New Project
-            </Button>
           </Group>
+          <Button component={Link} to="/projects/create">
+            Add New Project
+          </Button>
         </Group>
-      </Box>
 
-      {!loading && projects.length === 0 ? (
-        <DataNotFoundMessage
-          title="No projects found"
-          helpText="Try creating a new project or check the documentation."
-          helpLink={`${DOCS_URL}/projects/`}
-        />
-      ) : (
-        <Stack gap="xl">
-          {invitedProjects.length > 0 &&
-            ProjectListSection("Pending Invitations", invitedProjects, true)}
+        <Divider mt="lg" mb="md" />
 
-          {personalProjects.length > 0 &&
-            ProjectListSection(
-              invitedProjects.length > 0 ? "Projects List" : "",
-              personalProjects,
+        {!loading && projects.length === 0 ? (
+          <DataNotFoundMessage
+            title="No projects found"
+            helpText="Try creating a new project or check the documentation."
+            helpLink={`${DOCS_URL}/projects/`}
+          />
+        ) : (
+          <Stack gap="xl">
+            {invitedProjects.length > 0 &&
+              ProjectListSection("Pending Invitations", invitedProjects, true)}
+
+            {personalProjects.length > 0 &&
+              ProjectListSection(
+                invitedProjects.length > 0 ? "Projects List" : "",
+                personalProjects,
+              )}
+
+            {loading && (
+              <GridLayout columns={viewMode === "grid" ? 3 : 1}>
+                {[...Array(6)].map((_, i) => (
+                  <Skeleton key={i} height={100} w="100%" radius="md" />
+                ))}
+              </GridLayout>
             )}
-
-          {loading && (
-            <GridLayout columns={viewMode === "grid" ? 3 : 1}>
-              {[...Array(6)].map((_, i) => (
-                <Skeleton key={i} height={100} w="100%" radius="md" />
-              ))}
-            </GridLayout>
-          )}
-        </Stack>
-      )}
+          </Stack>
+        )}
+      </Box>
     </div>
   );
 };

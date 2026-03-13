@@ -16,7 +16,6 @@ import {
   Box,
   Loader,
   Divider,
-  Group,
 } from "@mantine/core";
 import {
   FiSearch,
@@ -35,7 +34,10 @@ import {
   useSetContainerSize,
   useSetNoSidebar,
   beautify,
+  formatPlural,
 } from "@/utils/helpers";
+import TrendingProjects from "@/components/Trending/TrendingProjects";
+import SuggestedUsers from "@/components/Trending/SuggestedUsers";
 import useGet from "@/utils/useGet";
 import { API_SOCIALS } from "@/utils/apis";
 import usePost from "@/utils/usePost";
@@ -46,7 +48,6 @@ import UserCard from "@/components/Cards/UserCard";
 import { TbFolderOff } from "react-icons/tb";
 import { useDebouncedValue } from "@mantine/hooks";
 import { useInfiniteScrollWithPagination } from "@/hooks/generic/useInfiniteScroll";
-import SuggestedUsersGrid from "@/components/Trending/SuggestedUsersGrid";
 
 const ExplorePage = () => {
   useSetNoSidebar();
@@ -127,20 +128,21 @@ const ExplorePage = () => {
     });
   }, []);
 
-  const { items: tags } = useInfiniteScrollWithPagination({
-    loading: loadingTags,
-    success: fetchedTags,
-    data: tagsResponse,
-    extractItems: (data) => data?.data?.tags || [],
-    extractPagination: (data) => data?.data?.pagination || {},
-    extractItemId: (tag) => tag.id,
-    onLoadMore: (page) => {
-      getTags({
-        api: `${API_SOCIALS}?filter=${sortBy}&entity=tags`,
-        params: { page, per_page: 10 },
-      });
-    },
-  });
+  const { items: tags, lastElementRef: tagLastElementRef } =
+    useInfiniteScrollWithPagination({
+      loading: loadingTags,
+      success: fetchedTags,
+      data: tagsResponse,
+      extractItems: (data) => data?.data?.tags || [],
+      extractPagination: (data) => data?.data?.pagination || {},
+      extractItemId: (tag) => tag.id,
+      onLoadMore: (page) => {
+        getTags({
+          api: `${API_SOCIALS}?filter=${sortBy}&entity=tags`,
+          params: { page, per_page: 10 },
+        });
+      },
+    });
 
   useEffect(() => {
     getTags({
@@ -284,7 +286,6 @@ const ExplorePage = () => {
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.currentTarget.value)}
                   size="md"
-                  radius="xl"
                 />
               </Grid.Col>
               <Grid.Col span={3}>
@@ -298,7 +299,6 @@ const ExplorePage = () => {
                   onChange={(value) => setSelectedCategory(value || "all")}
                   leftSection={<FiFilter size={16} />}
                   size="md"
-                  radius="xl"
                 />
               </Grid.Col>
               <Grid.Col span={3}>
@@ -314,7 +314,6 @@ const ExplorePage = () => {
                   onChange={(value) => setSortBy(value || "trending")}
                   leftSection={<FiTrendingUp size={16} />}
                   size="md"
-                  radius="xl"
                 />
               </Grid.Col>
             </Grid>
@@ -505,13 +504,23 @@ const ExplorePage = () => {
               </Stack>
             ) : (
               <Grid>
-                <Grid.Col span={{ base: 12, lg: 8 }}>
-                  <SuggestedUsersGrid title="Top Users" perPage={8} />
+                <Grid.Col span={{ base: 12, sm: 6, md: 4 }}>
+                  <Stack gap="lg">
+                    <TrendingProjects
+                      compact
+                      title="Trending Projects"
+                      perPage={4}
+                    />
+                  </Stack>
                 </Grid.Col>
 
-                <Grid.Col span={{ base: 12, lg: 4 }}>
+                <Grid.Col span={{ base: 12, sm: 6, md: 4 }}>
+                  <SuggestedUsers title="Top Developers" perPage={5} />
+                </Grid.Col>
+
+                <Grid.Col span={{ base: 12, sm: 12, md: 4 }}>
                   <Stack gap="lg">
-                    <TrendingTags title="Popular Tags" perPage={30} />
+                    <TrendingTags title="Popular Tags" perPage={10} />
                   </Stack>
                 </Grid.Col>
               </Grid>
@@ -519,7 +528,7 @@ const ExplorePage = () => {
           </Tabs.Panel>
 
           <Tabs.Panel value="projects">
-            <SimpleGrid cols={{ base: 1, sm: 2, lg: 4 }} spacing="md">
+            <SimpleGrid cols={{ base: 1, sm: 2, md: 3 }} spacing="md">
               {searching ? (
                 <div style={{ gridColumn: "1 / -1" }}>
                   <Center w="100%" h="300px">
@@ -544,32 +553,25 @@ const ExplorePage = () => {
                     <EmptyState message="No projects found" />
                   )
                 ) : (
-                  <>
-                    {projects?.map((project: any, index: number) => {
-                      const isLast = index === projects.length - 1;
-
-                      return (
-                        <div
-                          key={project.id}
-                          ref={isLast ? lastElementRef : null}
-                          style={{
-                            display: "flex",
-                            flexDirection: "column",
-                            height: "100%",
-                          }}
-                        >
-                          <ProjectExploreCard project={project} />
-                        </div>
-                      );
-                    })}
-                  </>
+                  projects?.map((project: any, index) => {
+                    const isLast = index === projects.length - 1;
+                    return (
+                      <div
+                        key={project.id}
+                        ref={isLast ? lastElementRef : null}
+                        style={{ display: "flex", height: "100%" }}
+                      >
+                        <ProjectExploreCard project={project} />
+                      </div>
+                    );
+                  })
                 )
               ) : null}
             </SimpleGrid>
           </Tabs.Panel>
 
           <Tabs.Panel value="users">
-            <SimpleGrid cols={{ base: 1, sm: 2, md: 4 }} spacing="md">
+            <SimpleGrid cols={{ base: 1, sm: 2, md: 3 }} spacing="md">
               {searching ? (
                 <div style={{ gridColumn: "1 / -1" }}>
                   <Center w="100%" h="300px">
@@ -610,7 +612,7 @@ const ExplorePage = () => {
             <Grid>
               <Grid.Col span={12}>
                 <SimpleGrid
-                  cols={{ base: 1, sm: 2, md: 4, lg: 4 }}
+                  cols={{ base: 1, sm: 2, md: 4, lg: 7 }}
                   spacing="md"
                 >
                   {searching ? (
@@ -630,9 +632,10 @@ const ExplorePage = () => {
                           return (
                             <Card
                               key={tag.id}
-                              p="sm" // Reduced padding for a tighter feel
+                              p="lg"
                               withBorder
                               radius="lg"
+                              ta="center"
                               component={Link}
                               to={`/tags/${tag.name}`}
                               style={{
@@ -640,52 +643,45 @@ const ExplorePage = () => {
                                 textDecoration: "none",
                                 color: "inherit",
                                 transition: "all 0.2s ease",
+                                display: "flex",
+                                flexDirection: "column",
                               }}
                               className="hover:shadow-md"
+                              onClick={(e) => {
+                                if (
+                                  (e.target as HTMLElement).closest("button")
+                                ) {
+                                  e.preventDefault();
+                                }
+                              }}
                             >
-                              {/* Switched to a horizontal layout to save vertical space */}
-                              <Group
-                                wrap="nowrap"
-                                justify="space-between"
-                                align="center"
+                              <ThemeIcon
+                                size="xl"
+                                variant="light"
+                                color={getTagColor(tag.name)}
+                                mx="auto"
+                                mb="md"
                               >
-                                {/* Left side: Icon + Text */}
-                                <Group
-                                  wrap="nowrap"
-                                  gap="sm"
-                                  style={{ flex: 1, minWidth: 0 }}
-                                >
-                                  <ThemeIcon
-                                    size="lg" // Reduced from xl to lg
-                                    variant="light"
-                                    color={getTagColor(tag.name)}
-                                    radius="md" // Added slightly softer edges to the icon background
-                                  >
-                                    <FiTag size={18} />
-                                  </ThemeIcon>
-
-                                  <Box style={{ minWidth: 0 }}>
-                                    <Title order={4} size="sm" lineClamp={1}>
-                                      {beautify(tag.name)}
-                                    </Title>
-                                    <Text size="xs" c="dimmed">
-                                      {tag.projects_count}{" "}
-                                      {tag.projects_count === 1
-                                        ? "project"
-                                        : "projects"}
-                                    </Text>
-                                  </Box>
-                                </Group>
-
-                                {/* Right side: Button */}
+                                <FiTag size={24} />
+                              </ThemeIcon>
+                              <Stack
+                                gap="xs"
+                                align="center"
+                                style={{ flex: 1 }}
+                              >
+                                <Title order={4} size="sm">
+                                  {beautify(tag.name)}
+                                </Title>
+                                <Text size="sm" c="dimmed" mb="xs">
+                                  {tag.projects_count} projects
+                                </Text>
                                 <Button
                                   variant="outline"
                                   color="blue"
                                   size="xs"
-                                  radius="xl" // Updated to pill-shape to match your other modern buttons
+                                  mt="xs"
                                   loading={tagState.loading}
                                   disabled={tagState.loading}
-                                  style={{ flexShrink: 0 }} // Prevents the button from getting squished
                                   onClick={(e) => {
                                     e.preventDefault();
                                     handleTagFollow(tag);
@@ -698,16 +694,15 @@ const ExplorePage = () => {
                                     )
                                   }
                                 >
-                                  {/* Note: I adjusted the loading text logic slightly so it makes sense based on the action */}
                                   {tagState.loading
                                     ? tagState.is_following
-                                      ? "Unfollowing..."
-                                      : "Following..."
+                                      ? "Following..."
+                                      : "Unfollowing..."
                                     : tagState.is_following
                                       ? "Following"
                                       : "Follow"}
                                 </Button>
-                              </Group>
+                              </Stack>
                             </Card>
                           );
                         })
@@ -717,92 +712,102 @@ const ExplorePage = () => {
                         </Box>
                       )
                     ) : (
-                      tags.map((tag: TagType) => {
-                        const tagState = tagStates[tag.id] || {
-                          is_following: tag.is_following,
-                          loading: false,
-                        };
+                      tags
+                        ?.filter((tag: TagType) => tag.projects_count > 0)
+                        .map((tag: TagType, index) => {
+                          const isLast = index === tags.length - 1;
 
-                        return (
-                          <Card
-                            key={tag.id}
-                            p="sm"
-                            withBorder
-                            radius="lg"
-                            component={Link}
-                            to={`/tags/${tag.name}`}
-                            style={{
-                              cursor: "pointer",
-                              textDecoration: "none",
-                              color: "inherit",
-                              transition: "all 0.2s ease",
-                            }}
-                            className="hover:shadow-md"
-                          >
-                            <Group
-                              wrap="nowrap"
-                              justify="space-between"
-                              align="center"
+                          const tagState = tagStates[tag.id] || {
+                            is_following: tag.is_following,
+                            loading: false,
+                          };
+
+                          return (
+                            <div
+                              key={tag.id}
+                              ref={isLast ? tagLastElementRef : null}
+                              style={{ height: "100%" }}
                             >
-                              <Group
-                                wrap="nowrap"
-                                gap="sm"
-                                style={{ flex: 1, minWidth: 0 }}
+                              <Card
+                                key={tag.id}
+                                p="lg"
+                                withBorder
+                                radius="lg"
+                                ta="center"
+                                component={Link}
+                                to={`/tags/${tag.name}`}
+                                style={{
+                                  cursor: "pointer",
+                                  textDecoration: "none",
+                                  color: "inherit",
+                                  transition: "all 0.2s ease",
+                                  display: "flex",
+                                  flexDirection: "column",
+                                }}
+                                className="hover:shadow-md"
+                                onClick={(e) => {
+                                  if (
+                                    (e.target as HTMLElement).closest("button")
+                                  ) {
+                                    e.preventDefault();
+                                  }
+                                }}
                               >
                                 <ThemeIcon
-                                  size="lg"
+                                  size="xl"
                                   variant="light"
                                   color={getTagColor(tag.name)}
-                                  radius="md"
+                                  mx="auto"
+                                  mb="md"
                                 >
-                                  <FiTag size={18} />
+                                  <FiTag size={24} />
                                 </ThemeIcon>
-
-                                <Box style={{ minWidth: 0 }}>
-                                  <Title order={4} size="sm" lineClamp={1}>
+                                <Stack
+                                  gap="xs"
+                                  align="center"
+                                  style={{ flex: 1 }}
+                                >
+                                  <Title order={4} size="sm">
                                     {beautify(tag.name)}
                                   </Title>
-                                  <Text size="xs" c="dimmed">
-                                    {tag.projects_count}{" "}
-                                    {tag.projects_count === 1
-                                      ? "project"
-                                      : "projects"}
+                                  <Text size="sm" c="dimmed" mb="xs">
+                                    {formatPlural(
+                                      tag.projects_count,
+                                      "project",
+                                    )}
                                   </Text>
-                                </Box>
-                              </Group>
-
-                              <Button
-                                variant="outline"
-                                color="blue"
-                                size="xs"
-                                radius="xl"
-                                loading={tagState.loading}
-                                disabled={tagState.loading}
-                                style={{ flexShrink: 0 }}
-                                onClick={(e) => {
-                                  e.preventDefault();
-                                  handleTagFollow(tag);
-                                }}
-                                leftSection={
-                                  tagState.is_following ? (
-                                    <FiCheck size={14} />
-                                  ) : (
-                                    <FiUserPlus size={14} />
-                                  )
-                                }
-                              >
-                                {tagState.loading
-                                  ? tagState.is_following
-                                    ? "Unfollowing..."
-                                    : "Following..."
-                                  : tagState.is_following
-                                    ? "Following"
-                                    : "Follow"}
-                              </Button>
-                            </Group>
-                          </Card>
-                        );
-                      })
+                                  <Button
+                                    variant="outline"
+                                    color="blue"
+                                    size="xs"
+                                    mt="xs"
+                                    loading={tagState.loading}
+                                    disabled={tagState.loading}
+                                    onClick={(e) => {
+                                      e.preventDefault();
+                                      handleTagFollow(tag);
+                                    }}
+                                    leftSection={
+                                      tagState.is_following ? (
+                                        <FiCheck size={14} />
+                                      ) : (
+                                        <FiUserPlus size={14} />
+                                      )
+                                    }
+                                  >
+                                    {tagState.loading
+                                      ? tagState.is_following
+                                        ? "Following..."
+                                        : "Unfollowing..."
+                                      : tagState.is_following
+                                        ? "Following"
+                                        : "Follow"}
+                                  </Button>
+                                </Stack>
+                              </Card>
+                            </div>
+                          );
+                        })
                     )
                   ) : null}
                 </SimpleGrid>

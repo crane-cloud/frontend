@@ -14,8 +14,6 @@ import {
   Text,
   TextInput,
   Progress,
-  Box,
-  SimpleGrid,
 } from "@mantine/core";
 import { FaGithub, FaGoogle } from "react-icons/fa";
 import { useForm } from "@mantine/form";
@@ -364,126 +362,117 @@ export function LoginForm(props: PaperProps) {
   };
 
   return (
-    <>
+    <Stack justify="center" mt="lg">
       <Paper
-        radius="xl" // Softer, modern corners
-        p={{ base: "xl", sm: "xl", md: 40 }} // Responsive padding: tight on mobile, spacious on desktop
-        w={{ base: "100%", sm: 450 }} // Restricts width cleanly
-        shadow="sm"
+        radius="md"
+        p="xl"
+        miw={{ base: "100%", sm: 400 }}
         withBorder
         {...props}
       >
         {!passwordReset ? (
           <>
-            <Stack justify="center" align="center" gap={10} mb="xl">
-              <Image src={CraneCloudLogo} alt="Crane Cloud" w={65} />
+            <Stack justify="center" align="center" gap={10} pt={10} pb={20}>
+              <Image src={CraneCloudLogo} alt="Crane Cloud" w={70} />
               <Text
                 variant="gradient"
                 gradient={{ from: "blue", to: "cyan", deg: 90 }}
                 size="xl"
-                fw={800} // Slightly bolder
+                fw={700}
                 ta="center"
               >
                 Welcome {type === "login" && "back"} to Crane Cloud
               </Text>
             </Stack>
-
-            {/* Changed to SimpleGrid: Stacks on mobile, side-by-side on desktop */}
-            <SimpleGrid cols={{ base: 1, sm: 2 }} spacing="sm">
+            <Group justify="center" mt="lg" gap="sm">
               <Button
-                variant="default" // Outline/default looks cleaner for social buttons
-                radius="md"
-                size="md" // Larger click area
-                leftSection={<FaGithub size={18} />}
+                radius="xl"
+                leftSection={<FaGithub />}
                 onClick={handleGithubAuth}
+                flex={1}
               >
-                {gitLogin ? <Loader size="sm" color="gray" /> : "GitHub"}
+                {gitLogin ? (
+                  <Loader size="sm" color="gray" />
+                ) : (
+                  "Continue with GitHub"
+                )}
               </Button>
               <Button
-                variant="default"
-                radius="md"
-                size="md"
-                leftSection={
-                  <FaGoogle size={18} style={{ color: "#EA4335" }} />
-                }
+                radius="xl"
+                flex={1}
+                leftSection={<FaGoogle style={{ color: "#EA4335" }} />}
                 onClick={handleGoogleAuth}
               >
-                {googleLogin ? <Loader size="sm" color="gray" /> : "Google"}
+                {googleLogin ? (
+                  <Loader size="sm" color="gray" />
+                ) : (
+                  "Continue with Google"
+                )}
               </Button>
-            </SimpleGrid>
-
+            </Group>
             <Divider
-              label={
-                <Text size="md" fw={500} c="gray.6">
-                  Or continue with email
-                </Text>
-              }
+              label="Or continue with email"
               labelPosition="center"
-              my="xl" // More breathing room
-              c="dimmed"
+              my="lg"
+              fw={700}
             />
-
             <form onSubmit={handleSubmit}>
-              <Stack gap="md">
-                {" "}
-                {/* Increased gap between inputs */}
+              <Stack gap="sm">
                 {type === "register" && (
-                  <Stack gap="md">
+                  <Stack>
                     <TextInput
                       required
-                      size="md" // Modern input sizing
                       label="Name"
                       placeholder="Your name"
                       {...form.getInputProps("name")}
-                      leftSection={<MdDriveFileRenameOutline size={18} />}
+                      leftSection={<MdDriveFileRenameOutline />}
                     />
                     <TextInput
                       required
-                      size="md"
                       label="Username"
                       placeholder="Your username"
                       {...form.getInputProps("username")}
-                      leftSection={<MdOutlinePerson size={18} />}
+                      leftSection={<MdOutlinePerson />}
                     />
                     <TextInput
                       required
-                      size="md"
                       label="Organisation"
                       placeholder="Your organisation"
                       {...form.getInputProps("organisation")}
-                      leftSection={<MdOutlineBusiness size={18} />}
+                      leftSection={<MdOutlineBusiness />}
                     />
                     <TextInput
                       required
-                      size="md"
                       label="Email"
                       placeholder="Email Address"
                       {...form.getInputProps("email")}
-                      leftSection={<MdOutlineEmail size={18} />}
+                      leftSection={<MdOutlineEmail />}
                     />
                   </Stack>
                 )}
                 {type === "login" && (
                   <TextInput
                     required
-                    size="md"
-                    label="Username or Email"
-                    placeholder="Enter your credentials"
+                    label="Username"
+                    placeholder="Your username or email"
                     {...form.getInputProps("username")}
-                    leftSection={<MdOutlinePerson size={18} />}
+                    leftSection={<MdOutlinePerson />}
                   />
                 )}
+
                 <PasswordInput
                   required
-                  size="md"
                   label="Password"
                   placeholder="Your password"
                   value={form.values.password}
-                  onChange={(e) => validatePassword(e.currentTarget.value)}
+                  onChange={(e) => {
+                    validatePassword(e.currentTarget.value);
+                  }}
                   onBlur={handlePasswordBlur}
                   error={form.errors.password}
-                  leftSection={<MdOutlineLock size={18} />}
+                  leftSection={<MdOutlineLock />}
                 />
+
                 {type === "register" && form.values.password && (
                   // !form.errors.password && (
                   <Stack gap={4}>
@@ -542,24 +531,24 @@ export function LoginForm(props: PaperProps) {
                     )}
                   </Stack>
                 )}
+
                 {type === "register" && (
                   <>
                     <PasswordInput
                       label="Confirm Password"
                       placeholder="Repeat password"
                       required
-                      size="md"
                       value={form.values.confirmPassword}
-                      onChange={(e) =>
-                        validateConfirmPassword(e.currentTarget.value)
-                      }
+                      onChange={(e) => {
+                        validateConfirmPassword(e.currentTarget.value);
+                      }}
                       onBlur={handleConfirmPasswordBlur}
                       error={form.errors.confirmPassword}
-                      leftSection={<MdOutlineLock size={18} />}
+                      leftSection={<MdOutlineLock />}
                     />
+
                     <Checkbox
                       required
-                      mt="sm"
                       label="I agree to the terms and conditions"
                       checked={form.values.terms}
                       onChange={(e) =>
@@ -570,15 +559,37 @@ export function LoginForm(props: PaperProps) {
                 )}
               </Stack>
 
-              <Stack mt="xl" gap="md">
+              <Stack mt="xl">
+                <Group justify="space-between">
+                  <Anchor
+                    component="button"
+                    type="button"
+                    c="dimmed"
+                    onClick={() => toggle()}
+                    size="xs"
+                    fw={600}
+                  >
+                    {type === "register"
+                      ? "Already have an account? Login"
+                      : "Don't have an account? Register"}
+                  </Anchor>
+                  {type === "login" && (
+                    <Anchor
+                      component="button"
+                      type="button"
+                      size="sm"
+                      fw={700}
+                      onClick={() => setShowPasswordReset(true)}
+                    >
+                      Forgot password?
+                    </Anchor>
+                  )}
+                </Group>
                 <Button
                   type="submit"
-                  size="md" // Taller primary button
-                  radius="md"
                   variant="gradient"
                   gradient={{ from: "blue", to: "cyan", deg: 90 }}
                   disabled={isSubmitDisabled()}
-                  fullWidth
                 >
                   {loggingIn || registering ? (
                     <Loader size="sm" color="white" />
@@ -586,32 +597,6 @@ export function LoginForm(props: PaperProps) {
                     upperFirst(type)
                   )}
                 </Button>
-
-                <Group justify="space-between" mt="xs">
-                  <Anchor
-                    component="button"
-                    type="button"
-                    c="dimmed"
-                    onClick={() => toggle()}
-                    size="sm"
-                    fw={500}
-                  >
-                    {type === "register"
-                      ? "Already have an account?"
-                      : "Don't have an account?"}
-                  </Anchor>
-                  {type === "login" && (
-                    <Anchor
-                      component="button"
-                      type="button"
-                      size="sm"
-                      fw={600}
-                      onClick={() => setShowPasswordReset(true)}
-                    >
-                      Forgot password?
-                    </Anchor>
-                  )}
-                </Group>
               </Stack>
             </form>
           </>
@@ -621,7 +606,7 @@ export function LoginForm(props: PaperProps) {
               variant="gradient"
               gradient={{ from: "blue", to: "cyan", deg: 90 }}
               size="xl"
-              fw={800}
+              fw={700}
               ta="center"
             >
               Reset Your Password
@@ -699,38 +684,18 @@ export function LoginForm(props: PaperProps) {
           </Text>
         </Modal>
       </Paper>
-    </>
+    </Stack>
   );
 }
 
 export function LoginPage() {
   return (
-    <Box
-      style={{
-        minHeight: "100vh",
-        display: "flex",
-        flexDirection: "column",
-        backgroundColor: "var(--mantine-color-body)",
-        backgroundImage:
-          "radial-gradient(circle, light-dark(rgba(0,0,0,0.08), rgba(255,255,255,0.06)) 1.5px, transparent 1.5px)",
-        backgroundSize: "24px 24px",
-      }}
-    >
+    <Stack justify="space-between" h="100vh">
       <GuestHeader />
-
-      <Box
-        style={{
-          flex: 1,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          padding: "var(--mantine-spacing-md)", // Prevents touching edges on mobile
-        }}
-      >
+      <Group justify="center">
         <LoginForm />
-      </Box>
-
+      </Group>
       <GuestFooter />
-    </Box>
+    </Stack>
   );
 }

@@ -464,12 +464,11 @@ export const MigrateProjectForm = (props: {
 
           <Group justify="flex-end">
             {onCancel && (
-              <Button radius="xl" variant="default" onClick={onCancel}>
+              <Button variant="default" onClick={onCancel}>
                 Cancel
               </Button>
             )}
             <Button
-              radius="xl"
               variant="filled"
               color={project ? "blue" : "gray.9"}
               type="submit"

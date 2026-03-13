@@ -8,7 +8,7 @@ import UserCard from "../Cards/UserCard";
 
 export default function SuggestedUsers({
   title,
-  perPage = 7,
+  perPage = 6,
 }: {
   title: string;
   perPage?: number;

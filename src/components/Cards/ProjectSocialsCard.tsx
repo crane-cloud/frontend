@@ -12,7 +12,6 @@ import {
   Loader,
   Menu,
   Text,
-  Box,
 } from "@mantine/core";
 import { useEffect, useMemo, useState } from "react";
 import { FaRegCircle } from "react-icons/fa";
@@ -49,7 +48,7 @@ export default function ProjectSocialsCard({
     return user.id === project?.owner_id;
   }, [user?.id, project?.owner_id]);
 
-  // --- KEEPING ALL YOUR EXISTING LOGIC AND HOOKS ---
+  // Follow/Unfollow functionality
   const {
     uploadData: followProject,
     submitting: following,
@@ -62,6 +61,8 @@ export default function ProjectSocialsCard({
     success: unfollow_success,
     data: unfollow_response,
   } = usePost();
+
+  // Pin/Unpin functionality
   const {
     uploadData: pinProject,
     submitting: pinningProject,
@@ -74,6 +75,8 @@ export default function ProjectSocialsCard({
     success: unpin_success,
     data: unpin_response,
   } = usePost();
+
+  //Private/Public functionality
   const {
     uploadData: makePublicProject,
     submitting: makingProjectPublic,
@@ -81,6 +84,7 @@ export default function ProjectSocialsCard({
     data: public_response,
   } = usePost();
 
+  // Handle pin success
   useEffect(() => {
     if (pin_success && pin_response) {
       setIsPinnedProject(true);
@@ -88,6 +92,8 @@ export default function ProjectSocialsCard({
       refreshUserProjects();
     }
   }, [pin_success, pin_response]);
+
+  // Handle unpin success
   useEffect(() => {
     if (unpin_success && unpin_response) {
       setIsPinnedProject(false);
@@ -95,6 +101,8 @@ export default function ProjectSocialsCard({
       refreshUserProjects();
     }
   }, [unpin_success, unpin_response]);
+
+  // Handle follow success
   useEffect(() => {
     if (follow_success && follow_response) {
       setIsFollowingProject(true);
@@ -102,6 +110,8 @@ export default function ProjectSocialsCard({
       refreshUserProjects();
     }
   }, [follow_success, follow_response]);
+
+  // Handle unfollow success
   useEffect(() => {
     if (unfollow_success && unfollow_response) {
       setIsFollowingProject(false);
@@ -109,6 +119,8 @@ export default function ProjectSocialsCard({
       refreshUserProjects();
     }
   }, [unfollow_success, unfollow_response]);
+
+  //Handle public success
   useEffect(() => {
     if (public_success && public_response) {
       setIsPrivateProject(public_response.is_public);
@@ -117,6 +129,7 @@ export default function ProjectSocialsCard({
     }
   }, [public_success, public_response]);
 
+  // Handle follow/unfollow click
   const onFollowClick = () => {
     if (isFollowingProject) {
       unfollowProject({
@@ -124,10 +137,13 @@ export default function ProjectSocialsCard({
         method: "DELETE",
       });
     } else {
-      followProject({ api: `${API_PROJECTS}/${project?.id}/following` });
+      followProject({
+        api: `${API_PROJECTS}/${project?.id}/following`,
+      });
     }
   };
 
+  // Handle pin/unpin click
   const onPinClick = (projectID: string, isPinned: boolean) => {
     if (isPinned) {
       unpinProject({
@@ -135,10 +151,13 @@ export default function ProjectSocialsCard({
         method: "DELETE",
       });
     } else {
-      pinProject({ api: `${API_PROJECTS}/${projectID}/pin` });
+      pinProject({
+        api: `${API_PROJECTS}/${projectID}/pin`,
+      });
     }
   };
 
+  // Handle make private/public click
   const onMakePrivateClick = (projectID: string, currentStatus: boolean) => {
     makePublicProject({
       api: `${API_PROJECTS}/${projectID}`,
@@ -152,25 +171,18 @@ export default function ProjectSocialsCard({
   const isPrivateLoading = makingProjectPublic;
 
   return (
-    <Card
-      key={project.id}
-      withBorder
-      radius="lg" // Upgraded to match new premium aesthetic
-      p="lg" // Increased padding for breathability
-      shadow="sm" // Subtle shadow
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        height: "100%", // Ensures all cards in the grid are equal height
-      }}
-    >
-      {/* Top Section: Title, Description, Menu */}
-      <Box style={{ flex: 1 }}>
-        <Group justify="space-between" align="flex-start" wrap="nowrap" mb="sm">
-          <Text fw={700} size="lg" lineClamp={1}>
+    <>
+      <Card
+        key={project.id}
+        withBorder
+        radius="md"
+        p="md"
+        style={{ position: "relative" }}
+      >
+        <Group justify="space-between" mb="sm">
+          <Text fw={600} lineClamp={1}>
             {beautify(project?.name)}
           </Text>
-
           <Menu
             shadow="md"
             width={200}
@@ -182,11 +194,10 @@ export default function ProjectSocialsCard({
             <Menu.Target>
               <ActionIcon
                 variant="subtle"
-                color="blue" // Matching the blue dots in your screenshot
                 aria-label="Options"
                 onClick={() => setMenuOpened((o) => !o)}
               >
-                <FiMoreVertical size={18} />
+                <FiMoreVertical size={15} />
               </ActionIcon>
             </Menu.Target>
 
@@ -220,6 +231,8 @@ export default function ProjectSocialsCard({
 
               {!isPinnedProject && (
                 <>
+                  <Divider />
+
                   {isProjectOwner && (
                     <Menu.Item
                       onClick={() =>
@@ -281,75 +294,78 @@ export default function ProjectSocialsCard({
         <Text
           size="sm"
           c="dimmed"
-          mb="xl" // Replaced strict line heights with a simple margin bottom
+          mb="md"
           lineClamp={2}
+          style={{
+            height: "2.4em",
+            lineHeight: "1.2em",
+          }}
         >
-          {beautify(project.description) || "No description provided."}
+          {beautify(project.description)}
         </Text>
-      </Box>
 
-      {/* Bottom Section: Tags & Visibility Status */}
-      <Group justify="space-between" align="center" mt="auto" wrap="nowrap">
-        <Group gap="xs" style={{ flex: 1, overflow: "hidden" }} wrap="nowrap">
-          {project?.tags &&
-            project.tags.slice(0, 3).map((tag: ProjectTag) => (
-              <Badge
-                key={tag.id}
-                size="sm"
-                radius="xl" // Pill shape
-                color="blue"
-                variant="light"
-                tt="uppercase" // Matches your screenshot styling
-                component={Link}
-                to={`/tags/${tag.name}`}
-                style={{ cursor: "pointer" }}
-              >
-                {tag.name}
-              </Badge>
-            ))}
-
-          {/* +X Badge */}
-          {project?.tags && project.tags.length > 3 && (
-            <Menu shadow="md" width={200} position="bottom-start">
-              <Menu.Target>
+        <Group justify="space-between" align="flex-end">
+          <Group gap="sm">
+            {project?.tags &&
+              project.tags.slice(0, 3).map((tag: ProjectTag) => (
                 <Badge
+                  key={tag.id}
                   size="sm"
-                  radius="xl" // Pill shape
                   color="blue"
                   variant="light"
+                  component={Link}
+                  to={`/tags/${tag.name}`}
                   style={{ cursor: "pointer" }}
                 >
-                  +{project.tags.length - 3}
+                  {tag.name}
                 </Badge>
-              </Menu.Target>
+              ))}
 
-              <Menu.Dropdown>
-                {project.tags.slice(3).map((tag: ProjectTag) => (
-                  <Menu.Item
-                    key={tag.id}
-                    component={Link}
-                    to={`/tags/${tag.name}`}
+            {/* Tags Plus Counter & Dropdown */}
+            {project?.tags && project.tags.length > 3 && (
+              <Menu shadow="md" width={200} position="bottom-start">
+                <Menu.Target>
+                  <Badge
+                    size="sm"
+                    color="blue"
+                    variant="light"
+                    style={{ cursor: "pointer" }}
                   >
-                    {tag.name}
-                  </Menu.Item>
-                ))}
-              </Menu.Dropdown>
-            </Menu>
-          )}
+                    +{project.tags.length - 3}
+                  </Badge>
+                </Menu.Target>
+
+                <Menu.Dropdown>
+                  {project.tags.slice(3).map((tag: ProjectTag) => (
+                    <Menu.Item
+                      key={tag.id}
+                      component={Link}
+                      to={`/tags/${tag.name}`}
+                    >
+                      {tag.name}
+                    </Menu.Item>
+                  ))}
+                </Menu.Dropdown>
+              </Menu>
+            )}
+          </Group>
         </Group>
 
         {/* Project Visibility Status Badge */}
-        {/* Removed absolute positioning so it aligns perfectly with tags */}
         <Badge
           size="sm"
-          radius="xl" // Pill shape
-          color={isPublicProject ? "green" : "gray"} // Soft gray for private looks better than aggressive red
+          color={isPublicProject ? "green" : "red"}
           variant="light"
+          style={{
+            position: "absolute",
+            bottom: "15px",
+            right: "8px",
+          }}
           tt="capitalize"
         >
           {isPublicProject ? "Public" : "Private"}
         </Badge>
-      </Group>
-    </Card>
+      </Card>
+    </>
   );
 }

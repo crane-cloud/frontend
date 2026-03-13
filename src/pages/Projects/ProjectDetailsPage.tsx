@@ -9,7 +9,6 @@ import { API_CLUSTERS } from "@/utils/apis";
 import { MigrateProjectForm } from "@/components/Forms/CreateProjectForm";
 import { ModalConfirm } from "@/components/Elements/Modals";
 import { BiTransferAlt } from "react-icons/bi";
-import { Container } from "@mantine/core";
 
 const ProjectDetailsPage = () => {
   const { project_id } = useParams();
@@ -55,42 +54,40 @@ const ProjectDetailsPage = () => {
 
   return (
     <>
-      <Container size="1070" mt="sm">
-        {!clustersLoading && success && (
-          <TitleText
-            loading={loading}
-            rightSection={
-              <AddServiceButton project={project} setRefresh={setRefresh} />
-            }
-          >
-            {project?.name} Dashboard
-          </TitleText>
-        )}
+      {!clustersLoading && success && (
+        <TitleText
+          loading={loading}
+          rightSection={
+            <AddServiceButton project={project} setRefresh={setRefresh} />
+          }
+        >
+          {project?.name} Dashboard
+        </TitleText>
+      )}
 
-        <AppsList project_id={project_id} refresh={refresh} />
-        {/* <DatabaseList project_id={id} /> */}
+      <AppsList project_id={project_id} refresh={refresh} />
+      {/* <DatabaseList project_id={id} /> */}
 
-        {showProjectMigrateModal && (
-          <ModalConfirm
-            opened={showProjectMigrateModal}
-            onClose={() => setShowProjectMigrateModal(false)}
-            title="Server Cluster Unavailable - Migrate Project Now"
-            buttonText="Migrate"
-            // buttonColor="red"
-            onConfirm={() => {}}
-            size="xl"
-            showFooterActions={false}
-            leftSection={<BiTransferAlt />}
-          >
-            <MigrateProjectForm
-              project={project}
-              showTitle={false}
-              onCancel={() => setShowProjectMigrateModal(false)}
-              refresh={() => setRefresh(true)}
-            />
-          </ModalConfirm>
-        )}
-      </Container>
+      {showProjectMigrateModal && (
+        <ModalConfirm
+          opened={showProjectMigrateModal}
+          onClose={() => setShowProjectMigrateModal(false)}
+          title="Server Cluster Unavailable - Migrate Project Now"
+          buttonText="Migrate"
+          // buttonColor="red"
+          onConfirm={() => {}}
+          size="xl"
+          showFooterActions={false}
+          leftSection={<BiTransferAlt />}
+        >
+          <MigrateProjectForm
+            project={project}
+            showTitle={false}
+            onCancel={() => setShowProjectMigrateModal(false)}
+            refresh={() => setRefresh(true)}
+          />
+        </ModalConfirm>
+      )}
     </>
   );
 };

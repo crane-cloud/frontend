@@ -26,8 +26,8 @@ interface CompactProjectsListProps {
 
 const CompactProjectsList = ({
   title = "Your Projects",
-  maxItems = 7,
-  showCreateButton = false,
+  maxItems = 8,
+  showCreateButton = true,
   showPrivacyIcons = true,
 }: CompactProjectsListProps) => {
   const { data: projectsData, getData, loading } = useGet();

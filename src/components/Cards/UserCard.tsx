@@ -78,7 +78,6 @@ const UserCard = ({
                 href={`/${user.username}`}
                 size="sm"
                 fw={500}
-                lineClamp={1}
                 style={{
                   lineHeight: 1.2,
                   textDecoration: "none",
@@ -102,7 +101,6 @@ const UserCard = ({
               <Button
                 variant="outline"
                 size="xs"
-                radius="xl"
                 color="blue"
                 leftSection={
                   isFollowingUser ? (

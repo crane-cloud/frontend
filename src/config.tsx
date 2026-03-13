@@ -2,7 +2,6 @@
 export const API_BASE_URL = import.meta.env.VITE_APP_API_BASE_URL;
 // docs Url
 export const DOCS_URL = import.meta.env.VITE_APP_DOCS_URL;
-export const STATUS_URL = import.meta.env.VITE_APP_STATUS_URL;
 export const BLOG_URL = import.meta.env.VITE_APP_BLOG_URL;
 export const STATUS_MONITORING_URL = import.meta.env.VITE_APP_MONITORING_APP;
 //mira Url
