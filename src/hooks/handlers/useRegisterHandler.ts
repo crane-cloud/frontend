@@ -12,10 +12,12 @@ import useNamespaces from "../cluster/useNamespaces";
 import useDeployments from "../cluster/useDeployments";
 import useJobs from "../cluster/useJobs";
 import useStorageClasses from "../cluster/useStorageClasses";
+import { useInactiveUsers } from "../useInactiveUsers";
 
 // handle register creation
 export const registerHooks: Record<string, any> = {
   users: useUsers,
+  inactive_users: useInactiveUsers,
   databases: useDatabases,
   projects: useProjects,
   apps: useApps,
@@ -32,6 +34,7 @@ export const registerHooks: Record<string, any> = {
 };
 export const sourceApis: Record<string, string> = {
   users: "/users",
+  inactive_users: "/users/inactive_users",
   databases: `${DATABASE_API_URL}/databases`,
   projects: `/projects`,
   apps: `/apps`,

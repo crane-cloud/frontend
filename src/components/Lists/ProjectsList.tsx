@@ -4,7 +4,6 @@ import {
   Badge,
   Box,
   Button,
-  Divider,
   Group,
   Skeleton,
   Stack,
@@ -110,9 +109,7 @@ const ProjectsList = () => {
 
   return (
     <div>
-      <Divider py="xs" mt="sm" />
-
-      <Box py="md">
+      <Box>
         <Group justify="space-between" align="center">
           {/* Left Side */}
           <Title fz="1.8rem">Projects</Title>
@@ -136,7 +133,7 @@ const ProjectsList = () => {
 
             <Button
               leftSection={<IoAdd size={18} />}
-              radius="xl"
+              radius="md"
               component={Link}
               to="/projects/create"
             >

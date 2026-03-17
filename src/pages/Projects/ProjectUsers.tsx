@@ -13,6 +13,7 @@ import {
   Text,
   TextInput,
   Modal,
+  Container,
 } from "@mantine/core";
 import { HiDotsVertical } from "react-icons/hi";
 import { HiTrash } from "react-icons/hi2";
@@ -328,7 +329,7 @@ export const MembersSection = ({ project }: { project: any }) => {
     .find((m) => m?.user?.id === user?.id)
     ?.role.split(".")[1];
   return (
-    <div>
+    <Container size="1070" mt="sm">
       <TitleText>Members</TitleText>
       <Stack gap={20}>
         {isSelf && (myRole === "owner" || myRole === "admin") && (
@@ -361,7 +362,7 @@ export const MembersSection = ({ project }: { project: any }) => {
               </Flex>
               <Group justify="start" mt={10}>
                 <Button
-                  radius="xl"
+                  radius="md"
                   color="var(--mantine-color-text)"
                   leftSection={<IoMdSend />}
                   onClick={handleInviteMember}
@@ -504,6 +505,6 @@ export const MembersSection = ({ project }: { project: any }) => {
           </>
         )}
       </Modal>
-    </div>
+    </Container>
   );
 };

@@ -49,7 +49,6 @@ export default function ProjectSocialsCard({
     return user.id === project?.owner_id;
   }, [user?.id, project?.owner_id]);
 
-  // --- KEEPING ALL YOUR EXISTING LOGIC AND HOOKS ---
   const {
     uploadData: followProject,
     submitting: following,
@@ -155,16 +154,15 @@ export default function ProjectSocialsCard({
     <Card
       key={project.id}
       withBorder
-      radius="lg" // Upgraded to match new premium aesthetic
-      p="lg" // Increased padding for breathability
-      shadow="sm" // Subtle shadow
+      radius="md"
+      p="sm"
+      shadow="sm"
       style={{
         display: "flex",
         flexDirection: "column",
-        height: "100%", // Ensures all cards in the grid are equal height
+        height: "100%",
       }}
     >
-      {/* Top Section: Title, Description, Menu */}
       <Box style={{ flex: 1 }}>
         <Group justify="space-between" align="flex-start" wrap="nowrap" mb="sm">
           <Text fw={700} size="lg" lineClamp={1}>
@@ -182,7 +180,7 @@ export default function ProjectSocialsCard({
             <Menu.Target>
               <ActionIcon
                 variant="subtle"
-                color="blue" // Matching the blue dots in your screenshot
+                color="blue"
                 aria-label="Options"
                 onClick={() => setMenuOpened((o) => !o)}
               >
@@ -278,17 +276,11 @@ export default function ProjectSocialsCard({
           </Menu>
         </Group>
 
-        <Text
-          size="sm"
-          c="dimmed"
-          mb="xl" // Replaced strict line heights with a simple margin bottom
-          lineClamp={2}
-        >
+        <Text size="sm" c="dimmed" mb="xl" lineClamp={2}>
           {beautify(project.description) || "No description provided."}
         </Text>
       </Box>
 
-      {/* Bottom Section: Tags & Visibility Status */}
       <Group justify="space-between" align="center" mt="auto" wrap="nowrap">
         <Group gap="xs" style={{ flex: 1, overflow: "hidden" }} wrap="nowrap">
           {project?.tags &&
@@ -296,10 +288,10 @@ export default function ProjectSocialsCard({
               <Badge
                 key={tag.id}
                 size="sm"
-                radius="xl" // Pill shape
+                radius="xl"
                 color="blue"
                 variant="light"
-                tt="uppercase" // Matches your screenshot styling
+                tt="uppercase"
                 component={Link}
                 to={`/tags/${tag.name}`}
                 style={{ cursor: "pointer" }}
@@ -308,13 +300,12 @@ export default function ProjectSocialsCard({
               </Badge>
             ))}
 
-          {/* +X Badge */}
           {project?.tags && project.tags.length > 3 && (
             <Menu shadow="md" width={200} position="bottom-start">
               <Menu.Target>
                 <Badge
                   size="sm"
-                  radius="xl" // Pill shape
+                  radius="xl"
                   color="blue"
                   variant="light"
                   style={{ cursor: "pointer" }}
@@ -338,12 +329,10 @@ export default function ProjectSocialsCard({
           )}
         </Group>
 
-        {/* Project Visibility Status Badge */}
-        {/* Removed absolute positioning so it aligns perfectly with tags */}
         <Badge
           size="sm"
-          radius="xl" // Pill shape
-          color={isPublicProject ? "green" : "gray"} // Soft gray for private looks better than aggressive red
+          radius="xl"
+          color={isPublicProject ? "green" : "gray"}
           variant="light"
           tt="capitalize"
         >

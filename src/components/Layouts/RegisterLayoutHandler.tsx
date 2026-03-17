@@ -9,7 +9,7 @@ import { beautify, returnObject } from "../../utils/helpers";
 import useGet from "@/utils/useGet";
 import { IoAdd } from "react-icons/io5";
 import { Table } from "../Elements/CustomTable";
-import { Button, Stack } from "@mantine/core";
+import { Button, Container, Stack } from "@mantine/core";
 import TitleText from "../TitleText";
 import { SimpleDetailsCard } from "../Cards/DetailsCard";
 import { BarMetricChart } from "../Elements/Charts";
@@ -57,6 +57,7 @@ const RegisterLayoutHandler = (props: any) => {
     createTitle,
     metaData,
     tableTotals,
+    rowActions,
     // externalFilters,
     initialFilters,
     isExternalRoute,
@@ -163,8 +164,9 @@ const RegisterLayoutHandler = (props: any) => {
   }
 
   return (
-    <Stack gap={20}>
-      {/* {externalFilters && externalFilters.length > 0 && (
+    <Container size="1070" mt="sm">
+      <Stack gap={20}>
+        {/* {externalFilters && externalFilters.length > 0 && (
         <div style={{ display: "flex", gap: 30, marginBottom: 30 }}>
           {externalFilters.map((row: any) => (
             <TableFilter
@@ -180,63 +182,66 @@ const RegisterLayoutHandler = (props: any) => {
           ))}
         </div>
       )} */}
-      {/* {showTotals && totalsData && ( */}
-      {showTitle && (
-        <TitleText
-          rightSection={
-            formRoute && (
-              <Button
-                className="capitalize"
-                leftSection={<IoAdd fontSize="small" />}
-                onClick={() => navigate(formRoute)}
-                size="sm"
-              >
-                {createTitle || `New ${beautify(source)}`}
-              </Button>
-            )
-          }
-        >
-          {title || getTitle()}
-        </TitleText>
-      )}
+        {/* {showTotals && totalsData && ( */}
+        {showTitle && (
+          <TitleText
+            rightSection={
+              formRoute && (
+                <Button
+                  className="capitalize"
+                  leftSection={<IoAdd fontSize="small" />}
+                  onClick={() => navigate(formRoute)}
+                  size="sm"
+                >
+                  {createTitle || `New ${beautify(source)}`}
+                </Button>
+              )
+            }
+          >
+            {title || getTitle()}
+          </TitleText>
+        )}
 
-      {metaData && registerData && (
-        <SimpleDetailsCard
-          data={metaData(
-            registerData?.data?.meta_data || registerData?.data?.metadata,
-          )}
-        />
-      )}
+        {metaData && registerData && (
+          <SimpleDetailsCard
+            data={metaData(
+              registerData?.data?.meta_data || registerData?.data?.metadata,
+            )}
+          />
+        )}
 
-      {graphData && (
-        <BarMetricChart
-          title={graphTitle || getTitle()}
-          data={graphDataResults}
-          showAllXValues
+        {graphData && (
+          <BarMetricChart
+            title={graphTitle || getTitle()}
+            data={graphDataResults}
+            showAllXValues
+            filters={filters}
+            setFilters={(data) => {
+              setFilter({ ...filters, ...data });
+            }}
+            height={250}
+            valueFormatter={(value) => `${value}`}
+            isLoading={fetchingGraphData}
+          />
+        )}
+        <Table
+          title={title || getTitle()}
+          loading={loading}
+          columns={tableColumns ? tableColumns(tableDataResults) : []}
+          data={tableData ? tableData(tableDataResults) : []}
+          tableTotals={tableTotals ? tableTotals(registerData) : {}}
+          pagination={pagination}
           filters={filters}
-          setFilters={(data) => {
-            setFilter({ ...filters, ...data });
+          onFilterChange={(data) => {
+            setFilter({ filters, ...data });
           }}
-          height={250}
-          valueFormatter={(value) => `${value}`}
-          isLoading={fetchingGraphData}
+          striped
+          showPagination
+          rowActions={rowActions}
+          hideActions={false}
         />
-      )}
-      <Table
-        title={title || getTitle()}
-        loading={loading}
-        columns={tableColumns ? tableColumns(tableDataResults) : []}
-        data={tableData ? tableData(tableDataResults) : []}
-        tableTotals={tableTotals ? tableTotals(registerData) : {}}
-        pagination={pagination}
-        filters={filters}
-        onFilterChange={(data) => {
-          setFilter({ filters, ...data });
-        }}
-        striped
-        showPagination
-      />
-    </Stack>
+      </Stack>
+    </Container>
   );
 };
 

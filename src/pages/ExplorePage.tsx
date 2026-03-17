@@ -263,7 +263,7 @@ const ExplorePage = () => {
   };
 
   return (
-    <Container size="xl" py="lg">
+    <Container size="xl">
       <Stack gap="xl">
         {/* Header Section */}
         <Stack gap="lg">
@@ -284,7 +284,7 @@ const ExplorePage = () => {
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.currentTarget.value)}
                   size="md"
-                  radius="xl"
+                  radius="md"
                 />
               </Grid.Col>
               <Grid.Col span={3}>
@@ -298,7 +298,7 @@ const ExplorePage = () => {
                   onChange={(value) => setSelectedCategory(value || "all")}
                   leftSection={<FiFilter size={16} />}
                   size="md"
-                  radius="xl"
+                  radius="md"
                 />
               </Grid.Col>
               <Grid.Col span={3}>
@@ -314,7 +314,7 @@ const ExplorePage = () => {
                   onChange={(value) => setSortBy(value || "trending")}
                   leftSection={<FiTrendingUp size={16} />}
                   size="md"
-                  radius="xl"
+                  radius="md"
                 />
               </Grid.Col>
             </Grid>
@@ -511,7 +511,7 @@ const ExplorePage = () => {
 
                 <Grid.Col span={{ base: 12, lg: 4 }}>
                   <Stack gap="lg">
-                    <TrendingTags title="Popular Tags" perPage={30} />
+                    <TrendingTags title="Popular Tags" perPage={28} />
                   </Stack>
                 </Grid.Col>
               </Grid>
@@ -630,7 +630,7 @@ const ExplorePage = () => {
                           return (
                             <Card
                               key={tag.id}
-                              p="sm" // Reduced padding for a tighter feel
+                              p="sm"
                               withBorder
                               radius="lg"
                               component={Link}
@@ -643,23 +643,21 @@ const ExplorePage = () => {
                               }}
                               className="hover:shadow-md"
                             >
-                              {/* Switched to a horizontal layout to save vertical space */}
                               <Group
                                 wrap="nowrap"
                                 justify="space-between"
                                 align="center"
                               >
-                                {/* Left side: Icon + Text */}
                                 <Group
                                   wrap="nowrap"
                                   gap="sm"
                                   style={{ flex: 1, minWidth: 0 }}
                                 >
                                   <ThemeIcon
-                                    size="lg" // Reduced from xl to lg
+                                    size="lg"
                                     variant="light"
                                     color={getTagColor(tag.name)}
-                                    radius="md" // Added slightly softer edges to the icon background
+                                    radius="md"
                                   >
                                     <FiTag size={18} />
                                   </ThemeIcon>
@@ -677,15 +675,14 @@ const ExplorePage = () => {
                                   </Box>
                                 </Group>
 
-                                {/* Right side: Button */}
                                 <Button
                                   variant="outline"
                                   color="blue"
                                   size="xs"
-                                  radius="xl" // Updated to pill-shape to match your other modern buttons
+                                  radius="xl"
                                   loading={tagState.loading}
                                   disabled={tagState.loading}
-                                  style={{ flexShrink: 0 }} // Prevents the button from getting squished
+                                  style={{ flexShrink: 0 }}
                                   onClick={(e) => {
                                     e.preventDefault();
                                     handleTagFollow(tag);
@@ -698,7 +695,6 @@ const ExplorePage = () => {
                                     )
                                   }
                                 >
-                                  {/* Note: I adjusted the loading text logic slightly so it makes sense based on the action */}
                                   {tagState.loading
                                     ? tagState.is_following
                                       ? "Unfollowing..."
@@ -775,7 +771,7 @@ const ExplorePage = () => {
                                 variant="outline"
                                 color="blue"
                                 size="xs"
-                                radius="xl"
+                                radius="md"
                                 loading={tagState.loading}
                                 disabled={tagState.loading}
                                 style={{ flexShrink: 0 }}

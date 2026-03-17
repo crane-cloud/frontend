@@ -1,6 +1,6 @@
 import { DashboardHeader } from "@/components/Header";
 import LeftMenu, { TLeftMenuType } from "@/components/Navbars/LeftMenu";
-import { AppShell, Box, Container, Flex } from "@mantine/core";
+import { AppShell, Container } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { useState, createContext, useMemo } from "react";
 export interface TAdminMenuContextType {
@@ -58,44 +58,28 @@ export const AdminDashboardLayout = ({
       <AppShell
         header={{ height: 60 }}
         navbar={{
-          width: menuType === "noSidebar" ? 0 : 250,
+          width: 200,
           breakpoint: "sm",
-          collapsed: { mobile: !opened },
+          collapsed: {
+            mobile: !opened,
+            desktop: menuType === "noSidebar",
+          },
         }}
-        py="md"
-        className="container"
+        padding="md"
       >
         <DashboardHeader opened={opened} toggle={toggle} />
 
-        <Container size="xl" pt="md">
-          <Flex gap="lg" align="flex-start" wrap="nowrap">
-            <Box
-              w={280}
-              style={{
-                flexShrink: 0,
-                display: menuType === "noSidebar" ? "none" : "block",
-              }}
-            >
-              <LeftMenu
-                menuType={menuType}
-                clusterId={clusterId}
-                title={title}
-                subtitle={subtitle}
-              />
-            </Box>
-
-            <Box
-              component="main"
-              style={{
-                flex: 1,
-                minWidth: 0,
-                width: "100%",
-              }}
-            >
-              {children}
-            </Box>
-          </Flex>
-        </Container>
+        <LeftMenu
+          menuType={menuType}
+          clusterId={clusterId}
+          title={title}
+          subtitle={subtitle}
+        />
+        <AppShell.Main>
+          <Container size={1400} w="100%">
+            {children}
+          </Container>
+        </AppShell.Main>
       </AppShell>
     </AdminMenuContext.Provider>
   );

@@ -1,5 +1,5 @@
 import TitleText from "@/components/TitleText";
-import { Stack } from "@mantine/core";
+import { Container, Stack } from "@mantine/core";
 import { useParams } from "react-router-dom";
 import { useGetProject } from "@/utils/helpers";
 import AppsList from "@/components/Lists/AppsList";
@@ -11,22 +11,24 @@ const AppsListPage = () => {
   const [refresh, setRefresh] = useState(false);
 
   return (
-    <Stack>
-      <TitleText
-        loading={false}
-        rightSection={
-          <AddServiceButton
-            project={project}
-            setRefresh={setRefresh}
-            title="Add App"
-            dontShowDatabase
-          />
-        }
-      >
-        Applications
-      </TitleText>
-      <AppsList project_id={project_id} refresh={refresh} />
-    </Stack>
+    <Container size="1070" mt="sm">
+      <Stack>
+        <TitleText
+          loading={false}
+          rightSection={
+            <AddServiceButton
+              project={project}
+              setRefresh={setRefresh}
+              title="Add App"
+              dontShowDatabase
+            />
+          }
+        >
+          Applications
+        </TitleText>
+        <AppsList project_id={project_id} refresh={refresh} />
+      </Stack>
+    </Container>
   );
 };
 

@@ -4,6 +4,7 @@ import { useGetProject } from "@/utils/helpers";
 import {
   Button,
   Card,
+  Container,
   Divider,
   Flex,
   Grid,
@@ -40,7 +41,7 @@ const ProjectSettingsPage = () => {
   useEffect(() => {}, [project]);
 
   return (
-    <div>
+    <Container size="1070" mt="sm">
       <Tabs defaultValue="general">
         <Tabs.List>
           <Tabs.Tab value="general">General</Tabs.Tab>
@@ -64,7 +65,7 @@ const ProjectSettingsPage = () => {
           Settings tab content
         </Tabs.Panel> */}
       </Tabs>
-    </div>
+    </Container>
   );
 };
 
@@ -192,7 +193,7 @@ const GeneralTab = ({
                 </Text>
               </Stack>
               <Button
-                radius="xl"
+                radius="md"
                 variant="outline"
                 onClick={() => setUpdateConfirmOpened(true)}
                 leftSection={<IoPencil />}
@@ -209,7 +210,7 @@ const GeneralTab = ({
                 </Text>
               </Stack>
               <Button
-                radius="xl"
+                radius="md"
                 variant="outline"
                 onClick={() => setMigrateConfirmOpened(true)}
                 leftSection={<BiTransferAlt />}
@@ -227,7 +228,7 @@ const GeneralTab = ({
                   </Text>
                 </Stack>
                 <Button
-                  radius="xl"
+                  radius="md"
                   variant="outline"
                   color="green"
                   onClick={() => setEnableConfirmOpened(true)}
@@ -246,7 +247,7 @@ const GeneralTab = ({
                   </Text>
                 </Stack>
                 <Button
-                  radius="xl"
+                  radius="md"
                   variant="outline"
                   color="red"
                   onClick={() => setDisableConfirmOpened(true)}
@@ -267,7 +268,7 @@ const GeneralTab = ({
                 </Text>
               </Stack>
               <Button
-                radius="xl"
+                radius="md"
                 variant="outline"
                 color="red"
                 onClick={() => setDeleteConfirmOpened(true)}

@@ -118,7 +118,7 @@ const ProjectExploreCard = ({ project }: ProjectExploreCardProps) => {
         <Button
           variant="outline"
           size="xs"
-          radius="xl"
+          radius="md"
           onClick={onFollowClick}
           style={{ flexShrink: 0 }}
           leftSection={
@@ -155,9 +155,10 @@ const ProjectExploreCard = ({ project }: ProjectExploreCardProps) => {
             color="blue"
             variant="light"
             radius="xl"
+            tt="capitalize"
             style={{ maxWidth: "100%" }}
           >
-            <Text size="xs" truncate="end">
+            <Text size="xs" truncate="end" lineClamp={1}>
               {tag.name}
             </Text>
           </Badge>

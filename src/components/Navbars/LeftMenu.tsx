@@ -1,4 +1,5 @@
 import {
+  AppShell,
   NavLink,
   Text,
   Group,
@@ -7,7 +8,6 @@ import {
   ScrollArea,
   Stack,
   useMantineColorScheme,
-  Box,
 } from "@mantine/core";
 import {
   HiOutlineSquares2X2,
@@ -24,6 +24,8 @@ import {
   HiOutlineCloud,
   HiOutlineGlobeAlt,
   HiOutlineArrowPath,
+  HiOutlineUserMinus,
+  HiOutlineFolder,
 } from "react-icons/hi2";
 import { GiNetworkBars } from "react-icons/gi";
 import { Link, matchPath, useLocation, useNavigate } from "react-router-dom";
@@ -63,7 +65,7 @@ interface INavLink {
   label: string;
   icon: React.ComponentType;
   key: string;
-  link: string;
+  link?: string;
   description?: string;
   children?: INavLink[];
 }
@@ -114,11 +116,24 @@ const LeftMenu = React.memo(
           label: "Users",
           icon: HiOutlineUsers,
           key: "users",
-          link: "/admin/users/list",
+          children: [
+            {
+              label: "User List",
+              icon: HiOutlineUsers,
+              key: "user_list",
+              link: `/admin/users/list`,
+            },
+            {
+              label: "Inactive Users",
+              icon: HiOutlineUserMinus,
+              key: "inactive_users",
+              link: `/admin/inactive_users/list`,
+            },
+          ],
         },
         {
           label: "Projects",
-          icon: HiOutlineUsers,
+          icon: HiOutlineFolder,
           key: "projects",
           link: "/admin/projects/list",
         },
@@ -447,19 +462,14 @@ const LeftMenu = React.memo(
     // }, [appId, projectId]);
     useEffect(() => {}, [navbarLinks]);
     return (
-      <Stack
-        pr="sm"
-        gap={0}
-        style={{
-          display: menuType === "noSidebar" ? "none" : "flex",
-          borderRight: "1px solid var(--mantine-color-default-border)",
-          height: "calc(100vh - 100px)",
-        }}
+      <AppShell.Navbar
+        p="5px"
+        style={{ display: menuType === "noSidebar" ? "none" : "flex" }}
+        w={280}
       >
-        {/* 1. Replaced AppShell.Section with ScrollArea */}
-        <ScrollArea style={{ flex: 1 }} type="scroll">
+        <AppShell.Section grow component={ScrollArea}>
           {showProjectHeader && (
-            <Stack pb={20} gap={10}>
+            <Stack pb={20} gap={30}>
               <SelectProject project_id={projectId} />
               {["app", "mlops"].includes(menuType) && (
                 <Stack gap={5} ml={10}>
@@ -477,7 +487,7 @@ const LeftMenu = React.memo(
                       }}
                     >
                       <IoArrowBack />
-                      <Text fz="md" fw={700}>
+                      <Text fz="sm" fw={700}>
                         {title}
                       </Text>
                     </UnstyledButton>
@@ -486,9 +496,7 @@ const LeftMenu = React.memo(
               )}
             </Stack>
           )}
-
-          {/* Navigation Links Mapping */}
-          {navbarLinks.map((link: INavLink, index) => (
+          {navbarLinks.map((link: INavLink) => (
             <React.Fragment key={link.key}>
               {link.children ? (
                 <Stack gap={5} my={2} mx={10} mt={20}>
@@ -497,64 +505,71 @@ const LeftMenu = React.memo(
                   </Text>
                 </Stack>
               ) : (
-                <NavLink
-                  component={Link}
-                  key={link.key}
-                  label={link.label}
-                  leftSection={<link.icon />}
-                  active={!!matchPath({ path: link.link }, location.pathname)}
-                  to={link.link}
-                  pb="xs"
-                  mb="sm"
-                  styles={{
-                    root: {
-                      borderBottom:
-                        index !== navbarLinks.length - 1
-                          ? "0.5px solid var(--mantine-color-gray-7)"
-                          : "none",
-                    },
-                    label: {
-                      fontSize: "0.9rem",
-                      fontWeight: 600,
-                    },
-                  }}
-                  className="navlink"
-                />
+                link.link && (
+                  <NavLink
+                    component={Link}
+                    key={link.key}
+                    label={link.label}
+                    leftSection={<link.icon />}
+                    active={
+                      link.link
+                        ? !!matchPath({ path: link.link }, location.pathname)
+                        : false
+                    }
+                    to={link.link}
+                    styles={{
+                      root: {
+                        borderRadius: "0.4rem",
+                      },
+                      label: {
+                        fontSize: "0.8rem",
+                      },
+                    }}
+                    className="navlink"
+                  />
+                )
               )}
               {link.children && (
                 <Stack gap={5}>
-                  {link.children.map((child) => (
-                    <NavLink
-                      component={Link}
-                      key={child.key}
-                      label={child.label}
-                      leftSection={<child.icon />}
-                      active={
-                        !!matchPath({ path: child.link }, location.pathname)
-                      }
-                      to={child.link}
-                      styles={{
-                        root: { borderRadius: "0.4rem", paddingLeft: "1.5rem" },
-                        label: { fontSize: "0.8rem" },
-                      }}
-                      className="navlink"
-                    />
-                  ))}
+                  {link.children.map((child) =>
+                    child.link ? (
+                      <NavLink
+                        component={Link}
+                        key={child.key}
+                        label={child.label}
+                        leftSection={<child.icon />}
+                        active={
+                          !!matchPath({ path: child.link }, location.pathname)
+                        }
+                        to={child.link}
+                        styles={{
+                          root: {
+                            borderRadius: "0.4rem",
+                            paddingLeft: "1.5rem",
+                          },
+                          label: {
+                            fontSize: "0.8rem",
+                          },
+                        }}
+                        className="navlink"
+                      />
+                    ) : null,
+                  )}
                 </Stack>
               )}
             </React.Fragment>
           ))}
-        </ScrollArea>
+        </AppShell.Section>
 
-        {/* 2. Replaced Footer AppShell.Section with Box */}
-        <Box pt="sm">
+        <AppShell.Section>
           <UnstyledButton
             style={{
-              width: "100%", // Ensures button spans full width of sidebar
               padding: rem(8),
               borderRadius: rem(4),
+              "&:hover": {
+                backgroundColor: "#f8f9fa",
+              },
             }}
-            className="hover:bg-gray-100 dark:hover:bg-zinc-800"
             onClick={() =>
               setColorScheme(colorScheme === "dark" ? "light" : "dark")
             }
@@ -570,8 +585,8 @@ const LeftMenu = React.memo(
               </Text>
             </Group>
           </UnstyledButton>
-        </Box>
-      </Stack>
+        </AppShell.Section>
+      </AppShell.Navbar>
     );
   },
 );

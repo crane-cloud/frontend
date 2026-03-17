@@ -1,15 +1,17 @@
 import { formatDate, useGetAdminCluster } from "@/utils/helpers";
 import React from "react";
-import { Stack, Skeleton } from "@mantine/core";
+import { Stack, Skeleton, Container } from "@mantine/core";
 import TitleText from "@/components/TitleText";
 import { useParams } from "react-router-dom";
 import DetailsCard, { SimpleDetailsCard } from "@/components/Cards/DetailsCard";
 
 const LoadingSkeleton = () => (
-  <Stack>
-    <Skeleton height={40} width={300} mb={20} />
-    <Skeleton height={100} radius="md" mb={20} />
-  </Stack>
+  <Container size="1070" mt="sm">
+    <Stack>
+      <Skeleton height={40} width={300} mb={20} />
+      <Skeleton height={100} radius="md" mb={20} />
+    </Stack>
+  </Container>
 );
 
 const ClustersDashboard = () => {
@@ -33,13 +35,15 @@ const ClustersDashboard = () => {
   }
 
   return (
-    <Stack>
-      <TitleText>
-        {clusterData?.data?.cluster?.name} Cluster Dashboard
-      </TitleText>
-      <SimpleDetailsCard data={success ? getMetaData() : {}} />
-      <ClusterDetailsCard clusterData={clusterData} />
-    </Stack>
+    <Container size="1070" mt="sm">
+      <Stack>
+        <TitleText>
+          {clusterData?.data?.cluster?.name} Cluster Dashboard
+        </TitleText>
+        <SimpleDetailsCard data={success ? getMetaData() : {}} />
+        <ClusterDetailsCard clusterData={clusterData} />
+      </Stack>
+    </Container>
   );
 };
 

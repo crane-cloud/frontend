@@ -14,6 +14,7 @@ import {
   ActionIcon,
   Skeleton,
   PasswordInput,
+  Container,
 } from "@mantine/core";
 import { HiLockOpen, HiLockClosed, HiTrash } from "react-icons/hi";
 import TitleText from "@/components/TitleText";
@@ -261,290 +262,293 @@ const DatabaseDetails = () => {
   ];
 
   return (
-    <Stack gap={30}>
-      <Stack gap={0}>
-        <TitleText>Database Details</TitleText>
-        {isLoadingDatabase ? (
-          <DatabaseDetailsSkeleton />
-        ) : (
-          <Card p="lg" radius="md" withBorder>
-            <Grid>
-              {projectInfo.map((info) => (
-                <Grid.Col span={{ base: 6, md: 4, lg: 4 }}>
-                  <Flex>
-                    <Stack gap={1}>
-                      <Text className="subtitle">{info.label}</Text>
-                      <Text size="sm">{info.value}</Text>
-                    </Stack>
-                  </Flex>
-                </Grid.Col>
-              ))}
-            </Grid>
-          </Card>
-        )}
-      </Stack>
-      <Stack gap={0}>
-        <TitleText>Database Connection</TitleText>
-        {isLoadingDatabase ? (
-          <DatabaseConnectionSkeleton />
-        ) : (
-          <Card p="lg" radius="md" withBorder>
-            <Stack gap="sm">
-              {connectionInfo.map((info) => (
-                <Flex
-                  key={info.label}
-                  justify="space-between"
-                  align="center"
-                  w="100%"
-                  gap={5}
-                >
-                  <Text className="subtitle" w="20%">
-                    {info.label}
-                  </Text>
-                  <Group gap="xs" w="80%">
-                    {info.hidden && (
-                      <Tooltip
-                        label={showFields[info.label] ? "Hide" : "Show"}
-                        withArrow
-                        position="right"
-                      >
-                        <ActionIcon
-                          variant="default"
-                          style={{ cursor: "pointer" }}
-                          onClick={() =>
-                            setShowFields((prev) => ({
-                              ...prev,
-                              [info.label]: !prev[info.label],
-                            }))
-                          }
+    <Container size="1070" mt="sm">
+      <Stack gap={30}>
+        <Stack gap={0}>
+          <TitleText>Database Details</TitleText>
+          {isLoadingDatabase ? (
+            <DatabaseDetailsSkeleton />
+          ) : (
+            <Card p="lg" radius="md" withBorder>
+              <Grid>
+                {projectInfo.map((info) => (
+                  <Grid.Col span={{ base: 6, md: 4, lg: 4 }}>
+                    <Flex>
+                      <Stack gap={1}>
+                        <Text className="subtitle">{info.label}</Text>
+                        <Text size="sm">{info.value}</Text>
+                      </Stack>
+                    </Flex>
+                  </Grid.Col>
+                ))}
+              </Grid>
+            </Card>
+          )}
+        </Stack>
+        <Stack gap={0}>
+          <TitleText>Database Connection</TitleText>
+          {isLoadingDatabase ? (
+            <DatabaseConnectionSkeleton />
+          ) : (
+            <Card p="lg" radius="md" withBorder>
+              <Stack gap="sm">
+                {connectionInfo.map((info) => (
+                  <Flex
+                    key={info.label}
+                    justify="space-between"
+                    align="center"
+                    w="100%"
+                    gap={5}
+                  >
+                    <Text className="subtitle" w="20%">
+                      {info.label}
+                    </Text>
+                    <Group gap="xs" w="80%">
+                      {info.hidden && (
+                        <Tooltip
+                          label={showFields[info.label] ? "Hide" : "Show"}
+                          withArrow
+                          position="right"
                         >
-                          {showFields[info.label] ? (
-                            <AiOutlineEyeInvisible size={16} />
-                          ) : (
-                            <AiOutlineEye size={16} />
-                          )}
-                        </ActionIcon>
-                      </Tooltip>
-                    )}
-                    <Tooltip
-                      label={clipboard.copied ? "Copied" : "Copy"}
-                      position="right"
-                      withArrow
-                    >
-                      <Input
-                        value={info.value}
-                        readOnly
-                        variant="filled"
-                        style={{ flex: 1 }}
-                        styles={{
-                          input: {
-                            cursor: "pointer",
-                            outline: "none",
-                            border: "none",
-                          },
-                        }}
-                        type={
-                          info.hidden
-                            ? showFields[info.label]
-                              ? "text"
-                              : "password"
-                            : "text"
-                        }
-                        rightSection={<TbCopy />}
-                        rightSectionProps={{
-                          onClick: () => {
+                          <ActionIcon
+                            variant="default"
+                            style={{ cursor: "pointer" }}
+                            onClick={() =>
+                              setShowFields((prev) => ({
+                                ...prev,
+                                [info.label]: !prev[info.label],
+                              }))
+                            }
+                          >
+                            {showFields[info.label] ? (
+                              <AiOutlineEyeInvisible size={16} />
+                            ) : (
+                              <AiOutlineEye size={16} />
+                            )}
+                          </ActionIcon>
+                        </Tooltip>
+                      )}
+                      <Tooltip
+                        label={clipboard.copied ? "Copied" : "Copy"}
+                        position="right"
+                        withArrow
+                      >
+                        <Input
+                          value={info.value}
+                          readOnly
+                          variant="filled"
+                          style={{ flex: 1 }}
+                          styles={{
+                            input: {
+                              cursor: "pointer",
+                              outline: "none",
+                              border: "none",
+                            },
+                          }}
+                          type={
+                            info.hidden
+                              ? showFields[info.label]
+                                ? "text"
+                                : "password"
+                              : "text"
+                          }
+                          rightSection={<TbCopy />}
+                          rightSectionProps={{
+                            onClick: () => {
+                              clipboard.copy(info.value);
+                            },
+                          }}
+                          onClick={() => {
                             clipboard.copy(info.value);
-                          },
-                        }}
-                        onClick={() => {
-                          clipboard.copy(info.value);
-                        }}
-                      />
-                    </Tooltip>
-                  </Group>
-                </Flex>
-              ))}
-            </Stack>
-          </Card>
-        )}
-      </Stack>
-      <Stack gap={0}>
-        <TitleText>Danger Zone</TitleText>
-        <Card p="lg" radius="md" withBorder>
-          <Stack gap={10}>
-            <Group justify="space-between" align="center">
-              <Stack gap={0}>
-                <Text className="title">Change Password</Text>
-                <Text className="subtext">
-                  Update the password for the database
-                </Text>
+                          }}
+                        />
+                      </Tooltip>
+                    </Group>
+                  </Flex>
+                ))}
               </Stack>
-              <Button
-                variant="outline"
-                onClick={() => setChangePasswordConfirmOpened(true)}
-                leftSection={<LiaExchangeAltSolid />}
-              >
-                Change Password
-              </Button>
-            </Group>
-            <Divider />
-            <Group justify="space-between" align="center">
-              <Stack gap={0}>
-                <Text className="title">Reset Database</Text>
-                <Text className="subtext">
-                  Delete all data inside this database and restore it to its
-                  initial state.
-                </Text>
-              </Stack>
-              <Button
-                variant="outline"
-                color="red"
-                onClick={() => setResetConfirmOpened(true)}
-                leftSection={<RiResetLeftLine />}
-              >
-                Reset
-              </Button>
-            </Group>
-            <Divider />
-            {database?.status === "disabled" ? (
+            </Card>
+          )}
+        </Stack>
+        <Stack gap={0}>
+          <TitleText>Danger Zone</TitleText>
+          <Card p="lg" radius="md" withBorder>
+            <Stack gap={10}>
               <Group justify="space-between" align="center">
                 <Stack gap={0}>
-                  <Text className="title">Enable Database</Text>
+                  <Text className="title">Change Password</Text>
                   <Text className="subtext">
-                    Enable the database to allow access to resources.
+                    Update the password for the database
                   </Text>
                 </Stack>
                 <Button
                   variant="outline"
-                  color="green"
-                  onClick={() => setEnableConfirmOpened(true)}
-                  leftSection={<HiLockOpen />}
+                  onClick={() => setChangePasswordConfirmOpened(true)}
+                  leftSection={<LiaExchangeAltSolid />}
                 >
-                  Enable
+                  Change Password
                 </Button>
               </Group>
-            ) : (
+              <Divider />
               <Group justify="space-between" align="center">
                 <Stack gap={0}>
-                  <Text className="title">Disable Database</Text>
+                  <Text className="title">Reset Database</Text>
                   <Text className="subtext">
-                    This will temporary disable the database. .
+                    Delete all data inside this database and restore it to its
+                    initial state.
                   </Text>
                 </Stack>
                 <Button
                   variant="outline"
                   color="red"
-                  onClick={() => setDisableConfirmOpened(true)}
-                  leftSection={<HiLockClosed />}
+                  onClick={() => setResetConfirmOpened(true)}
+                  leftSection={<RiResetLeftLine />}
                 >
-                  Disable
+                  Reset
                 </Button>
               </Group>
-            )}
-            <Divider />
-            <Group justify="space-between" align="center">
-              <Stack gap={0}>
-                <Text className="title">Delete Database</Text>
-                <Text className="subtext">
-                  This action is irreversible and will delete the database
-                  permanently.
-                </Text>
-              </Stack>
-              <Button
-                variant="outline"
-                color="red"
-                onClick={() => setDeleteConfirmOpened(true)}
-                leftSection={<HiTrash />}
-              >
-                Delete
-              </Button>
-            </Group>
-          </Stack>
-          <ModalConfirm
-            opened={deleteConfirmOpened}
-            onClose={() => setDeleteConfirmOpened(false)}
-            title="Delete Database"
-            buttonColor="red"
-            buttonText="Delete"
-            onConfirm={handleDelete}
-            loading={deletingDatabase}
-            leftSection={<HiTrash />}
-          >
-            Are you sure you want to delete <b>{database?.name}</b> database
-            permanently? Destroy the entire database, delete all tables and data
-            inside them.
-          </ModalConfirm>
-          <ModalConfirm
-            opened={disableConfirmOpened}
-            onClose={() => setDisableConfirmOpened(false)}
-            title="Disable Database"
-            buttonText="Disable"
-            onConfirm={handleDisable}
-            loading={disablingDatabase}
-            buttonColor="red"
-            leftSection={<HiLockClosed />}
-          >
-            Are you sure you want to disable <b>{database?.name}</b> database?
-            This action will prevent the database contents from being accessed.
-          </ModalConfirm>
-          <ModalConfirm
-            opened={enableConfirmOpened}
-            onClose={() => setEnableConfirmOpened(false)}
-            title="Enable Database"
-            buttonText="Enable"
-            buttonColor="green"
-            onConfirm={handleEnable}
-            loading={enablingDatabase}
-            leftSection={<HiLockOpen />}
-          >
-            Are you sure you want to enable <b>{database?.name}</b> database?
-            This action will allow the database contents to be accessed.
-          </ModalConfirm>
-          <ModalConfirm
-            opened={resetConfirmOpened}
-            onClose={() => setResetConfirmOpened(false)}
-            title="Reset Database"
-            buttonText="Reset"
-            buttonColor="red"
-            leftSection={<RiResetLeftLine />}
-            onConfirm={handleReset}
-            loading={resettingDatabase}
-          >
-            Are you sure you want to reset <b>{database?.name}</b> database?
-          </ModalConfirm>
-          <ModalConfirm
-            opened={changePasswordConfirmOpened}
-            onClose={() => setChangePasswordConfirmOpened(false)}
-            title="Change Password"
-            buttonText="Change"
-            buttonColor="red"
-            onConfirm={handleChangePassword}
-            loading={changingPasswordDatabase}
-          >
-            <form onSubmit={handleChangePassword}>
-              <Stack gap={20}>
-                <PasswordInput
-                  placeholder="New Password"
-                  label="New Password"
-                  name="password"
-                  required
-                  onChange={changePasswordOnChange}
-                  leftSection={<MdOutlineLock />}
-                />
-                <PasswordInput
-                  placeholder="Confirm New Password"
-                  label="Confirm New Password"
-                  name="confirm_password"
-                  required
-                  onChange={changePasswordOnChange}
-                  leftSection={<MdOutlineLock />}
-                />
-              </Stack>
-            </form>
-          </ModalConfirm>
-        </Card>
+              <Divider />
+              {database?.status === "disabled" ? (
+                <Group justify="space-between" align="center">
+                  <Stack gap={0}>
+                    <Text className="title">Enable Database</Text>
+                    <Text className="subtext">
+                      Enable the database to allow access to resources.
+                    </Text>
+                  </Stack>
+                  <Button
+                    variant="outline"
+                    color="green"
+                    onClick={() => setEnableConfirmOpened(true)}
+                    leftSection={<HiLockOpen />}
+                  >
+                    Enable
+                  </Button>
+                </Group>
+              ) : (
+                <Group justify="space-between" align="center">
+                  <Stack gap={0}>
+                    <Text className="title">Disable Database</Text>
+                    <Text className="subtext">
+                      This will temporary disable the database. .
+                    </Text>
+                  </Stack>
+                  <Button
+                    variant="outline"
+                    color="red"
+                    onClick={() => setDisableConfirmOpened(true)}
+                    leftSection={<HiLockClosed />}
+                  >
+                    Disable
+                  </Button>
+                </Group>
+              )}
+              <Divider />
+              <Group justify="space-between" align="center">
+                <Stack gap={0}>
+                  <Text className="title">Delete Database</Text>
+                  <Text className="subtext">
+                    This action is irreversible and will delete the database
+                    permanently.
+                  </Text>
+                </Stack>
+                <Button
+                  variant="outline"
+                  color="red"
+                  onClick={() => setDeleteConfirmOpened(true)}
+                  leftSection={<HiTrash />}
+                >
+                  Delete
+                </Button>
+              </Group>
+            </Stack>
+            <ModalConfirm
+              opened={deleteConfirmOpened}
+              onClose={() => setDeleteConfirmOpened(false)}
+              title="Delete Database"
+              buttonColor="red"
+              buttonText="Delete"
+              onConfirm={handleDelete}
+              loading={deletingDatabase}
+              leftSection={<HiTrash />}
+            >
+              Are you sure you want to delete <b>{database?.name}</b> database
+              permanently? Destroy the entire database, delete all tables and
+              data inside them.
+            </ModalConfirm>
+            <ModalConfirm
+              opened={disableConfirmOpened}
+              onClose={() => setDisableConfirmOpened(false)}
+              title="Disable Database"
+              buttonText="Disable"
+              onConfirm={handleDisable}
+              loading={disablingDatabase}
+              buttonColor="red"
+              leftSection={<HiLockClosed />}
+            >
+              Are you sure you want to disable <b>{database?.name}</b> database?
+              This action will prevent the database contents from being
+              accessed.
+            </ModalConfirm>
+            <ModalConfirm
+              opened={enableConfirmOpened}
+              onClose={() => setEnableConfirmOpened(false)}
+              title="Enable Database"
+              buttonText="Enable"
+              buttonColor="green"
+              onConfirm={handleEnable}
+              loading={enablingDatabase}
+              leftSection={<HiLockOpen />}
+            >
+              Are you sure you want to enable <b>{database?.name}</b> database?
+              This action will allow the database contents to be accessed.
+            </ModalConfirm>
+            <ModalConfirm
+              opened={resetConfirmOpened}
+              onClose={() => setResetConfirmOpened(false)}
+              title="Reset Database"
+              buttonText="Reset"
+              buttonColor="red"
+              leftSection={<RiResetLeftLine />}
+              onConfirm={handleReset}
+              loading={resettingDatabase}
+            >
+              Are you sure you want to reset <b>{database?.name}</b> database?
+            </ModalConfirm>
+            <ModalConfirm
+              opened={changePasswordConfirmOpened}
+              onClose={() => setChangePasswordConfirmOpened(false)}
+              title="Change Password"
+              buttonText="Change"
+              buttonColor="red"
+              onConfirm={handleChangePassword}
+              loading={changingPasswordDatabase}
+            >
+              <form onSubmit={handleChangePassword}>
+                <Stack gap={20}>
+                  <PasswordInput
+                    placeholder="New Password"
+                    label="New Password"
+                    name="password"
+                    required
+                    onChange={changePasswordOnChange}
+                    leftSection={<MdOutlineLock />}
+                  />
+                  <PasswordInput
+                    placeholder="Confirm New Password"
+                    label="Confirm New Password"
+                    name="confirm_password"
+                    required
+                    onChange={changePasswordOnChange}
+                    leftSection={<MdOutlineLock />}
+                  />
+                </Stack>
+              </form>
+            </ModalConfirm>
+          </Card>
+        </Stack>
       </Stack>
-    </Stack>
+    </Container>
   );
 };
 
