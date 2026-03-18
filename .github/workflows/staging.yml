@@ -57,9 +57,7 @@ jobs:
             latest=true
           images: ${{ env.image }}
           tags: |
-            type=ref,event=branch
-            type=ref,event=pr
-            type=sha
+            type=sha,prefix=staging-
 
       - name: Add Env vars
         env:
