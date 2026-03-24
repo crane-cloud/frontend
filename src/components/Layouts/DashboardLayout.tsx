@@ -74,7 +74,7 @@ export const DashboardLayout = ({
       <AppShell
         header={{ height: 60 }}
         navbar={{
-          width: 200,
+          width: 260,
           breakpoint: "sm",
           collapsed: {
             mobile: !opened,
@@ -95,9 +95,7 @@ export const DashboardLayout = ({
         />
 
         <AppShell.Main>
-          <Container size={1400} w="100%">
-            {children}
-          </Container>
+          <Container size={containerSize}>{children}</Container>
         </AppShell.Main>
       </AppShell>
     </MenuContext.Provider>

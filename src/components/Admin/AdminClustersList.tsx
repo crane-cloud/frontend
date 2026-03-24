@@ -10,7 +10,6 @@ import {
   Text,
   Badge,
   Skeleton,
-  Container,
   ThemeIcon,
 } from "@mantine/core";
 import { FaPlus } from "react-icons/fa6";
@@ -92,18 +91,18 @@ const AdminClustersList = () => {
 
   if (loading) {
     return (
-      <Container size="1070" mt="sm">
+      <>
         <SimpleGrid cols={{ base: 1, xs: 2, md: 3 }} mt="md">
           {[...Array(3)].map((_, index) => (
             <Skeleton key={index} height={100} radius="md" />
           ))}
         </SimpleGrid>
-      </Container>
+      </>
     );
   }
 
   return (
-    <Container size="1070" mt="sm">
+    <>
       <Stack gap={0}>
         <TitleText
           rightSection={
@@ -124,7 +123,7 @@ const AdminClustersList = () => {
           ))}
         </SimpleGrid>
       </Stack>
-    </Container>
+    </>
   );
 };
 

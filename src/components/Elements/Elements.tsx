@@ -143,6 +143,7 @@ export const DropdownMenu = (props: DropdownMenuProps) => {
       position={position}
       offset={offset}
       withArrow={withArrow}
+      shadow="md"
       {...rest}
     >
       <Menu.Target>{children}</Menu.Target>
@@ -209,7 +210,11 @@ export const AddServiceButton = ({
 
   return (
     <div>
-      <Menu transitionProps={{ transition: "pop-top-right" }} radius="md">
+      <Menu
+        transitionProps={{ transition: "pop-top-right" }}
+        radius="md"
+        shadow="md"
+      >
         <Menu.Target>
           <Button rightSection={<IoIosArrowDown />} size="sm" radius="md">
             {title}
@@ -366,7 +371,7 @@ export function CustomSelect({
         </InputBase>
       </Combobox.Target>
 
-      <Combobox.Dropdown>
+      <Combobox.Dropdown left={0}>
         <Combobox.Options>{optionsList}</Combobox.Options>
       </Combobox.Dropdown>
     </Combobox>

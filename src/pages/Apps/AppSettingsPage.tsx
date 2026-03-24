@@ -39,7 +39,6 @@ import {
   List,
   Collapse,
   Box,
-  Container,
 } from "@mantine/core";
 import { useContext, useEffect, useState } from "react";
 import {
@@ -79,29 +78,27 @@ const AppSettingsPage = () => {
   }, [setContainerSize]);
   useEffect(() => {}, [app]);
   return (
-    <Container size="1070" mt="sm">
-      <Tabs defaultValue="general">
-        <Tabs.List>
-          <Tabs.Tab value="general">General</Tabs.Tab>
-          <Tabs.Tab value="ci/cd">CI / CD</Tabs.Tab>
-          <Tabs.Tab value="deployments">Deployments</Tabs.Tab>
-          <Tabs.Tab value="domains">Domains</Tabs.Tab>
-        </Tabs.List>
+    <Tabs defaultValue="general">
+      <Tabs.List>
+        <Tabs.Tab value="general">General</Tabs.Tab>
+        <Tabs.Tab value="ci/cd">CI / CD</Tabs.Tab>
+        <Tabs.Tab value="deployments">Deployments</Tabs.Tab>
+        <Tabs.Tab value="domains">Domains</Tabs.Tab>
+      </Tabs.List>
 
-        <Tabs.Panel value="general" pt={10}>
-          <GeneralTab app={app} setRefresh={setRefresh} />
-        </Tabs.Panel>
-        <Tabs.Panel value="deployments" pt={10}>
-          <DeploymentsTab app={app} />
-        </Tabs.Panel>
-        <Tabs.Panel value="ci/cd" pt={10}>
-          <CICDTab app={app} />
-        </Tabs.Panel>
-        <Tabs.Panel value="domains" pt={10}>
-          <DomainsTab app={app} setRefresh={setRefresh} />
-        </Tabs.Panel>
-      </Tabs>
-    </Container>
+      <Tabs.Panel value="general" pt={10}>
+        <GeneralTab app={app} setRefresh={setRefresh} />
+      </Tabs.Panel>
+      <Tabs.Panel value="deployments" pt={10}>
+        <DeploymentsTab app={app} />
+      </Tabs.Panel>
+      <Tabs.Panel value="ci/cd" pt={10}>
+        <CICDTab app={app} />
+      </Tabs.Panel>
+      <Tabs.Panel value="domains" pt={10}>
+        <DomainsTab app={app} setRefresh={setRefresh} />
+      </Tabs.Panel>
+    </Tabs>
   );
 };
 

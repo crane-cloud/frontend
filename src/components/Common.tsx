@@ -106,6 +106,7 @@ export const UserDropDown = () => {
       position="bottom-end"
       transitionProps={{ transition: "pop-top-right" }}
       withinPortal
+      shadow="md"
     >
       <Menu.Target>
         <UnstyledButton

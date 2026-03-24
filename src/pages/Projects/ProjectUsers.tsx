@@ -13,7 +13,6 @@ import {
   Text,
   TextInput,
   Modal,
-  Container,
 } from "@mantine/core";
 import { HiDotsVertical } from "react-icons/hi";
 import { HiTrash } from "react-icons/hi2";
@@ -255,7 +254,7 @@ export const MembersSection = ({ project }: { project: any }) => {
         <Group gap={10}>
           {/* Only show menu if there are actions */}
           {memberActions(member).length > 0 && (
-            <Menu position="bottom-end">
+            <Menu position="bottom-end" shadow="md">
               <Menu.Target>
                 <ActionIcon variant="subtle">
                   <HiDotsVertical />
@@ -329,7 +328,7 @@ export const MembersSection = ({ project }: { project: any }) => {
     .find((m) => m?.user?.id === user?.id)
     ?.role.split(".")[1];
   return (
-    <Container size="1070" mt="sm">
+    <>
       <TitleText>Members</TitleText>
       <Stack gap={20}>
         {isSelf && (myRole === "owner" || myRole === "admin") && (
@@ -505,6 +504,6 @@ export const MembersSection = ({ project }: { project: any }) => {
           </>
         )}
       </Modal>
-    </Container>
+    </>
   );
 };

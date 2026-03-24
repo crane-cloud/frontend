@@ -14,7 +14,6 @@ import {
   ActionIcon,
   Skeleton,
   PasswordInput,
-  Container,
 } from "@mantine/core";
 import { HiLockOpen, HiLockClosed, HiTrash } from "react-icons/hi";
 import TitleText from "@/components/TitleText";
@@ -262,7 +261,7 @@ const DatabaseDetails = () => {
   ];
 
   return (
-    <Container size="1070" mt="sm">
+    <>
       <Stack gap={30}>
         <Stack gap={0}>
           <TitleText>Database Details</TitleText>
@@ -548,7 +547,7 @@ const DatabaseDetails = () => {
           </Card>
         </Stack>
       </Stack>
-    </Container>
+    </>
   );
 };
 

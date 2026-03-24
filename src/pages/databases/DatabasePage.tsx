@@ -3,7 +3,7 @@ import CreateDatabaseForm from "@/components/Forms/CreateDatabaseForm";
 import DatabaseList from "@/components/Lists/databaseList";
 import TitleText from "@/components/TitleText";
 import { useGetProject } from "@/utils/helpers";
-import { Button, Container, Stack } from "@mantine/core";
+import { Button, Stack } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { useState } from "react";
 import { GoPlus } from "react-icons/go";
@@ -16,7 +16,7 @@ const DatabasePage = () => {
   useGetProject(project_id || "");
 
   return (
-    <Container size="1070" mt="sm">
+    <>
       <Stack>
         <TitleText
           loading={false}
@@ -45,7 +45,7 @@ const DatabasePage = () => {
           />
         </ModalConfirm>
       </Stack>
-    </Container>
+    </>
   );
 };
 

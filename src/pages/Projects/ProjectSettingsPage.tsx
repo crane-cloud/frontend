@@ -4,7 +4,6 @@ import { useGetProject } from "@/utils/helpers";
 import {
   Button,
   Card,
-  Container,
   Divider,
   Flex,
   Grid,
@@ -41,7 +40,7 @@ const ProjectSettingsPage = () => {
   useEffect(() => {}, [project]);
 
   return (
-    <Container size="1070" mt="sm">
+    <>
       <Tabs defaultValue="general">
         <Tabs.List>
           <Tabs.Tab value="general">General</Tabs.Tab>
@@ -65,7 +64,7 @@ const ProjectSettingsPage = () => {
           Settings tab content
         </Tabs.Panel> */}
       </Tabs>
-    </Container>
+    </>
   );
 };
 

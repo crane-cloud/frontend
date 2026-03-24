@@ -1,13 +1,4 @@
-import {
-  Button,
-  Card,
-  Container,
-  Divider,
-  Flex,
-  Group,
-  Stack,
-  Text,
-} from "@mantine/core";
+import { Button, Card, Divider, Flex, Group, Stack, Text } from "@mantine/core";
 import { useEffect, useState } from "react";
 import { HiPlus } from "react-icons/hi2";
 import { FaArrowLeft, FaLockOpen } from "react-icons/fa";
@@ -127,148 +118,144 @@ const SocialLinksTab = ({
     })) || [];
 
   return (
-    <Container size="1070" mt="sm">
-      <Stack gap={30} mt="md">
-        {/* Social Links */}
-        <Stack gap={0}>
-          <TitleText>Social Media Links</TitleText>
-          {links.length > 0 ? (
-            <SocialMediaLinksTable links={links} />
-          ) : (
-            <Text className="subtext">
-              Add your social media profiles here.
-            </Text>
-          )}
-          <Flex justify="flex-end" mt="md">
-            <Button
-              variant="outline"
-              onClick={() => setSocialModal(true)}
-              leftSection={links.length > 0 ? <FaPencil /> : <HiPlus />}
-            >
-              {links.length > 0 ? "Update Links" : "Add Links"}
-            </Button>
-          </Flex>
-        </Stack>
-
-        {/* User Profile */}
-        <Stack gap={0}>
-          <TitleText>Manage Profile</TitleText>
-          <Card p="lg" radius="md" withBorder>
-            <Stack gap={10} mt="md">
-              <Group justify="space-between" align="center">
-                <Stack gap={0}>
-                  <Text className="title">Toggle Profile Visibility</Text>
-                  <Text className="subtext">
-                    Make your profile {user?.is_public ? "private" : "public"}.
-                  </Text>
-                </Stack>
-                {/* Visibility Toggle */}
-                <Stack gap={10} mt="md">
-                  <Group justify="space-between" align="center">
-                    <Stack gap={0} />
-                    {visibility ? (
-                      <Button
-                        variant="outline"
-                        color="black"
-                        onClick={() => setMakePrivateConfirmOpened(true)}
-                        leftSection={<FaLock />}
-                      >
-                        Private
-                      </Button>
-                    ) : (
-                      <Button
-                        variant="outline"
-                        color="green"
-                        onClick={() => setMakePublicConfirmOpened(true)}
-                        leftSection={<FaLockOpen />}
-                      >
-                        Public
-                      </Button>
-                    )}
-                  </Group>
-                </Stack>
-              </Group>
-            </Stack>
-            <Divider my="md" />
-            <Stack gap={10}>
-              <Group justify="space-between">
-                <Stack gap={0}>
-                  <Text className="title">Update profile</Text>
-                  <Text className="subtext">
-                    Modify the profile name and description
-                  </Text>
-                </Stack>
-                <Button
-                  variant="outline"
-                  onClick={() => setUpdateModal(true)}
-                  leftSection={<FaPencil />}
-                >
-                  Update
-                </Button>
-              </Group>
-            </Stack>
-
-            {/* Modals */}
-            <ModalConfirm
-              opened={updateModal}
-              onClose={() => setUpdateModal(false)}
-              title="Update Profile Information"
-              buttonText="Update"
-              size="xl"
-              showFooterActions={false}
-              onConfirm={() => {}}
-            >
-              <UpdateProfileForm
-                user={user}
-                onCancel={() => setUpdateModal(false)}
-                refresh={() => setRefresh((prev) => prev + 1)}
-              />
-            </ModalConfirm>
-
-            <ModalConfirm
-              opened={makePrivateConfirmOpened}
-              onClose={() => setMakePrivateConfirmOpened(false)}
-              title="Make Profile Private"
-              buttonText="Confirm"
-              buttonColor="black"
-              onConfirm={handleMakePrivate}
-              leftSection={<FaLock />}
-            >
-              Are you sure you want to make your profile <b>private</b>? It will
-              no longer be publicly visible.
-            </ModalConfirm>
-
-            <ModalConfirm
-              opened={makePublicConfirmOpened}
-              onClose={() => setMakePublicConfirmOpened(false)}
-              title="Make Profile Public"
-              buttonText="Confirm"
-              buttonColor="green"
-              onConfirm={handleMakePublic}
-              leftSection={<FaLockOpen />}
-            >
-              Are you sure you want to make your profile <b>public</b>? It will
-              be visible to everyone.
-            </ModalConfirm>
-
-            <ModalConfirm
-              opened={socialModal}
-              onClose={() => setSocialModal(false)}
-              title="Social Media Links"
-              size="xl"
-              showFooterActions={false}
-              onConfirm={() => {}}
-            >
-              <SocialMediaLinksForm
-                user={user}
-                onCancel={() => setSocialModal(false)}
-                refresh={() => setRefresh((prev) => prev + 1)}
-              />
-            </ModalConfirm>
-          </Card>
-        </Stack>
+    <Stack gap={30} mt="md">
+      {/* Social Links */}
+      <Stack gap={0}>
+        <TitleText>Social Media Links</TitleText>
+        {links.length > 0 ? (
+          <SocialMediaLinksTable links={links} />
+        ) : (
+          <Text className="subtext">Add your social media profiles here.</Text>
+        )}
+        <Flex justify="flex-end" mt="md">
+          <Button
+            variant="outline"
+            onClick={() => setSocialModal(true)}
+            leftSection={links.length > 0 ? <FaPencil /> : <HiPlus />}
+          >
+            {links.length > 0 ? "Update Links" : "Add Links"}
+          </Button>
+        </Flex>
       </Stack>
-    </Container>
+
+      {/* User Profile */}
+      <Stack gap={0}>
+        <TitleText>Manage Profile</TitleText>
+        <Card p="lg" radius="md" withBorder>
+          <Stack gap={10} mt="md">
+            <Group justify="space-between" align="center">
+              <Stack gap={0}>
+                <Text className="title">Toggle Profile Visibility</Text>
+                <Text className="subtext">
+                  Make your profile {user?.is_public ? "private" : "public"}.
+                </Text>
+              </Stack>
+              {/* Visibility Toggle */}
+              <Stack gap={10} mt="md">
+                <Group justify="space-between" align="center">
+                  <Stack gap={0} />
+                  {visibility ? (
+                    <Button
+                      variant="outline"
+                      color="black"
+                      onClick={() => setMakePrivateConfirmOpened(true)}
+                      leftSection={<FaLock />}
+                    >
+                      Private
+                    </Button>
+                  ) : (
+                    <Button
+                      variant="outline"
+                      color="green"
+                      onClick={() => setMakePublicConfirmOpened(true)}
+                      leftSection={<FaLockOpen />}
+                    >
+                      Public
+                    </Button>
+                  )}
+                </Group>
+              </Stack>
+            </Group>
+          </Stack>
+          <Divider my="md" />
+          <Stack gap={10}>
+            <Group justify="space-between">
+              <Stack gap={0}>
+                <Text className="title">Update profile</Text>
+                <Text className="subtext">
+                  Modify the profile name and description
+                </Text>
+              </Stack>
+              <Button
+                variant="outline"
+                onClick={() => setUpdateModal(true)}
+                leftSection={<FaPencil />}
+              >
+                Update
+              </Button>
+            </Group>
+          </Stack>
+
+          {/* Modals */}
+          <ModalConfirm
+            opened={updateModal}
+            onClose={() => setUpdateModal(false)}
+            title="Update Profile Information"
+            buttonText="Update"
+            size="xl"
+            showFooterActions={false}
+            onConfirm={() => {}}
+          >
+            <UpdateProfileForm
+              user={user}
+              onCancel={() => setUpdateModal(false)}
+              refresh={() => setRefresh((prev) => prev + 1)}
+            />
+          </ModalConfirm>
+
+          <ModalConfirm
+            opened={makePrivateConfirmOpened}
+            onClose={() => setMakePrivateConfirmOpened(false)}
+            title="Make Profile Private"
+            buttonText="Confirm"
+            buttonColor="black"
+            onConfirm={handleMakePrivate}
+            leftSection={<FaLock />}
+          >
+            Are you sure you want to make your profile <b>private</b>? It will
+            no longer be publicly visible.
+          </ModalConfirm>
+
+          <ModalConfirm
+            opened={makePublicConfirmOpened}
+            onClose={() => setMakePublicConfirmOpened(false)}
+            title="Make Profile Public"
+            buttonText="Confirm"
+            buttonColor="green"
+            onConfirm={handleMakePublic}
+            leftSection={<FaLockOpen />}
+          >
+            Are you sure you want to make your profile <b>public</b>? It will be
+            visible to everyone.
+          </ModalConfirm>
+
+          <ModalConfirm
+            opened={socialModal}
+            onClose={() => setSocialModal(false)}
+            title="Social Media Links"
+            size="xl"
+            showFooterActions={false}
+            onConfirm={() => {}}
+          >
+            <SocialMediaLinksForm
+              user={user}
+              onCancel={() => setSocialModal(false)}
+              refresh={() => setRefresh((prev) => prev + 1)}
+            />
+          </ModalConfirm>
+        </Card>
+      </Stack>
+    </Stack>
   );
 };
 
