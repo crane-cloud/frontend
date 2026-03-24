@@ -7,9 +7,12 @@ import {
   Pagination,
   Group,
   Flex,
+  Menu,
+  ActionIcon,
 } from "@mantine/core";
 import styled from "styled-components";
 import TableFilter from "./TableFilter";
+import { IoEllipsisVertical } from "react-icons/io5";
 export interface TColumn {
   id: string;
   header: string;
@@ -20,6 +23,14 @@ export interface TColumn {
     options?: { label: string; value: string }[];
     placeholder?: string;
   };
+}
+
+export interface TRowAction {
+  label: string;
+  onClick: (item: any) => void;
+  color?: string;
+  icon?: React.ReactNode;
+  hidden?: boolean;
 }
 
 interface TPaginationData {
@@ -53,6 +64,8 @@ interface TTableProps {
   showPagination?: boolean;
   pagination?: TPaginationData;
   title?: string;
+  hideActions?: boolean;
+  rowActions?: (item: any) => TRowAction[];
 }
 
 export const Table = ({
@@ -76,6 +89,8 @@ export const Table = ({
   onFilterChange,
   filters = {},
   hideFilters = false,
+  hideActions = true,
+  rowActions,
   title,
 }: TTableProps) => {
   const startItem = pagination
@@ -156,6 +171,19 @@ export const Table = ({
                         )}
                       </MantineTable.Th>
                     ))}
+                    {rowActions && !hideActions && (
+                      <MantineTable.Th
+                        style={{
+                          width: 80,
+                          textAlign: "center",
+                          verticalAlign: "top",
+                        }}
+                      >
+                        <Text size="sm" fw={700}>
+                          Actions
+                        </Text>
+                      </MantineTable.Th>
+                    )}
                   </MantineTable.Tr>
                 </MantineTable.Thead>
               )}
@@ -195,6 +223,43 @@ export const Table = ({
                             (noEmptyText && <Text c="dimmed">Empty</Text>)}
                         </MantineTable.Td>
                       ))}
+                      {rowActions && !hideActions && (
+                        <MantineTable.Td
+                          onClick={(e) => e.stopPropagation()}
+                          style={{ textAlign: "center" }}
+                        >
+                          <Menu
+                            shadow="md"
+                            width={180}
+                            position="bottom-end"
+                            withinPortal
+                          >
+                            <Menu.Target>
+                              <ActionIcon variant="subtle" color="gray">
+                                <IoEllipsisVertical />
+                              </ActionIcon>
+                            </Menu.Target>
+
+                            <Menu.Dropdown>
+                              {rowActions(item).map((action, actionIdx) => {
+                                if (action.hidden) {
+                                  return null;
+                                }
+                                return (
+                                  <Menu.Item
+                                    key={actionIdx}
+                                    color={action.color}
+                                    leftSection={action.icon}
+                                    onClick={() => action.onClick(item)}
+                                  >
+                                    {action.label}
+                                  </Menu.Item>
+                                );
+                              })}
+                            </Menu.Dropdown>
+                          </Menu>
+                        </MantineTable.Td>
+                      )}
                     </StyledTableRow>
                   ))
                 ) : (

@@ -102,7 +102,7 @@ const UserCard = ({
               <Button
                 variant="outline"
                 size="xs"
-                radius="xl"
+                radius="md"
                 color="blue"
                 leftSection={
                   isFollowingUser ? (

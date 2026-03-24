@@ -13,6 +13,7 @@ import {
   Button,
   Alert,
   Skeleton,
+  Container,
 } from "@mantine/core";
 import {
   TbArrowLeft,
@@ -165,16 +166,18 @@ const AppDeploymentDetailPage = () => {
 
   if (loading) {
     return (
-      <Stack gap="lg">
-        <Skeleton height={40} radius="md" />
-        <Card p="lg" radius="md" withBorder>
-          <Stack gap="md">
-            <Skeleton height={20} width="40%" />
-            <Skeleton height={60} />
-            <Skeleton height={400} />
-          </Stack>
-        </Card>
-      </Stack>
+      <Container size="1070" mt="sm">
+        <Stack gap="lg">
+          <Skeleton height={40} radius="md" />
+          <Card p="lg" radius="md" withBorder>
+            <Stack gap="md">
+              <Skeleton height={20} width="40%" />
+              <Skeleton height={60} />
+              <Skeleton height={400} />
+            </Stack>
+          </Card>
+        </Stack>
+      </Container>
     );
   }
 
@@ -193,136 +196,138 @@ const AppDeploymentDetailPage = () => {
   }
 
   return (
-    <Stack gap="lg">
-      {/* Header */}
-      <Flex justify="space-between" align="center">
-        <Group gap="sm">
-          <Button
-            component={Link}
-            to={`/projects/${project_id}/apps/${app_id}/build_logs`}
-            variant="subtle"
-            leftSection={<TbArrowLeft size={16} />}
-            color="gray"
-          >
-            Back to Deployments
-          </Button>
-        </Group>
-      </Flex>
+    <Container size="1070" mt="sm">
+      <Stack gap="lg">
+        {/* Header */}
+        <Flex justify="space-between" align="center">
+          <Group gap="sm">
+            <Button
+              component={Link}
+              to={`/projects/${project_id}/apps/${app_id}/build_logs`}
+              variant="subtle"
+              leftSection={<TbArrowLeft size={16} />}
+              color="gray"
+            >
+              Back to Deployments
+            </Button>
+          </Group>
+        </Flex>
 
-      <TitleText>Deployment Details</TitleText>
+        <TitleText>Deployment Details</TitleText>
 
-      {/* Deployment Info Card */}
-      <Card p="md" radius="md" withBorder>
-        <Stack gap="sm">
-          {/* Header with status and deployment info */}
-          <Flex justify="space-between" align="center" wrap="wrap" gap="sm">
-            <Group gap="sm">
-              {metaData && getStatusBadge(metaData.status)}
-              <Text size="sm" fw={600}>
-                Deployment #{metaData ? shortenID(metaData.build_id) : ""}
-              </Text>
-            </Group>
-            <Text size="xs" c="dimmed" ff="mono">
-              {build_id}
-            </Text>
-          </Flex>
-
-          {/* Compact details grid */}
-          <Flex wrap="wrap" gap="lg" mt="xs">
-            <Flex align="center" gap={3}>
-              <TbUser size={13} color="var(--mantine-color-gray-6)" />
-              <Text size="xs" c="gray.7" fw={700}>
-                <Text size="xs" c="dimmed" component="span" fw={500}>
-                  App Name:
-                </Text>{" "}
-                {metaData?.app_name || app?.name || "Unknown"}
+        {/* Deployment Info Card */}
+        <Card p="md" radius="md" withBorder>
+          <Stack gap="sm">
+            {/* Header with status and deployment info */}
+            <Flex justify="space-between" align="center" wrap="wrap" gap="sm">
+              <Group gap="sm">
+                {metaData && getStatusBadge(metaData.status)}
+                <Text size="sm" fw={600}>
+                  Deployment #{metaData ? shortenID(metaData.build_id) : ""}
+                </Text>
+              </Group>
+              <Text size="xs" c="dimmed" ff="mono">
+                {build_id}
               </Text>
             </Flex>
 
-            <Flex align="center" gap={3}>
-              <TbCalendar size={14} color="var(--mantine-color-gray-6)" />
-              <Text size="xs" c="gray.7" fw={700}>
-                <Text size="xs" c="dimmed" component="span" fw={500}>
-                  Started:
-                </Text>{" "}
-                {metaData?.started_at
-                  ? moment(metaData.started_at).format("MMM DD, HH:mm")
-                  : "N/A"}
-              </Text>
-            </Flex>
+            {/* Compact details grid */}
+            <Flex wrap="wrap" gap="lg" mt="xs">
+              <Flex align="center" gap={3}>
+                <TbUser size={13} color="var(--mantine-color-gray-6)" />
+                <Text size="xs" c="gray.7" fw={700}>
+                  <Text size="xs" c="dimmed" component="span" fw={500}>
+                    App Name:
+                  </Text>{" "}
+                  {metaData?.app_name || app?.name || "Unknown"}
+                </Text>
+              </Flex>
 
-            <Flex align="center" gap={3}>
-              <TbClock size={14} color="var(--mantine-color-gray-6)" />
-              <Text size="xs" c="gray.7" fw={700}>
-                <Text size="xs" c="dimmed" component="span" fw={500}>
-                  Duration:
-                </Text>{" "}
-                {metaData
-                  ? formatDuration(metaData.started_at, metaData.completed_at)
-                  : "N/A"}
-              </Text>
-            </Flex>
-
-            {metaData?.completed_at && (
               <Flex align="center" gap={3}>
                 <TbCalendar size={14} color="var(--mantine-color-gray-6)" />
                 <Text size="xs" c="gray.7" fw={700}>
                   <Text size="xs" c="dimmed" component="span" fw={500}>
-                    Completed:
+                    Started:
                   </Text>{" "}
-                  {moment(metaData.completed_at).format("MMM DD, HH:mm")}
+                  {metaData?.started_at
+                    ? moment(metaData.started_at).format("MMM DD, HH:mm")
+                    : "N/A"}
                 </Text>
               </Flex>
-            )}
-          </Flex>
 
-          {/* Error alert - only show if there's an error */}
-          {metaData?.error && (
+              <Flex align="center" gap={3}>
+                <TbClock size={14} color="var(--mantine-color-gray-6)" />
+                <Text size="xs" c="gray.7" fw={700}>
+                  <Text size="xs" c="dimmed" component="span" fw={500}>
+                    Duration:
+                  </Text>{" "}
+                  {metaData
+                    ? formatDuration(metaData.started_at, metaData.completed_at)
+                    : "N/A"}
+                </Text>
+              </Flex>
+
+              {metaData?.completed_at && (
+                <Flex align="center" gap={3}>
+                  <TbCalendar size={14} color="var(--mantine-color-gray-6)" />
+                  <Text size="xs" c="gray.7" fw={700}>
+                    <Text size="xs" c="dimmed" component="span" fw={500}>
+                      Completed:
+                    </Text>{" "}
+                    {moment(metaData.completed_at).format("MMM DD, HH:mm")}
+                  </Text>
+                </Flex>
+              )}
+            </Flex>
+
+            {/* Error alert - only show if there's an error */}
+            {metaData?.error && (
+              <Alert
+                icon={<TbAlertCircle size={16} />}
+                color="red"
+                variant="light"
+                p="sm"
+                mt="xs"
+              >
+                <Text size="xs" fw={500} mb={4}>
+                  Deployment Error
+                </Text>
+                <Text size="xs" style={{ wordBreak: "break-word" }}>
+                  {metaData.error}
+                </Text>
+              </Alert>
+            )}
+          </Stack>
+        </Card>
+
+        {/* Build Logs Section */}
+        <div>
+          {build_id ? (
+            hasStaticLogs ? (
+              <StaticLogsDisplay
+                logsData={logsData}
+                buildId={build_id}
+                onRefresh={refreshLogs}
+              />
+            ) : (
+              <BuildLogsTerminal
+                logsSocketUrl={getLogsSocketUrl()}
+                buildId={build_id}
+              />
+            )
+          ) : (
             <Alert
               icon={<TbAlertCircle size={16} />}
-              color="red"
+              title="No build ID available"
+              color="orange"
               variant="light"
-              p="sm"
-              mt="xs"
             >
-              <Text size="xs" fw={500} mb={4}>
-                Deployment Error
-              </Text>
-              <Text size="xs" style={{ wordBreak: "break-word" }}>
-                {metaData.error}
-              </Text>
+              Unable to load build logs without a valid build ID.
             </Alert>
           )}
-        </Stack>
-      </Card>
-
-      {/* Build Logs Section */}
-      <div>
-        {build_id ? (
-          hasStaticLogs ? (
-            <StaticLogsDisplay
-              logsData={logsData}
-              buildId={build_id}
-              onRefresh={refreshLogs}
-            />
-          ) : (
-            <BuildLogsTerminal
-              logsSocketUrl={getLogsSocketUrl()}
-              buildId={build_id}
-            />
-          )
-        ) : (
-          <Alert
-            icon={<TbAlertCircle size={16} />}
-            title="No build ID available"
-            color="orange"
-            variant="light"
-          >
-            Unable to load build logs without a valid build ID.
-          </Alert>
-        )}
-      </div>
-    </Stack>
+        </div>
+      </Stack>
+    </Container>
   );
 };
 

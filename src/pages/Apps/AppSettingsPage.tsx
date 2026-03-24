@@ -39,6 +39,7 @@ import {
   List,
   Collapse,
   Box,
+  Container,
 } from "@mantine/core";
 import { useContext, useEffect, useState } from "react";
 import {
@@ -78,7 +79,7 @@ const AppSettingsPage = () => {
   }, [setContainerSize]);
   useEffect(() => {}, [app]);
   return (
-    <div>
+    <Container size="1070" mt="sm">
       <Tabs defaultValue="general">
         <Tabs.List>
           <Tabs.Tab value="general">General</Tabs.Tab>
@@ -100,7 +101,7 @@ const AppSettingsPage = () => {
           <DomainsTab app={app} setRefresh={setRefresh} />
         </Tabs.Panel>
       </Tabs>
-    </div>
+    </Container>
   );
 };
 

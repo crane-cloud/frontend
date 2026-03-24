@@ -45,11 +45,11 @@ export const ModalConfirm = (props: TModalConfirm) => {
 
       {showFooterActions && (
         <Group justify="flex-end">
-          <Button radius="xl" variant="default" onClick={onClose}>
+          <Button radius="md" variant="default" onClick={onClose}>
             Cancel
           </Button>
           <Button
-            radius="xl"
+            radius="md"
             color={buttonColor || "blue"}
             variant="filled"
             onClick={onConfirm}

@@ -1,11 +1,11 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { Card, Group, Title, Stack, Badge, Skeleton } from "@mantine/core";
 import { FiTrendingUp } from "react-icons/fi";
 import { Link } from "react-router-dom";
 import useGet from "@/utils/useGet";
 import { API_SOCIALS } from "@/utils/apis";
 import { Tag } from "@/types/tag";
-import { getTagColor } from "@/utils/helpers";
+import { IoTrendingUp } from "react-icons/io5";
 
 interface TrendingTagsProps {
   title?: string;
@@ -42,13 +42,40 @@ export default function TrendingTags({
             {response?.data?.tags?.map((tag: Tag) => (
               <Badge
                 key={tag.id}
-                variant="outline"
-                color={getTagColor(tag.name)}
+                variant="default"
                 component={Link}
                 to={`/tags/${tag.name}`}
-                style={{ cursor: "pointer", textDecoration: "none" }}
+                size="md"
+                radius="md"
+                pr={4}
+                tt="capitalize"
+                style={{
+                  cursor: "pointer",
+                  textDecoration: "none",
+                  fontWeight: 500,
+                }}
+                rightSection={
+                  <Badge
+                    variant="light"
+                    color="gray"
+                    size="sm"
+                    radius="sm"
+                    style={{
+                      padding: "0 6px",
+                      height: 13,
+                      minWidth: 20,
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      color: "var(--mantine-color-dimmed)",
+                    }}
+                    leftSection={<IoTrendingUp />}
+                  >
+                    {tag.projects_count}
+                  </Badge>
+                }
               >
-                # {tag.name}
+                {tag.name}
               </Badge>
             ))}
           </Group>
@@ -65,7 +92,7 @@ const TagsSkeleton = () => {
         <Skeleton
           key={index}
           height={24}
-          width={Math.random() * 40 + 60} // Keeps the organic, varied tag widths
+          width={Math.random() * 40 + 60}
           radius="xl"
         />
       ))}

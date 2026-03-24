@@ -1,16 +1,39 @@
+import React from "react";
 import { beautify } from "@/utils/helpers";
 import { MODAL_SERVERS } from "@/utils/constants";
-import { Anchor, Card, Flex, Group, Pill, Stack, Text } from "@mantine/core";
+import {
+  Anchor,
+  Card,
+  Flex,
+  Group,
+  Badge,
+  Stack,
+  Text,
+  Box,
+  ThemeIcon,
+  Divider,
+} from "@mantine/core";
 import { FiLayers } from "react-icons/fi";
 import { GoClock } from "react-icons/go";
 import { HiMiniCubeTransparent } from "react-icons/hi2";
 import { PiShareFatThin } from "react-icons/pi";
 import { SiJupyter } from "react-icons/si";
-import React from "react";
 
-const AppsCard = (props: any) => {
-  const { app, project_id } = props;
+const getStatusColor = (status: string) => {
+  const normalized = status.toLowerCase();
+  if (normalized === "running") {
+    return "green";
+  }
+  if (normalized === "deployed") {
+    return "blue";
+  }
+  if (normalized === "failed" || normalized === "error") {
+    return "red";
+  }
+  return "gray";
+};
 
+const AppsCard = ({ app, project_id }: any) => {
   const modalServerEntry =
     app.model_server &&
     MODAL_SERVERS.find((server) => server.value === app.model_server);
@@ -19,121 +42,137 @@ const AppsCard = (props: any) => {
   const modalServerColor = modalServerEntry?.color || "gray";
 
   return (
-    <Card p="md" radius="md" withBorder>
-      <Group wrap="nowrap" gap={10}>
-        {app.is_notebook ? (
-          <SiJupyter size={35} color="#f57c00" />
-        ) : modalServerIcon ? (
-          React.createElement(modalServerIcon, {
-            size: 35,
-            color: modalServerColor,
-          })
-        ) : (
-          <FiLayers size={20} color="gray" />
-        )}
-        <Stack gap={3} flex={1}>
+    <Card
+      p="md"
+      radius="md"
+      withBorder
+      h="100%"
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        transition: "box-shadow 0.2s ease, transform 0.2s ease",
+      }}
+      className="app-card-hover"
+    >
+      <Group wrap="nowrap" gap={15} align="flex-start">
+        <ThemeIcon
+          size={48}
+          radius="md"
+          variant="light"
+          color={app.is_notebook ? "orange" : modalServerColor}
+        >
+          {app.is_notebook ? (
+            <SiJupyter size={24} />
+          ) : modalServerIcon ? (
+            React.createElement(modalServerIcon, { size: 24 })
+          ) : (
+            <FiLayers size={24} />
+          )}
+        </ThemeIcon>
+
+        <Stack gap={4} flex={1} style={{ overflow: "hidden" }}>
           <Anchor
             fw={600}
+            size="md"
             href={`/projects/${project_id}/apps/${app.id}`}
-            truncate
-            style={{ flex: 1 }}
+            truncate="end"
             c="var(--mantine-color-text)"
             className="no-scale"
           >
             {beautify(app.name)}
           </Anchor>
 
-          <Anchor
-            href={app.url}
-            target="_blank"
-            c="var(--mantine-color-text)"
-            maw="95%"
-            className="no-scale"
-          >
-            <Group gap={4} align="center" wrap="nowrap">
-              <Text size="0.8rem" truncate>
+          {app.url && (
+            <Anchor
+              href={app.url}
+              target="_blank"
+              c="dimmed"
+              className="no-scale"
+              style={{ display: "flex", alignItems: "center", gap: "4px" }}
+            >
+              <Text size="xs" truncate="end">
                 {new URL(app.url).hostname}
               </Text>
-              <PiShareFatThin size={15} />
-            </Group>
-          </Anchor>
+              <PiShareFatThin size={14} style={{ flexShrink: 0 }} />
+            </Anchor>
+          )}
         </Stack>
       </Group>
 
-      {app?.image && !app?.is_notebook && (
-        <Pill w="fit-content" mt="sm">
-          <Flex gap={5} wrap="nowrap" w="fit-content" align="center">
-            <HiMiniCubeTransparent size={14} />
-            <Text size="sm" truncate>
-              {app?.image}
-            </Text>
-          </Flex>
-        </Pill>
-      )}
+      <Box style={{ flex: 1, minWidth: 0 }} mt="md">
+        {app?.image && !app?.is_notebook && (
+          <Badge
+            variant="default"
+            size="md"
+            radius="sm"
+            maw="100%"
+            leftSection={<HiMiniCubeTransparent size={14} />}
+            style={{
+              textTransform: "none",
+              fontWeight: 500,
+            }}
+          >
+            {app?.image}
+          </Badge>
+        )}
+      </Box>
 
-      <Group justify="space-between" mt="md">
-        <Group gap={10} align="center">
-          {app?.is_notebook && (
-            <Pill w="fit-content" py={2}>
-              <Flex
-                gap={5}
-                wrap="nowrap"
-                w="fit-content"
-                align="center"
-                justify="center"
+      <Box mt="auto">
+        <Divider my="sm" />
+        <Group justify="space-between" align="center" wrap="nowrap">
+          <Group gap={8} align="center" wrap="nowrap">
+            {app?.is_notebook && (
+              <Badge
+                tt="capitalize"
+                variant="light"
+                color="orange"
+                size="md"
+                radius="sm"
+                leftSection={<SiJupyter size={10} />}
               >
-                <SiJupyter size={13} color="#f57c00" />
-                <Text size="xs" truncate>
-                  Notebook
-                </Text>
-              </Flex>
-            </Pill>
-          )}
+                Notebook
+              </Badge>
+            )}
 
-          {app.model_server && (
-            <Pill w="fit-content" py={2}>
-              <Flex gap={5} align="center" wrap="nowrap">
-                {modalServerIcon &&
-                  React.createElement(modalServerIcon, {
-                    size: 13,
-                    color: modalServerColor,
-                  })}
-                <Text size="xs" truncate>
-                  {app.model_server === "HUGGINGFACE_SERVER"
-                    ? beautify(app.task)
-                    : modalServerEntry?.label}
-                </Text>
-              </Flex>
-            </Pill>
-          )}
+            {app.model_server && (
+              <Badge
+                tt="capitalize"
+                variant="light"
+                color={modalServerColor}
+                size="sm"
+                radius="sm"
+                leftSection={
+                  modalServerIcon &&
+                  React.createElement(modalServerIcon, { size: 10 })
+                }
+              >
+                {app.model_server === "HUGGINGFACE_SERVER"
+                  ? beautify(app.task)
+                  : modalServerEntry?.label}
+              </Badge>
+            )}
 
-          <Flex gap={5} c="var(--mantine-color-dark-3)" align="center">
-            <GoClock size={13} />
-            <Text size="xs">{app.age}</Text>
-          </Flex>
+            <Flex gap={4} c="dimmed" align="center">
+              <GoClock size={12} />
+              <Text size="xs" fw={500}>
+                {app.age}
+              </Text>
+            </Flex>
+          </Group>
+
+          <Badge
+            size="md"
+            tt="capitalize"
+            variant="light"
+            color={getStatusColor(app.app_running_status)}
+            radius="xl"
+          >
+            {app.app_running_status}
+          </Badge>
         </Group>
-
-        <Pill
-          size="xs"
-          fw={500}
-          bg={getStatusColor(app.app_running_status).background}
-          c={getStatusColor(app.app_running_status).text}
-        >
-          {app.app_running_status}
-        </Pill>
-      </Group>
+      </Box>
     </Card>
   );
-};
-
-// Helper function for status colors
-const getStatusColor = (status: string) => {
-  const colors: Record<string, { background: string; text: string }> = {
-    running: { background: "#e3fbe3", text: "#1a7a1a" },
-    deployed: { background: "#e3f2fd", text: "#1a4a7a" },
-    unknown: { background: "", text: "" },
-  };
-  return colors[status.toLowerCase()] || colors.unknown;
 };
 
 export default AppsCard;

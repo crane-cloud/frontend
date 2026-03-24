@@ -3,7 +3,7 @@ import CreateDatabaseForm from "@/components/Forms/CreateDatabaseForm";
 import DatabaseList from "@/components/Lists/databaseList";
 import TitleText from "@/components/TitleText";
 import { useGetProject } from "@/utils/helpers";
-import { Button, Stack } from "@mantine/core";
+import { Button, Container, Stack } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { useState } from "react";
 import { GoPlus } from "react-icons/go";
@@ -16,34 +16,36 @@ const DatabasePage = () => {
   useGetProject(project_id || "");
 
   return (
-    <Stack>
-      <TitleText
-        loading={false}
-        rightSection={
-          <Button radius="xl" leftSection={<GoPlus />} onClick={open}>
-            Add Database
-          </Button>
-        }
-      >
-        Databases
-      </TitleText>
-      <DatabaseList project_id={project_id} refresh={refresh} />
-      <ModalConfirm
-        opened={opened}
-        onClose={close}
-        title="Create Database"
-        buttonText="Create"
-        onConfirm={() => {}}
-        showFooterActions={false}
-      >
-        <CreateDatabaseForm
-          showTitle={false}
-          onCancel={close}
-          project_id={project_id}
-          refresh={() => setRefresh(true)}
-        />
-      </ModalConfirm>
-    </Stack>
+    <Container size="1070" mt="sm">
+      <Stack>
+        <TitleText
+          loading={false}
+          rightSection={
+            <Button radius="md" leftSection={<GoPlus />} onClick={open}>
+              Add Database
+            </Button>
+          }
+        >
+          Databases
+        </TitleText>
+        <DatabaseList project_id={project_id} refresh={refresh} />
+        <ModalConfirm
+          opened={opened}
+          onClose={close}
+          title="Create Database"
+          buttonText="Create"
+          onConfirm={() => {}}
+          showFooterActions={false}
+        >
+          <CreateDatabaseForm
+            showTitle={false}
+            onCancel={close}
+            project_id={project_id}
+            refresh={() => setRefresh(true)}
+          />
+        </ModalConfirm>
+      </Stack>
+    </Container>
   );
 };
 

@@ -207,7 +207,7 @@ const LandingPage = () => {
                   loading={loading}
                 />
                 <Select
-                  radius="xl"
+                  radius="md"
                   data={["All Activity", "Following", "Your Activity"]}
                   defaultValue="Your Activity"
                   size="xs"
@@ -216,7 +216,7 @@ const LandingPage = () => {
               </Group>
             </Group>
 
-            <ScrollArea h={964}>
+            <ScrollArea h={800}>
               {loading ? (
                 <Stack gap="md">
                   {Array.from({ length: 5 }).map((_, index) => (

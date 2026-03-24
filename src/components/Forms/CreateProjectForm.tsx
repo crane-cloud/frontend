@@ -12,6 +12,7 @@ import {
   TextInput,
   Text,
   Alert,
+  Container,
 } from "@mantine/core";
 import {
   InvalidFeedback,
@@ -159,7 +160,7 @@ const CreateProjectForm = (props: TCreateProjectForm) => {
     feedback.numbers?.length;
 
   return (
-    <div>
+    <Container size="1070" mt="sm">
       {showTitle && <TitleText>Create new Project</TitleText>}
       <Paper p="lg" radius="md">
         <form onSubmit={handleSubmit}>
@@ -325,7 +326,7 @@ const CreateProjectForm = (props: TCreateProjectForm) => {
           </Stack>
         </form>
       </Paper>
-    </div>
+    </Container>
   );
 };
 
@@ -464,12 +465,12 @@ export const MigrateProjectForm = (props: {
 
           <Group justify="flex-end">
             {onCancel && (
-              <Button radius="xl" variant="default" onClick={onCancel}>
+              <Button radius="md" variant="default" onClick={onCancel}>
                 Cancel
               </Button>
             )}
             <Button
-              radius="xl"
+              radius="md"
               variant="filled"
               color={project ? "blue" : "gray.9"}
               type="submit"

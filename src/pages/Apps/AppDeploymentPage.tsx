@@ -12,6 +12,7 @@ import {
   Tooltip,
   Code,
   Skeleton,
+  Container,
 } from "@mantine/core";
 import {
   TbAlertCircle,
@@ -229,89 +230,93 @@ const AppDeploymentPage = () => {
   // Show loading skeleton while app data is loading
   if (appLoading) {
     return (
-      <Stack gap="lg">
-        {/* Header Loading */}
-        <Flex justify="space-between" align="center">
-          <Skeleton height={32} width={150} />
-          <Group gap="sm">
-            <Skeleton height={28} width={120} />
-            <Skeleton height={28} width={28} radius="md" />
-          </Group>
-        </Flex>
+      <Container size="1070" mt="sm">
+        <Stack gap="lg">
+          {/* Header Loading */}
+          <Flex justify="space-between" align="center">
+            <Skeleton height={32} width={150} />
+            <Group gap="sm">
+              <Skeleton height={28} width={120} />
+              <Skeleton height={28} width={28} radius="md" />
+            </Group>
+          </Flex>
 
-        {/* Table Loading */}
-        <Stack gap="md">
-          <Skeleton height={50} />
-          <Skeleton height={40} />
-          <Skeleton height={40} />
-          <Skeleton height={40} />
+          {/* Table Loading */}
+          <Stack gap="md">
+            <Skeleton height={50} />
+            <Skeleton height={40} />
+            <Skeleton height={40} />
+            <Skeleton height={40} />
+          </Stack>
         </Stack>
-      </Stack>
+      </Container>
     );
   }
 
   return (
-    <Stack gap="lg">
-      {/* Header */}
-      <Flex justify="space-between" align="center">
-        <TitleText>Deployments</TitleText>
-        <Group gap="sm">
-          {loading ? (
-            <Skeleton height={28} width={120} />
-          ) : (
-            <Badge variant="light" color="gray" size="lg">
-              {builds.length} deployment{builds.length !== 1 ? "s" : ""}
-            </Badge>
-          )}
-          <ActionIcon
-            variant="filled"
-            size="md"
-            onClick={() => window.location.reload()}
+    <Container size="1070" mt="sm">
+      <Stack gap="lg">
+        {/* Header */}
+        <Flex justify="space-between" align="center">
+          <TitleText>Deployments</TitleText>
+          <Group gap="sm">
+            {loading ? (
+              <Skeleton height={28} width={120} />
+            ) : (
+              <Badge variant="light" color="gray" size="lg">
+                {builds.length} deployment{builds.length !== 1 ? "s" : ""}
+              </Badge>
+            )}
+            <ActionIcon
+              variant="filled"
+              size="md"
+              onClick={() => window.location.reload()}
+              color="blue"
+              loading={loading}
+              disabled={loading}
+            >
+              <TbRefresh size={16} />
+            </ActionIcon>
+          </Group>
+        </Flex>
+
+        {/* Enhanced Table */}
+        <Table
+          columns={columns}
+          data={tableData}
+          loading={loading || appLoading}
+          showIndex={false}
+          hideFilters
+          verticalSpacing="md"
+          striped="odd"
+          rowHover
+        />
+
+        {/* Empty State */}
+        {builds.length === 0 && !loading && !appLoading && (
+          <Alert
+            icon={<TbPlayerPlay size={20} />}
+            title="No deployments yet"
             color="blue"
-            loading={loading}
-            disabled={loading}
-          >
-            <TbRefresh size={16} />
-          </ActionIcon>
-        </Group>
-      </Flex>
-
-      {/* Enhanced Table */}
-      <Table
-        columns={columns}
-        data={tableData}
-        loading={loading || appLoading}
-        showIndex={false}
-        hideFilters
-        verticalSpacing="md"
-        striped="odd"
-        rowHover
-      />
-
-      {/* Empty State */}
-      {builds.length === 0 && !loading && !appLoading && (
-        <Alert
-          icon={<TbPlayerPlay size={20} />}
-          title="No deployments yet"
-          color="blue"
-          variant="light"
-          p="xl"
-          radius="md"
-        >
-          <Text size="sm" c="dimmed" mb="md">
-            No deployment history available for this app. Deployments will
-            appear here once you start deploying your application.
-          </Text>
-          <Button
-            leftSection={<TbPlayerPlay size={16} />}
             variant="light"
-            size="sm"
+            p="xl"
+            radius="md"
           >
-            Start your first deployment
-          </Button>
-        </Alert>
-      )}
-    </Stack>
+            <Text size="sm" c="dimmed" mb="md">
+              No deployment history available for this app. Deployments will
+              appear here once you start deploying your application.
+            </Text>
+            <Button
+              leftSection={<TbPlayerPlay size={16} />}
+              variant="light"
+              size="sm"
+            >
+              Start your first deployment
+            </Button>
+          </Alert>
+        )}
+      </Stack>
+    </Container>
   );
 };
 

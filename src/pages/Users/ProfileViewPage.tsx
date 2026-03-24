@@ -15,7 +15,6 @@ import {
   Divider,
   Skeleton,
   Center,
-  Badge,
   ThemeIcon,
   Anchor,
   LoadingOverlay,
@@ -42,7 +41,7 @@ import {
 } from "react-icons/fi";
 import { ProfileAvatar } from "@/components/Common";
 import { useParams, useNavigate } from "react-router-dom";
-import { FaUsersViewfinder, FaXTwitter } from "react-icons/fa6";
+import { FaCircleDot, FaUsersViewfinder, FaXTwitter } from "react-icons/fa6";
 import { ACTIVITY_LOGS_API_URL } from "@/config";
 import { Project } from "@/types/project";
 import ActivityTimeline from "@/components/Elements/Timeline";
@@ -51,6 +50,7 @@ import { TbFolderOff } from "react-icons/tb";
 import usePost from "@/utils/usePost";
 import { API_USERS } from "@/utils/apis";
 import PaginationInfo from "@/components/PaginationInfo";
+import { LuUserCheck, LuUsers } from "react-icons/lu";
 
 const ProfileViewPage = () => {
   useSetNoSidebar();
@@ -232,58 +232,134 @@ const ProfileViewPage = () => {
     <Grid gutter={40}>
       {/* LEFT COLUMN - MAIN PROFILE & PROJECTS */}
       <Grid.Col span={{ base: 12, md: 8 }}>
-        {/* PROFILE HEADER CARD */}
+        <Group justify="space-between">
+          <Title order={3}>User Details</Title>
+        </Group>
+        <Divider my="xs" />
         {fetchingUserDetails && !userData?.data?.user ? (
           <ProfileHeaderSkeleton />
         ) : (
-          <Card p={0} radius="lg" withBorder shadow="sm" mb={40}>
-            {/* Modern Banner */}
-            <Box
-              h={140}
-              style={{
-                background:
-                  "linear-gradient(45deg, var(--mantine-color-blue-6), var(--mantine-color-cyan-6))",
-              }}
-            />
-
-            <Box p="xl" pt={0}>
-              <Flex justify="space-between" align="flex-end" mt={-60} mb="md">
-                {/* Overlapping Avatar */}
-                <Box
-                  style={{
-                    borderRadius: "50%",
-                    border: "6px solid var(--mantine-color-body)",
-                    backgroundColor: "var(--mantine-color-body)",
-                  }}
+          <Card
+            p="xl"
+            radius="md"
+            withBorder
+            style={{
+              position: "relative",
+              overflow: "hidden",
+              [`@media (min-width: 992px)`]: {
+                height: "280px",
+              },
+            }}
+            mb={20}
+          >
+            <Grid gutter="xl">
+              <Grid.Col span={{ base: 12, lg: 10 }}>
+                <Flex
+                  gap="xl"
+                  align="flex-start"
+                  direction={{ base: "column", sm: "row" }}
                 >
-                  <ProfileAvatar user={userData?.data?.user} size={120} />
-                </Box>
+                  <ProfileAvatar user={userData?.data?.user} size={140} />
+                  <Stack gap="xs" flex={1}>
+                    <Group gap="sm" wrap="nowrap">
+                      <Title order={2}>
+                        {userData?.data?.user?.name || "N/A"}
+                      </Title>
+                    </Group>
 
-                {/* Action Buttons floated right */}
-                <Box mb="sm">
+                    <Text c="dimmed" size="md">
+                      @{userData?.data?.user?.username || "johndoe"}
+                    </Text>
+
+                    <Text size="md" maw={600} lineClamp={3}>
+                      {beautify(userData?.data?.user?.biography)}
+                    </Text>
+
+                    <Group gap="xl" mt={20}>
+                      <Group gap={6}>
+                        <LuUserCheck size={18} />
+                        <Text size="sm" fw={500}>
+                          {userData?.data?.user?.following_count || 0}
+                        </Text>
+                        <Text size="sm" c="dimmed">
+                          Following
+                        </Text>
+                      </Group>
+
+                      <Group gap={6}>
+                        <LuUsers size={18} />
+                        <Text size="sm" fw={500}>
+                          {userData?.data?.user?.followers_count || 0}
+                        </Text>
+                        <Text size="sm" c="dimmed">
+                          Followers
+                        </Text>
+                      </Group>
+                    </Group>
+
+                    <Group gap="md" mt="xs">
+                      <Group gap={4}>
+                        <Text size="sm" c="dimmed">
+                          Member Since{" "}
+                          {new Date(
+                            userData?.data?.user?.date_created,
+                          ).getFullYear()}
+                        </Text>
+                      </Group>
+
+                      <Group gap="xs">
+                        {socialLinks?.map(
+                          (social, index) =>
+                            social.url !== null && (
+                              <>
+                                <FaCircleDot size="4" color="gray" />
+                                <ActionIcon
+                                  key={index}
+                                  variant="subtle"
+                                  size="lg"
+                                  component="a"
+                                  href={social.url}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                >
+                                  <social.icon size={18} />
+                                </ActionIcon>
+                              </>
+                            ),
+                        )}
+                      </Group>
+                    </Group>
+                  </Stack>
+                </Flex>
+              </Grid.Col>
+
+              <Grid.Col span={{ base: 12, md: 2 }}>
+                <Stack align="flex-end" gap="md" h="100%">
                   {isCurrentUser ? (
                     <Button
-                      variant="default"
-                      radius="xl"
+                      variant="outline"
+                      size="sm"
+                      color="blue"
                       onClick={() => navigate("/users/profile/settings")}
-                      leftSection={<FiEdit size={16} />}
+                      leftSection={<FiEdit size={20} />}
                     >
                       Edit Profile
                     </Button>
                   ) : (
                     <Button
-                      variant={isFollowingUser ? "default" : "filled"}
-                      color={isFollowingUser ? "gray" : "blue"}
-                      radius="xl"
+                      variant="outline"
+                      size="sm"
+                      color="blue"
                       onClick={onFollowClick}
                       leftSection={
                         isFollowingUser ? (
-                          <FiCheck size={16} />
+                          <FiCheck size={20} />
                         ) : (
-                          <FiUserPlus size={16} />
+                          <FiUserPlus size={20} />
                         )
                       }
                       loading={isLoading}
+                      disabled={isLoading}
                     >
                       {isLoading
                         ? isFollowingUser
@@ -294,77 +370,9 @@ const ProfileViewPage = () => {
                           : "Follow"}
                     </Button>
                   )}
-                </Box>
-              </Flex>
-
-              <Stack gap="xs">
-                <Group align="center" gap="sm">
-                  <Title order={2} style={{ letterSpacing: "-0.5px" }}>
-                    {userData?.data?.user?.name || "N/A"}
-                  </Title>
-                  <Badge
-                    tt="capitalize"
-                    variant="light"
-                    color="blue"
-                    radius="xl"
-                  >
-                    Member Since{" "}
-                    {new Date(
-                      userData?.data?.user?.date_created || Date.now(),
-                    ).getFullYear()}
-                  </Badge>
-                </Group>
-
-                <Text c="dimmed" size="lg" fw={500} mt={-5}>
-                  @{userData?.data?.user?.username || "johndoe"}
-                </Text>
-
-                <Text size="md" maw={650} mt="sm" lh={1.6}>
-                  {beautify(userData?.data?.user?.biography)}
-                </Text>
-
-                <Group gap="xl" mt="md">
-                  <Group gap={6}>
-                    <Text size="md" fw={700}>
-                      {userData?.data?.user?.following_count || 0}
-                    </Text>
-                    <Text size="sm" c="dimmed">
-                      Following
-                    </Text>
-                  </Group>
-                  <Group gap={6}>
-                    <Text size="md" fw={700}>
-                      {userData?.data?.user?.followers_count || 0}
-                    </Text>
-                    <Text size="sm" c="dimmed">
-                      Followers
-                    </Text>
-                  </Group>
-
-                  <Divider orientation="vertical" />
-
-                  <Group gap="xs">
-                    {socialLinks?.map(
-                      (social, index) =>
-                        social.url !== null && (
-                          <ActionIcon
-                            key={index}
-                            variant="subtle"
-                            color="gray"
-                            size="lg"
-                            radius="xl"
-                            component="a"
-                            href={social.url}
-                            target="_blank"
-                          >
-                            <social.icon size={20} />
-                          </ActionIcon>
-                        ),
-                    )}
-                  </Group>
-                </Group>
-              </Stack>
-            </Box>
+                </Stack>
+              </Grid.Col>
+            </Grid>
           </Card>
         )}
 
@@ -373,7 +381,7 @@ const ProfileViewPage = () => {
           <ProjectsSkeleton />
         ) : (
           userProjectData?.data?.pinned?.length > 0 && (
-            <Stack gap="lg" mb={40}>
+            <Stack gap="md" mb={40}>
               <Title order={3} size="h4" fw={700}>
                 Pinned Projects
               </Title>
@@ -394,7 +402,7 @@ const ProfileViewPage = () => {
         {fetchingUserProjects && !userProjectData?.data?.projects ? (
           <ProjectsSkeleton />
         ) : (
-          <Stack gap="lg">
+          <Stack gap="md">
             <Title order={3} size="h4" fw={700}>
               {isCurrentUser ? "My Projects" : "Projects"}
             </Title>
@@ -463,30 +471,25 @@ const ProfileViewPage = () => {
           <Stack gap="xl">
             {/* UNIFIED OVERVIEW CARD */}
             <Box>
-              <Title order={3} size="h4" fw={700} mb="md">
-                Overview
+              <Title order={3} size="h4" fw={700} mb="md" lts={0.1}>
+                Platform Summary
               </Title>
               {fetchingUserDetails ? (
                 <UserStatsSkeleton />
               ) : (
-                <Card withBorder radius="lg" shadow="sm">
+                <Card withBorder radius="md" shadow="sm" p="sm">
                   <SimpleGrid cols={2} spacing="md">
                     {userStats.map((stat, index) => (
                       <Box
                         key={index}
-                        // p="sm"
+                        p={3}
                         style={{
                           borderRadius: "var(--mantine-radius-md)",
                         }}
                       >
                         <Box key={index} p="xs">
-                          <Group gap="sm" wrap="nowrap">
-                            <ThemeIcon
-                              variant="light"
-                              // color={stat.color}
-                              size="lg"
-                              radius="md"
-                            >
+                          <Group gap="md" wrap="nowrap">
+                            <ThemeIcon variant="light" size="lg" radius="md">
                               <stat.icon size={18} />
                             </ThemeIcon>
                             <Box>
@@ -517,7 +520,7 @@ const ProfileViewPage = () => {
               <Title order={3} size="h4" fw={700} mb="md">
                 Recent Activity
               </Title>
-              <Card withBorder radius="lg" shadow="sm" p="lg">
+              <Card withBorder radius="md" shadow="sm" p="lg">
                 {fetchingUserActivities ? (
                   <UserActivitiesSkeleton />
                 ) : error || activitiesData?.data?.activity?.length === 0 ? (
@@ -599,60 +602,57 @@ const ProfileViewPage = () => {
 
 export const ProfileHeaderSkeleton = () => {
   return (
-    <Card p={0} radius="lg" withBorder shadow="sm" mb={40}>
-      {/* Skeleton for the Banner */}
-      <Skeleton height={140} radius={0} />
-
-      <Box p="xl" pt={0}>
-        <Flex justify="space-between" align="flex-end" mt={-60} mb="md">
-          {/* Skeleton for the Overlapping Avatar */}
-          <Box
-            style={{
-              borderRadius: "50%",
-              border: "6px solid var(--mantine-color-body)",
-              backgroundColor: "var(--mantine-color-body)",
-            }}
+    <Card
+      p="xl"
+      radius="md"
+      withBorder
+      style={{
+        position: "relative",
+        overflow: "hidden",
+      }}
+    >
+      <Grid gutter="xl">
+        <Grid.Col span={{ base: 12, md: 8 }}>
+          <Flex
+            gap="xl"
+            align="flex-start"
+            direction={{ base: "column", sm: "row" }}
           >
-            <Skeleton circle height={120} width={120} />
-          </Box>
+            {/* Avatar */}
+            <Skeleton circle height={140} width={140} />
 
-          {/* Skeleton for the Edit/Follow Button */}
-          <Box mb="sm">
-            <Skeleton height={36} width={100} radius="md" />
-          </Box>
-        </Flex>
+            <Stack gap="xs" flex={1}>
+              {/* Name */}
+              <Group gap="sm" wrap="nowrap">
+                <Skeleton height={28} width={200} />
+              </Group>
 
-        <Stack gap="xs">
-          {/* Skeleton for Name & Badge */}
-          <Group align="center" gap="sm">
-            <Skeleton height={32} width={220} radius="sm" />
-            <Skeleton height={24} width={130} radius="sm" />
-          </Group>
+              {/* Username */}
+              <Skeleton height={18} width={120} />
 
-          {/* Skeleton for Username */}
-          <Skeleton height={18} width={100} mt={-5} />
+              {/* Biography */}
+              <Skeleton height={50} width="80%" />
 
-          {/* Skeleton for Biography (3 lines) */}
-          <Box mt="sm">
-            <Skeleton height={16} width="80%" mb={8} radius="sm" />
-            <Skeleton height={16} width="90%" mb={8} radius="sm" />
-            <Skeleton height={16} width="60%" radius="sm" />
-          </Box>
+              {/* Following + Followers */}
+              <Group gap="xl">
+                <Skeleton height={16} width={80} />
+                <Skeleton height={16} width={80} />
+              </Group>
 
-          {/* Skeleton for Followers/Following/Socials */}
-          <Group gap="xl" mt="md">
-            <Group gap={6}>
-              <Skeleton height={20} width={30} radius="sm" />
-              <Skeleton height={14} width={60} radius="sm" />
-            </Group>
-            <Group gap={6}>
-              <Skeleton height={20} width={30} radius="sm" />
-              <Skeleton height={14} width={60} radius="sm" />
-            </Group>
-            <Skeleton height={28} width={120} radius="xl" />
-          </Group>
-        </Stack>
-      </Box>
+              {/* Member Since + Socials */}
+              <Group gap="md" mt="sm">
+                <Skeleton height={14} width={150} />
+              </Group>
+            </Stack>
+          </Flex>
+        </Grid.Col>
+
+        <Grid.Col span={{ base: 12, md: 4 }}>
+          <Stack align="flex-end" gap="md" h="100%">
+            <Skeleton height={36} width={100} />
+          </Stack>
+        </Grid.Col>
+      </Grid>
     </Card>
   );
 };
@@ -710,7 +710,6 @@ export const UserStatsSkeleton: React.FC = () => {
             key={index}
             p="sm"
             style={{
-              backgroundColor: "var(--mantine-color-gray-0)",
               borderRadius: "var(--mantine-radius-md)",
             }}
           >

@@ -403,7 +403,7 @@ const TagDetailsPage = () => {
               <Group gap="sm">
                 <Button
                   variant={isFollowing ? "light" : "filled"}
-                  radius="xl"
+                  radius="md"
                   size="md"
                   leftSection={
                     isFollowing ? (

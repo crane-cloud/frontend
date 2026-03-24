@@ -211,7 +211,7 @@ export const AddServiceButton = ({
     <div>
       <Menu transitionProps={{ transition: "pop-top-right" }} radius="md">
         <Menu.Target>
-          <Button rightSection={<IoIosArrowDown />} size="sm" radius="xl">
+          <Button rightSection={<IoIosArrowDown />} size="sm" radius="md">
             {title}
           </Button>
         </Menu.Target>

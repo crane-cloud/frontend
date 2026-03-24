@@ -6,7 +6,7 @@ import TitleText from "@/components/TitleText";
 import { MONITORING_API_URL } from "@/config";
 import { bytesToMB, useGetProject, useSetContainerSize } from "@/utils/helpers";
 import usePost from "@/utils/usePost";
-import { Grid } from "@mantine/core";
+import { Container, Grid } from "@mantine/core";
 import { useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
 
@@ -130,7 +130,7 @@ const ProjectMetrics = () => {
     gpuMetricsData,
   ]);
   return (
-    <div>
+    <Container size="1070" mt="sm">
       <TitleText>Project Metrics</TitleText>
       <Grid>
         <Grid.Col span={12}>
@@ -205,7 +205,7 @@ const ProjectMetrics = () => {
           />
         </Grid.Col>
       </Grid>
-    </div>
+    </Container>
   );
 };
 

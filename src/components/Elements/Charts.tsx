@@ -247,7 +247,7 @@ export const LineLargeMetricChart = ({
                   key={range}
                   variant={activePreset === range ? "solid" : "outline"}
                   size="xs"
-                  radius="xl"
+                  radius="md"
                   onClick={() => handlePresetClick(range)}
                 >
                   {range}
@@ -270,7 +270,7 @@ export const LineLargeMetricChart = ({
                 c="light-dark(var(--mantine-color-dark-9), white)"
                 mx="auto"
                 size="sm"
-                radius="xl"
+                radius="md"
                 leftSection={<CiCalendarDate size={18} />}
                 className="dimmed-placeholder"
               />
@@ -287,7 +287,7 @@ export const LineLargeMetricChart = ({
                   setActivePreset(null);
                 }}
                 mx="auto"
-                radius="xl"
+                radius="md"
                 size="sm"
                 leftSection={<CiCalendarDate size={18} />}
                 className="dimmed-placeholder"
