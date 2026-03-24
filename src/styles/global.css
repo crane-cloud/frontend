@@ -110,3 +110,9 @@ a:hover {
   color: light-dark(var(--mantine-color-gray-6),
       var(--mantine-color-gray-5)) !important;
 }
+
+.paper-hover:hover {
+  transform: scale(1.02);
+  transition: all 0.2s ease;
+  box-shadow: 0 8px 64px 16px rgba(0, 0, 0, 0.06);
+}
