@@ -7,7 +7,7 @@ import TitleText from "@/components/TitleText";
 import { MONITORING_API_URL } from "@/config";
 import { bytesToMB } from "@/utils/helpers";
 import usePost from "@/utils/usePost";
-import { Container, Grid } from "@mantine/core";
+import { Grid } from "@mantine/core";
 import { useContext, useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
 
@@ -141,7 +141,7 @@ const AppMetrics = () => {
   ]);
 
   return (
-    <Container size="1070" mt="sm">
+    <>
       <TitleText>App Metrics</TitleText>
       <Grid>
         <Grid.Col span={12}>
@@ -214,7 +214,7 @@ const AppMetrics = () => {
           />
         </Grid.Col>
       </Grid>
-    </Container>
+    </>
   );
 };
 

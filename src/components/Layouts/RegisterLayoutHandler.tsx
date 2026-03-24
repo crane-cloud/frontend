@@ -9,7 +9,7 @@ import { beautify, returnObject } from "../../utils/helpers";
 import useGet from "@/utils/useGet";
 import { IoAdd } from "react-icons/io5";
 import { Table } from "../Elements/CustomTable";
-import { Button, Container, Stack } from "@mantine/core";
+import { Button, Stack } from "@mantine/core";
 import TitleText from "../TitleText";
 import { SimpleDetailsCard } from "../Cards/DetailsCard";
 import { BarMetricChart } from "../Elements/Charts";
@@ -164,7 +164,7 @@ const RegisterLayoutHandler = (props: any) => {
   }
 
   return (
-    <Container size="1070" mt="sm">
+    <>
       <Stack gap={20}>
         {/* {externalFilters && externalFilters.length > 0 && (
         <div style={{ display: "flex", gap: 30, marginBottom: 30 }}>
@@ -241,7 +241,7 @@ const RegisterLayoutHandler = (props: any) => {
           hideActions={false}
         />
       </Stack>
-    </Container>
+    </>
   );
 };
 

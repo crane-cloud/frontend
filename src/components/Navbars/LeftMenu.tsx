@@ -465,7 +465,6 @@ const LeftMenu = React.memo(
       <AppShell.Navbar
         p="5px"
         style={{ display: menuType === "noSidebar" ? "none" : "flex" }}
-        w={280}
       >
         <AppShell.Section grow component={ScrollArea}>
           {showProjectHeader && (

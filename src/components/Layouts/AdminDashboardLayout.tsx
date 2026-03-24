@@ -76,9 +76,7 @@ export const AdminDashboardLayout = ({
           subtitle={subtitle}
         />
         <AppShell.Main>
-          <Container size={1400} w="100%">
-            {children}
-          </Container>
+          <Container size={containerSize}>{children}</Container>
         </AppShell.Main>
       </AppShell>
     </AdminMenuContext.Provider>

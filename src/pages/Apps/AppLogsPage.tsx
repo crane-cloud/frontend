@@ -1,14 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import {
-  Card,
-  Code,
-  Container,
-  Flex,
-  Loader,
-  Stack,
-  Text,
-} from "@mantine/core";
+import { Card, Code, Flex, Loader, Stack, Text } from "@mantine/core";
 import TitleText from "@/components/TitleText";
 import usePost from "@/utils/usePost";
 import { useGetApp } from "@/utils/helpers";
@@ -51,40 +43,38 @@ const LogsCard = ({ project_id, app_id }: TLogsCardProps) => {
   }, [appLogsSuccess]);
 
   return (
-    <Container size="1070" mt="sm">
-      <Stack gap={10}>
-        <TitleText className="title">Logs</TitleText>
-        <Card radius="md" withBorder>
-          <Card.Section>
-            <Code
-              p="lg"
-              block
-              mah="80vh"
-              bg="dark.7"
-              c="white"
-              style={{
-                overflow: "auto",
-              }}
-            >
-              {appLogsLoading ? (
-                <Flex justify="center" align="center" h="100%">
-                  <Loader size="sm" />
-                </Flex>
-              ) : logs.length <= 0 ? (
-                <Text size="xs" py="lg" ta="center">
-                  No logs found
+    <Stack gap={10}>
+      <TitleText className="title">Logs</TitleText>
+      <Card radius="md" withBorder>
+        <Card.Section>
+          <Code
+            p="lg"
+            block
+            mah="80vh"
+            bg="dark.7"
+            c="white"
+            style={{
+              overflow: "auto",
+            }}
+          >
+            {appLogsLoading ? (
+              <Flex justify="center" align="center" h="100%">
+                <Loader size="sm" />
+              </Flex>
+            ) : logs.length <= 0 ? (
+              <Text size="xs" py="lg" ta="center">
+                No logs found
+              </Text>
+            ) : (
+              logs.map((log) => (
+                <Text size="xs" key={log}>
+                  {log}
                 </Text>
-              ) : (
-                logs.map((log) => (
-                  <Text size="xs" key={log}>
-                    {log}
-                  </Text>
-                ))
-              )}
-            </Code>
-          </Card.Section>
-        </Card>
-      </Stack>
-    </Container>
+              ))
+            )}
+          </Code>
+        </Card.Section>
+      </Card>
+    </Stack>
   );
 };

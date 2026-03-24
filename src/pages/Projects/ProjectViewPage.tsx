@@ -8,7 +8,6 @@ import {
   Button,
   Card,
   Center,
-  Container,
   Grid,
   Group,
   Loader,
@@ -177,7 +176,7 @@ const ProjectViewPage = () => {
   // --- MODERN LOADING SKELETON ---
   if (gettingProjectDetails) {
     return (
-      <Container size="xl" py="xl">
+      <>
         <Grid gutter="xl">
           <Grid.Col span={{ base: 12, md: 8 }}>
             <Stack gap="xl">
@@ -204,13 +203,13 @@ const ProjectViewPage = () => {
             <Skeleton height={300} radius="lg" />
           </Grid.Col>
         </Grid>
-      </Container>
+      </>
     );
   }
 
   if (!projectResponse?.data && !gettingProjectDetails) {
     return (
-      <Container size="xl" py="xl">
+      <>
         <Stack gap="xl">
           <Card withBorder radius="lg" py={80} shadow="sm">
             <Center>
@@ -238,7 +237,7 @@ const ProjectViewPage = () => {
             </Center>
           </Card>
         </Stack>
-      </Container>
+      </>
     );
   }
 

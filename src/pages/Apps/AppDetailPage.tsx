@@ -5,7 +5,6 @@ import {
   Button,
   Card,
   Code,
-  Container,
   Flex,
   Grid,
   Pill,
@@ -89,93 +88,91 @@ const AppDetailPage = () => {
     },
   ];
   return (
-    <Container size="1070" mt="sm">
-      <Stack gap={20}>
-        <TitleText
-          rightSection={
-            <Button
-              color="gray.9"
-              variant="filled"
-              size="sm"
-              radius="md"
-              leftSection={<TbWorld />}
-              onClick={() => window.open(app?.url, "_blank")}
-            >
-              {app?.is_notebook ? "Open Notebook" : "Visit App"}
-            </Button>
-          }
-        >
-          {app?.name}
-        </TitleText>
-        <Card p="lg" radius="md" withBorder>
-          {loading ? (
-            <AppDetailsSkeleton />
-          ) : (
-            <Stack gap={20}>
-              <Flex gap={20} wrap="wrap">
-                {app?.image && !app?.is_notebook && (
-                  <Stack gap={5}>
-                    <Text className="subtitle">Image</Text>
-                    <Code>
-                      <CustomText
-                        size="sm"
-                        leftSection={<FaDocker color="gray.7" />}
-                      >
-                        {app?.image}
-                      </CustomText>
-                    </Code>
-                  </Stack>
-                )}
-                <Stack gap={5} w="fit-content" flex={app?.is_notebook && 1}>
-                  <CustomText className="subtitle" leftSection={<TbWorld />}>
-                    Domain
-                  </CustomText>
-                  <Text
-                    component={Link}
-                    size="sm"
-                    to={app?.url}
-                    target="_blank"
-                    className="link"
-                  >
-                    {app?.url}
-                    <FiExternalLink />
-                  </Text>
+    <Stack gap={20}>
+      <TitleText
+        rightSection={
+          <Button
+            color="gray.9"
+            variant="filled"
+            size="sm"
+            radius="md"
+            leftSection={<TbWorld />}
+            onClick={() => window.open(app?.url, "_blank")}
+          >
+            {app?.is_notebook ? "Open Notebook" : "Visit App"}
+          </Button>
+        }
+      >
+        {app?.name}
+      </TitleText>
+      <Card p="lg" radius="md" withBorder>
+        {loading ? (
+          <AppDetailsSkeleton />
+        ) : (
+          <Stack gap={20}>
+            <Flex gap={20} wrap="wrap">
+              {app?.image && !app?.is_notebook && (
+                <Stack gap={5}>
+                  <Text className="subtitle">Image</Text>
+                  <Code>
+                    <CustomText
+                      size="sm"
+                      leftSection={<FaDocker color="gray.7" />}
+                    >
+                      {app?.image}
+                    </CustomText>
+                  </Code>
                 </Stack>
-                {app?.is_notebook && (
-                  <Pill w="fit-content">
-                    <Flex gap={5} wrap="nowrap" w="fit-content" align="center">
-                      <SiJupyter size={13} color="#f57c00" />
-                      <Text size="sm" truncate>
-                        Notebook
-                      </Text>
-                    </Flex>
-                  </Pill>
-                )}
-              </Flex>
+              )}
+              <Stack gap={5} w="fit-content" flex={app?.is_notebook && 1}>
+                <CustomText className="subtitle" leftSection={<TbWorld />}>
+                  Domain
+                </CustomText>
+                <Text
+                  component={Link}
+                  size="sm"
+                  to={app?.url}
+                  target="_blank"
+                  className="link"
+                >
+                  {app?.url}
+                  <FiExternalLink />
+                </Text>
+              </Stack>
+              {app?.is_notebook && (
+                <Pill w="fit-content">
+                  <Flex gap={5} wrap="nowrap" w="fit-content" align="center">
+                    <SiJupyter size={13} color="#f57c00" />
+                    <Text size="sm" truncate>
+                      Notebook
+                    </Text>
+                  </Flex>
+                </Pill>
+              )}
+            </Flex>
 
-              <Grid>
-                {appInfo.map((info) => (
-                  <Grid.Col
-                    span={{ base: 12, md: 4, lg: 3 }}
-                    key={info.label}
-                    hidden={info?.visible === false}
-                  >
-                    <Flex>
-                      <Stack gap={5}>
-                        <Text className="subtitle">{info.label}</Text>
-                        <CustomText size="sm" leftSection={info?.icon}>
-                          {info.value}
-                        </CustomText>
-                      </Stack>
-                    </Flex>
-                  </Grid.Col>
-                ))}
-              </Grid>
-            </Stack>
-          )}
-        </Card>
-      </Stack>
-    </Container>
+            <Grid>
+              {appInfo.map((info) => (
+                <Grid.Col
+                  span={{ base: 12, md: 4, lg: 3 }}
+                  key={info.label}
+                  hidden={info?.visible === false}
+                >
+                  <Flex>
+                    <Stack gap={5}>
+                      <Text className="subtitle">{info.label}</Text>
+                      <CustomText size="sm" leftSection={info?.icon}>
+                        {info.value}
+                      </CustomText>
+                    </Stack>
+                  </Flex>
+                </Grid.Col>
+              ))}
+            </Grid>
+          </Stack>
+        )}
+      </Card>
+    </Stack>
   );
 };
 

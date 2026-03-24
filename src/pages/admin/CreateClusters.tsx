@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import TitleText from "@/components/TitleText";
 import {
   Button,
-  Container,
   Divider,
   Group,
   Paper,
@@ -69,7 +68,7 @@ const CreateClusters = ({
   }, []);
 
   return (
-    <Container size="1070" mt="sm">
+    <>
       <Stack>
         {showTitle && <TitleText>Create Cluster</TitleText>}
         <Paper px="lg" radius="md">
@@ -151,7 +150,7 @@ const CreateClusters = ({
           </form>
         </Paper>
       </Stack>
-    </Container>
+    </>
   );
 };
 
