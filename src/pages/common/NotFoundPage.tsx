@@ -1,4 +1,4 @@
-import { Button, Container, Image, Stack, Text } from "@mantine/core";
+import { Button, Image, Stack, Text } from "@mantine/core";
 import notFoundImage from "../../assets/images/not-found.svg";
 import { FaArrowLeft } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";

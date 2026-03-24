@@ -254,7 +254,7 @@ export const MembersSection = ({ project }: { project: any }) => {
         <Group gap={10}>
           {/* Only show menu if there are actions */}
           {memberActions(member).length > 0 && (
-            <Menu position="bottom-end">
+            <Menu position="bottom-end" shadow="md">
               <Menu.Target>
                 <ActionIcon variant="subtle">
                   <HiDotsVertical />
