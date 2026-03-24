@@ -1,14 +1,7 @@
 import React, { useEffect, useState } from "react";
 import TitleText from "@/components/TitleText";
 import { useGetAdminCluster } from "@/utils/helpers";
-import {
-  Button,
-  Card,
-  Divider,
-  Group,
-  Stack,
-  Text,
-} from "@mantine/core";
+import { Button, Card, Divider, Group, Stack, Text } from "@mantine/core";
 import { useNavigate, useParams } from "react-router-dom";
 import { ClusterDetailsCard } from "./ClustersDashboard";
 import { ModalConfirm } from "@/components/Elements/Modals";
