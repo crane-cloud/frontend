@@ -86,6 +86,8 @@ const AppSettingsPage = () => {
     return () => setContainerSize("xl");
   }, [setContainerSize]);
 
+  useEffect(() => {}, [app]);
+
   return (
     <Tabs defaultValue="general" value={activeTab} onChange={handleTabChange}>
       <Tabs.List>
