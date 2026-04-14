@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useGetApp, useSetContainerSize } from "@/utils/helpers";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import {
+  ActionIcon,
   Button,
   Card,
   Code,
@@ -11,6 +12,7 @@ import {
   Skeleton,
   Stack,
   Text,
+  Tooltip,
 } from "@mantine/core";
 import TitleText, { CustomText } from "@/components/TitleText";
 import { TbCopy, TbWorld } from "react-icons/tb";
@@ -18,11 +20,22 @@ import { FiExternalLink } from "react-icons/fi";
 import { FaDocker } from "react-icons/fa";
 import { LuScreenShare } from "react-icons/lu";
 import { SiJupyter } from "react-icons/si";
+import { ModalConfirm } from "@/components/Elements/Modals";
+import usePost from "@/utils/usePost";
+import { RiRefreshLine } from "react-icons/ri";
 
 const AppDetailPage = () => {
   const { app_id } = useParams();
   const { app, loading } = useGetApp(app_id || "");
   useSetContainerSize("md");
+  const [refreshModalOpened, setRefreshModalOpened] = useState(false);
+  const navigate = useNavigate();
+
+  const {
+    uploadData: refreshApp,
+    submitting: refreshingApp,
+    success: refreshedAppSuccess,
+  } = usePost();
 
   const getAppStatus = (status: string) => {
     if (status === "running") {
@@ -87,6 +100,25 @@ const AppDetailPage = () => {
       value: getAppStatus(app?.app_running_status),
     },
   ];
+
+  const handleRefresh = () => {
+    refreshApp({
+      api: `apps/${app?.id}/restart`,
+      params: {
+        restart: true,
+      },
+    });
+  };
+
+  useEffect(() => {
+    if (refreshedAppSuccess) {
+      setRefreshModalOpened(false);
+      navigate(
+        `/projects/${app?.project_id}/apps/${app?.id}/settings?tab=deployments`,
+      );
+    }
+  }, [refreshedAppSuccess]);
+
   return (
     <Stack gap={20}>
       <TitleText
@@ -110,46 +142,76 @@ const AppDetailPage = () => {
           <AppDetailsSkeleton />
         ) : (
           <Stack gap={20}>
-            <Flex gap={20} wrap="wrap">
-              {app?.image && !app?.is_notebook && (
-                <Stack gap={5}>
-                  <Text className="subtitle">Image</Text>
-                  <Code>
-                    <CustomText
-                      size="sm"
-                      leftSection={<FaDocker color="gray.7" />}
-                    >
-                      {app?.image}
-                    </CustomText>
-                  </Code>
+            <Flex gap={20} wrap="wrap" justify="space-between">
+              <Flex gap={20} wrap="wrap">
+                {app?.image && !app?.is_notebook && (
+                  <Stack gap={5}>
+                    <Text className="subtitle">Image</Text>
+                    <Code>
+                      <CustomText
+                        size="sm"
+                        leftSection={<FaDocker color="gray.7" />}
+                      >
+                        {app?.image}
+                      </CustomText>
+                    </Code>
+                  </Stack>
+                )}
+                <Stack gap={5} w="fit-content" flex={app?.is_notebook && 1}>
+                  <CustomText className="subtitle" leftSection={<TbWorld />}>
+                    Domain
+                  </CustomText>
+                  <Text
+                    component={Link}
+                    size="sm"
+                    to={app?.url}
+                    target="_blank"
+                    className="link"
+                  >
+                    {app?.url}
+                    <FiExternalLink />
+                  </Text>
                 </Stack>
-              )}
-              <Stack gap={5} w="fit-content" flex={app?.is_notebook && 1}>
-                <CustomText className="subtitle" leftSection={<TbWorld />}>
-                  Domain
-                </CustomText>
-                <Text
-                  component={Link}
-                  size="sm"
-                  to={app?.url}
-                  target="_blank"
-                  className="link"
+                {app?.is_notebook && (
+                  <Pill w="fit-content">
+                    <Flex gap={5} wrap="nowrap" w="fit-content" align="center">
+                      <SiJupyter size={13} color="#f57c00" />
+                      <Text size="sm" truncate>
+                        Notebook
+                      </Text>
+                    </Flex>
+                  </Pill>
+                )}
+              </Flex>
+              <Tooltip label="Refresh" withArrow position="bottom">
+                <ActionIcon
+                  variant="light"
+                  color="dark"
+                  size="md"
+                  radius="xl"
+                  onClick={() => setRefreshModalOpened(true)}
                 >
-                  {app?.url}
-                  <FiExternalLink />
-                </Text>
-              </Stack>
-              {app?.is_notebook && (
-                <Pill w="fit-content">
-                  <Flex gap={5} wrap="nowrap" w="fit-content" align="center">
-                    <SiJupyter size={13} color="#f57c00" />
-                    <Text size="sm" truncate>
-                      Notebook
-                    </Text>
-                  </Flex>
-                </Pill>
-              )}
+                  <RiRefreshLine size={18} />
+                </ActionIcon>
+              </Tooltip>
             </Flex>
+
+            <ModalConfirm
+              opened={refreshModalOpened}
+              onClose={() => setRefreshModalOpened(false)}
+              title="Refresh App"
+              buttonColor="gray.9"
+              buttonText="Refresh"
+              onConfirm={handleRefresh}
+              loading={refreshingApp}
+              leftSection={<RiRefreshLine size={18} />}
+            >
+              Are you sure you want to refresh the app?
+              <Text size="sm" mt="md">
+                This action will restart the app and pull the latest image. This
+                may take a few minutes.
+              </Text>
+            </ModalConfirm>
 
             <Grid>
               {appInfo.map((info) => (
