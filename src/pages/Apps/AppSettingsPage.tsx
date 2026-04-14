@@ -53,7 +53,12 @@ import {
 import { FiCalendar, FiExternalLink } from "react-icons/fi";
 import { LiaDocker } from "react-icons/lia";
 
-import { Link, useNavigate, useParams } from "react-router-dom";
+import {
+  Link,
+  useNavigate,
+  useParams,
+  useSearchParams,
+} from "react-router-dom";
 import { TbCheck, TbCopy } from "react-icons/tb";
 import { useClipboard } from "@mantine/hooks";
 import { useAuth } from "@/utils/AuthContext";
@@ -66,19 +71,23 @@ import { FaPencil } from "react-icons/fa6";
 
 const AppSettingsPage = () => {
   const { app_id } = useParams();
-  const [refresh, setRefresh] = useState<number>(0);
+  const [refresh, setRefresh] = useState(0);
   const { app } = useGetApp(app_id || "", refresh);
   const { setContainerSize } = useContext(MenuContext);
 
+  const [searchParams, setSearchParams] = useSearchParams();
+  const activeTab = searchParams.get("tab") || "general";
+
+  const handleTabChange = (value: string | null) => {
+    setSearchParams({ tab: value || "" });
+  };
   useEffect(() => {
     setContainerSize("md");
-    return () => {
-      setContainerSize("xl");
-    };
+    return () => setContainerSize("xl");
   }, [setContainerSize]);
-  useEffect(() => {}, [app]);
+
   return (
-    <Tabs defaultValue="general">
+    <Tabs defaultValue="general" value={activeTab} onChange={handleTabChange}>
       <Tabs.List>
         <Tabs.Tab value="general">General</Tabs.Tab>
         <Tabs.Tab value="ci/cd">CI / CD</Tabs.Tab>
