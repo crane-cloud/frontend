@@ -300,10 +300,7 @@ const ProfileViewPage = () => {
                     <Group gap="md" mt="xs">
                       <Group gap={4}>
                         <Text size="sm" c="dimmed">
-                          Member Since{" "}
-                          {new Date(
-                            userData?.data?.user?.date_created,
-                          ).getFullYear()}
+                          Joined {userData?.data?.user?.age}
                         </Text>
                       </Group>
 

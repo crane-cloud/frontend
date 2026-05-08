@@ -1,4 +1,4 @@
-import { Anchor, Button, Card, Group, Text } from "@mantine/core";
+import { Anchor, Button, Card, Group, Text, Box } from "@mantine/core";
 import React, { useEffect, useState } from "react";
 import { ProfileAvatar } from "../Common";
 import { User } from "@/types/user";
@@ -11,10 +11,11 @@ import { useAuth } from "@/utils/AuthContext";
 const UserCard = ({
   user,
   isCard = false,
+  showBorder = false,
 }: {
   user: User;
-  isCard: boolean;
-  showBorder: boolean;
+  isCard?: boolean;
+  showBorder?: boolean;
 }) => {
   const { user: currentUser } = useAuth();
   const isCurrentUser = currentUser?.id === user.id;
@@ -25,6 +26,7 @@ const UserCard = ({
     success: follow_success,
     data: follow_response,
   } = usePost();
+
   const {
     uploadData: unfollowUser,
     submitting: unfollowing,
@@ -38,14 +40,12 @@ const UserCard = ({
     setIsFollowingUser(user?.is_following);
   }, [user?.is_following]);
 
-  // Handle follow success
   useEffect(() => {
     if (follow_success && follow_response) {
       setIsFollowingUser(true);
     }
   }, [follow_success, follow_response]);
 
-  // Handle unfollow success
   useEffect(() => {
     if (unfollow_success && unfollow_response) {
       setIsFollowingUser(false);
@@ -59,84 +59,79 @@ const UserCard = ({
         method: "DELETE",
       });
     } else {
-      followUser({
-        api: `${API_USERS}/${userId}/following`,
-      });
+      followUser({ api: `${API_USERS}/${userId}/following` });
     }
   };
 
   const isLoading = following || unfollowing;
 
   const content = (
-    <>
-      <Group mb={4} align="flex-start">
-        <ProfileAvatar user={user} size={40} />
-        <div style={{ flex: 1 }}>
-          <Group justify="space-between" align="flex-start" mb={2}>
-            <div style={{ flex: 1 }}>
-              <Anchor
-                href={`/${user.username}`}
-                size="sm"
-                fw={500}
-                lineClamp={1}
-                style={{
-                  lineHeight: 1.2,
-                  textDecoration: "none",
-                  display: "block",
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.textDecoration = "underline";
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.textDecoration = "none";
-                }}
-              >
-                {beautify(user.name)}
-              </Anchor>
-              <Text size="xs" c="dimmed" mb={4}>
-                @{user.username}
-              </Text>
-            </div>
+    <Group wrap="nowrap" align="center" gap="sm">
+      <ProfileAvatar user={user} size={40} />
 
-            {!isCurrentUser && (
-              <Button
-                variant="outline"
-                size="xs"
-                radius="md"
-                color="blue"
-                leftSection={
-                  isFollowingUser ? (
-                    <FiCheck size={14} />
-                  ) : (
-                    <FiUserPlus size={14} />
-                  )
-                }
-                onClick={() => onFollowClick(user.id)}
-                loading={isLoading}
-                disabled={isLoading}
-              >
-                {isLoading
-                  ? isFollowingUser
-                    ? "Unfollowing..."
-                    : "Following..."
-                  : isFollowingUser
-                    ? "Following"
-                    : "Follow"}
-              </Button>
-            )}
-          </Group>
-        </div>
-      </Group>
-    </>
+      <Box style={{ flex: 1, minWidth: 0 }}>
+        <Anchor
+          href={`/${user.username}`}
+          size="sm"
+          fw={500}
+          truncate="end"
+          style={{
+            lineHeight: 1.2,
+            textDecoration: "none",
+            display: "block",
+            marginBottom: "2px",
+          }}
+          onMouseEnter={(e) =>
+            (e.currentTarget.style.textDecoration = "underline")
+          }
+          onMouseLeave={(e) => (e.currentTarget.style.textDecoration = "none")}
+        >
+          {beautify(user.name)}
+        </Anchor>
+        <Text size="xs" c="dimmed" truncate="end">
+          @{user.username}
+        </Text>
+      </Box>
+
+      {!isCurrentUser && (
+        <Button
+          variant="outline"
+          size="xs"
+          radius="md"
+          color="blue"
+          leftSection={
+            isFollowingUser ? <FiCheck size={14} /> : <FiUserPlus size={14} />
+          }
+          onClick={() => onFollowClick(user.id)}
+          loading={isLoading}
+          disabled={isLoading}
+          style={{ flexShrink: 0 }}
+        >
+          {isLoading
+            ? isFollowingUser
+              ? "Unfollowing..."
+              : "Following..."
+            : isFollowingUser
+              ? "Following"
+              : "Follow"}
+        </Button>
+      )}
+    </Group>
   );
 
   if (isCard) {
     return (
-      <Card style={{ padding: "8px 0" }} withBorder radius="md" p="md">
+      <Card
+        withBorder={showBorder}
+        radius="md"
+        p="md"
+        style={{ height: "100%", display: "flex", justifyContent: "center" }}
+      >
         {content}
       </Card>
     );
   }
+
   return <div style={{ padding: "8px 0" }}>{content}</div>;
 };
 
