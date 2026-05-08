@@ -159,7 +159,7 @@ const CreateAppForm = () => {
   const { project } = useGetProject(project_id || "");
   return (
     <div>
-      <Tabs defaultValue="mira">
+      <Tabs defaultValue="single">
         <Tabs.List>
           <Tabs.Tab value="single">Single App</Tabs.Tab>
           <Tabs.Tab value="mira">Deploy with MIRA</Tabs.Tab>

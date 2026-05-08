@@ -320,12 +320,12 @@ const LeftMenu = React.memo(
           key: "dashboard",
           link: `/projects/${project_id}/apps/${app_id}`,
         },
-        {
-          label: "Build Logs",
-          icon: HiOutlineArrowPath,
-          key: "build_logs",
-          link: `/projects/${project_id}/apps/${app_id}/build_logs`,
-        },
+        // {
+        //   label: "Build Logs",
+        //   icon: HiOutlineArrowPath,
+        //   key: "build_logs",
+        //   link: `/projects/${project_id}/apps/${app_id}/build_logs`,
+        // },
         {
           label: "Logs",
           icon: LuLogs,

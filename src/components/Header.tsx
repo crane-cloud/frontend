@@ -13,7 +13,7 @@ import { Logo, UserDropDown } from "./Common";
 import { Link } from "react-router-dom";
 import Search from "./Elements/Search";
 import { useAuth } from "@/utils/AuthContext";
-import { DOCS_URL } from "@/config";
+import { DOCS_URL, STATUS_URL } from "@/config";
 
 interface HeaderProps {
   opened: boolean;
@@ -75,6 +75,7 @@ export const DashboardHeader = ({ opened, toggle }: HeaderProps) => {
                 </Group>
               </a>
               <a
+                href={`${STATUS_URL}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 style={{ textDecoration: "none", paddingLeft: "10px" }}

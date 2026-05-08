@@ -127,20 +127,21 @@ const ExplorePage = () => {
     });
   }, []);
 
-  const { items: tags } = useInfiniteScrollWithPagination({
-    loading: loadingTags,
-    success: fetchedTags,
-    data: tagsResponse,
-    extractItems: (data) => data?.data?.tags || [],
-    extractPagination: (data) => data?.data?.pagination || {},
-    extractItemId: (tag) => tag.id,
-    onLoadMore: (page) => {
-      getTags({
-        api: `${API_SOCIALS}?filter=${sortBy}&entity=tags`,
-        params: { page, per_page: 10 },
-      });
-    },
-  });
+  const { items: tags, lastElementRef: tagLastElementRef } =
+    useInfiniteScrollWithPagination({
+      loading: loadingTags,
+      success: fetchedTags,
+      data: tagsResponse,
+      extractItems: (data) => data?.data?.tags || [],
+      extractPagination: (data) => data?.data?.pagination || {},
+      extractItemId: (tag) => tag.id,
+      onLoadMore: (page) => {
+        getTags({
+          api: `${API_SOCIALS}?filter=${sortBy}&entity=tags`,
+          params: { page, per_page: 10 },
+        });
+      },
+    });
 
   useEffect(() => {
     getTags({
@@ -591,7 +592,7 @@ const ExplorePage = () => {
                   )
                 ) : (
                   users?.map((user: User, index) => {
-                    const isLast = index === projects.length - 1;
+                    const isLast = index === users.length - 1;
                     return (
                       <div
                         key={user.id}
@@ -713,15 +714,18 @@ const ExplorePage = () => {
                         </Box>
                       )
                     ) : (
-                      tags.map((tag: TagType) => {
+                      tags.map((tag: TagType, index: number) => {
                         const tagState = tagStates[tag.id] || {
                           is_following: tag.is_following,
                           loading: false,
                         };
 
+                        const isLast = index === tags.length - 1;
+
                         return (
                           <Card
                             key={tag.id}
+                            ref={isLast ? tagLastElementRef : null}
                             p="sm"
                             withBorder
                             radius="lg"

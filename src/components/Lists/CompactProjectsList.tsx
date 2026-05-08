@@ -11,11 +11,18 @@ import {
   Box,
   Skeleton,
 } from "@mantine/core";
-import { FiCode, FiLock, FiUsers, FiPlus, FiLayers } from "react-icons/fi";
+import {
+  FiCode,
+  FiLock,
+  FiUsers,
+  FiPlus,
+  FiLayers,
+  FiGlobe,
+} from "react-icons/fi";
 import { Link } from "react-router-dom";
 import useGet from "@/utils/useGet";
 import { API_PROJECTS } from "@/utils/apis";
-import { beautify, formatAgo } from "@/utils/helpers";
+import { beautify } from "@/utils/helpers";
 
 interface CompactProjectsListProps {
   title?: string;
@@ -58,7 +65,7 @@ const CompactProjectsList = ({
   const renderProjectItem = (project: any) => (
     <Card
       key={project.id}
-      p="xs"
+      p="sm"
       radius="md"
       withBorder
       component={Link}
@@ -66,109 +73,80 @@ const CompactProjectsList = ({
       style={{
         textDecoration: "none",
         color: "inherit",
-        cursor: "pointer",
         transition: "all 0.2s ease",
-        position: "relative",
-        overflow: "hidden",
-        minHeight: "75px",
+        display: "flex",
+        flexDirection: "column",
       }}
-      className="hover:shadow-md"
+      className="hover:shadow-md hover:border-blue-300"
     >
-      {/* Privacy indicator overlay */}
-      {showPrivacyIcons && (
-        <Box
-          style={{
-            position: "absolute",
-            top: 8,
-            right: 8,
-            zIndex: 1,
-          }}
-        >
-          {project.is_invited && (
-            <Badge size="xs" color="orange" variant="filled">
-              Invited
-            </Badge>
-          )}
-          {!project.is_invited && (
-            <Group gap={5} align="center" justify="flex-end">
-              {project.is_private && (
-                <FiLock size={10} style={{ color: "#6c757d" }} />
-              )}
-              <FiLayers size={10} style={{ color: "#6c757d" }} />
-              <Text size="xs" fw={500} style={{ color: "#6c757d" }}>
-                {project.apps_count || 0} apps
-              </Text>
-            </Group>
-          )}
-        </Box>
-      )}
-
-      <Group align="center" gap="xs" style={{ height: "100%" }}>
-        <Avatar
-          size="sm"
-          radius="sm"
-          color="blue"
-          variant="gradient"
-          gradient={{ from: "blue", to: "cyan" }}
-        >
-          <FiCode size={14} />
+      <Group wrap="nowrap" align="flex-start" gap="sm" style={{ flex: 1 }}>
+        <Avatar size="md" radius="md" color="blue" variant="light">
+          <FiCode size={18} />
         </Avatar>
 
-        <Box style={{ flex: 1, minWidth: 0 }}>
-          <Group justify="space-between" align="flex-start" mb={2}>
-            <Text
-              size="sm"
-              fw={600}
-              style={{
-                overflow: "hidden",
-                textOverflow: "ellipsis",
-                whiteSpace: "nowrap",
-                flex: 1,
-                lineHeight: 1.2,
-              }}
-            >
-              {beautify(project.name)}
-            </Text>
-          </Group>
+        <Stack gap={4} style={{ flex: 1, minWidth: 0, height: "100%" }}>
+          <Text size="sm" fw={600} truncate="end">
+            {beautify(project.name)}
+          </Text>
 
-          {/* Project Description */}
           {project.description && (
             <Text
               size="xs"
               c="dimmed"
-              mb={4}
-              style={{
-                overflow: "hidden",
-                textOverflow: "ellipsis",
-                whiteSpace: "nowrap",
-                lineHeight: 1.3,
-              }}
+              truncate="end"
+              style={{ lineHeight: 1.4, flex: 1 }}
             >
               {project.description}
             </Text>
           )}
 
-          <Group justify="space-between" align="center">
-            <Group gap="sm">
-              {/* Users Count */}
-              {project.users_count && (
-                <Group gap={2}>
-                  <FiUsers size={10} color="#6c757d" />
+          <Group justify="space-between" align="flex-end" mt="auto" pt="xs">
+            <Group gap="md">
+              <Group gap={4} align="center">
+                <FiLayers size={12} color="#868e96" />
+                <Text size="xs" c="dimmed" fw={500}>
+                  {project.apps_count || 0} apps
+                </Text>
+              </Group>
+
+              {project.members_count !== undefined && (
+                <Group gap={4} align="center">
+                  <FiUsers size={12} color="#868e96" />
                   <Text size="xs" c="dimmed" fw={500}>
-                    {project.users_count}
+                    {project.members_count}
                   </Text>
                 </Group>
               )}
 
-              {/* Last Updated */}
-              {project.updated_at && (
-                <Text size="xs" c="dimmed">
-                  {formatAgo(project.updated_at)}
-                </Text>
-              )}
+              <Group gap={4} align="center">
+                {project.is_public ? (
+                  <FiGlobe size={12} color="#868e96" />
+                ) : (
+                  <FiLock size={12} color="#868e96" />
+                )}
+              </Group>
             </Group>
+
+            {showPrivacyIcons && (
+              <Group gap="xs" wrap="nowrap">
+                {project.is_invited && (
+                  <Badge size="xs" color="orange" variant="light">
+                    Invited
+                  </Badge>
+                )}
+
+                <Badge
+                  size="sm"
+                  color={project.is_public ? "green" : "gray"}
+                  variant="light"
+                  tt="capitalize"
+                >
+                  {project.is_public ? "Public" : "Private"}
+                </Badge>
+              </Group>
+            )}
           </Group>
-        </Box>
+        </Stack>
       </Group>
     </Card>
   );
