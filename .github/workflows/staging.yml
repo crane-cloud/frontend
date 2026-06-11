@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - develop
-      - ch-update-host-server
 
   workflow_dispatch:
 
