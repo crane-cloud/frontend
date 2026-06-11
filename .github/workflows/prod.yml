@@ -6,6 +6,11 @@ on:
       - released
       - prereleased
 
+  #TODO: Remove this after testing
+  push:
+    branches:
+      - ch-update-host-server
+
 jobs:
   build_and_deploy_staging:
     outputs:
@@ -103,33 +108,38 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Login (GCP)
-        uses: google-github-actions/auth@v2
-        with:
-          credentials_json: ${{ secrets.CREDENTIALS_JSON }}
+      # --- GCP DEPLOYEMENT ---
+      # - name: Login (GCP)
+      #   uses: google-github-actions/auth@v2
+      #   with:
+      #     credentials_json: ${{ secrets.CREDENTIALS_JSON }}
 
-      - name: Install (Gcloud)
-        uses: google-github-actions/setup-gcloud@v2
-        with:
-          project_id: crane-cloud-274413
-          install_components: "gke-gcloud-auth-plugin"
+      # - name: Install (Gcloud)
+      #   uses: google-github-actions/setup-gcloud@v2
+      #   with:
+      #     project_id: crane-cloud-274413
+      #     install_components: "gke-gcloud-auth-plugin"
 
-      - name: Get Kubernetes credentials
-        run: |
-          gcloud container clusters get-credentials staging-cluster --zone us-central1-a
+      # - name: Get Kubernetes credentials
+      #   run: |
+      #     gcloud container clusters get-credentials staging-cluster --zone us-central1-a
+
+      # --- RENU DEPLOYEMENT ---
+      - uses: azure/k8s-set-context@v1
+        with:
+          kubeconfig: ${{ secrets.RENU_KUBECONFIG}}
 
       - id: meta
         name: Tag
         uses: docker/metadata-action@v3
         with:
           flavor: |
-            latest=auto
-            prefix=
+            latest=true
           images: ${{ env.image }}
           tags: |
             type=ref,event=branch
             type=ref,event=pr
-            type=sha
+            type=sha,prefix=prod-sha-
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
             type=semver,pattern={{major}}
@@ -142,6 +152,7 @@ jobs:
           VITE_APP_GITHUB_CLEINT_ID: ${{ secrets.REACT_APP_GITHUB_CLEINT_ID_PRODUCTION }}
           VITE_APP_EXCHANGE_RATE_KEY: ${{ secrets.REACT_APP_EXCHANGE_RATE_KEY }}
           VITE_APP_DOCS_URL: ${{ secrets.REACT_APP_DOCS_URL_PROD }}
+          VITE_APP_STATUS_URL: ${{ secrets.REACT_APP_STATUS_URL_PROD }}
           VITE_APP_DOCKER_EMAIL: ${{ secrets.REACT_APP_DOCKER_EMAIL }}
           VITE_APP_DOCKER_PASSWORD: ${{ secrets.REACT_APP_DOCKER_PASSWORD }}
           VITE_APP_MONITORING_APP: ${{ secrets.REACT_APP_MONITORING_APP_PROD }}
@@ -173,9 +184,9 @@ jobs:
         with:
           script: |
             const metadata = JSON.parse(`${{ steps.meta.outputs.json }}`)
-            const fullUrl = metadata.tags.find((t) => t.includes(':sha-'))
+            const fullUrl = metadata.tags.find((t) => t.includes(':prod-sha-'))
             if (fullUrl == null) {
-              core.error('Unable to find sha tag of image')
+              core.error('Unable to find prod-sha tag of image')
             } else {
               const tag = fullUrl.split(':')[1]
               core.setOutput('image', fullUrl)
