@@ -68,7 +68,7 @@
     "postcss-simple-vars": "^7.0.1",
     "prettier": "^3.6.2",
     "prop-types": "^15.8.1",
-    "storybook": "^8.5.0",
+    "storybook": "^8.6.15",
     "storybook-dark-mode": "^4.0.2",
     "stylelint": "^16.13.2",
     "stylelint-config-standard-scss": "^14.0.0",
